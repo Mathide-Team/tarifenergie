@@ -55,7 +55,11 @@ jobs:
       - name: hassfest
         uses: home-assistant/actions/hassfest@master
 
+      # L'action HACS ne valide que les dépôts publics (« … is private, the HACS
+      # action can only validate public repositories ») : sautée tant que le
+      # dépôt est privé, voir l'issue de visibilité. hassfest reste exigé.
       - name: Validation HACS
+        if: ${{ !github.event.repository.private }}
         uses: hacs/action@main
         with:
           category: integration
