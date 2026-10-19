@@ -16,7 +16,7 @@ from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, UnitOfEnergy
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import selector
 
-from .calendrier import PlagesHC, PlagesInvalides
+from .calendrier import PlagesDatees, PlagesInvalides
 from .const import (
     CONF_ENERGIE,
     CONF_HEURES_CREUSES,
@@ -67,7 +67,7 @@ def _schema_contrat(valeurs: dict[str, Any]) -> dict[vol.Marker, Any]:
 def _verifier_contrat(saisie: dict[str, Any]) -> tuple[dict[str, Any], dict[str, str]]:
     """Normalise la saisie (puissance en entier, plages réécrites) ; erreurs par champ."""
     try:
-        plages = PlagesHC.lire(saisie[CONF_HEURES_CREUSES])
+        plages = PlagesDatees.lire(saisie[CONF_HEURES_CREUSES])
     except PlagesInvalides:
         return saisie, {CONF_HEURES_CREUSES: "plages_invalides"}
     return {**saisie, CONF_PUISSANCE: int(saisie[CONF_PUISSANCE]), CONF_HEURES_CREUSES: plages.texte()}, {}

@@ -14,7 +14,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
-from .calcul import Comparaison, PlagesHC, comparer
+from .calcul import Comparaison, comparer
+from .calendrier import PlagesDatees
 from .const import (
     CONF_ENERGIE,
     CONF_HEURES_CREUSES,
@@ -100,7 +101,7 @@ class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
         self.entite: str = config[CONF_ENERGIE]
         self.puissance = int(config[CONF_PUISSANCE])
         self.option_actuelle: str = config[CONF_OPTION]
-        self.plages = PlagesHC.lire(config[CONF_HEURES_CREUSES])
+        self.plages = PlagesDatees.lire(config[CONF_HEURES_CREUSES])
         self.debut: datetime | None = None
         self.fin: datetime | None = None
 

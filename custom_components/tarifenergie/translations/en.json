@@ -14,7 +14,7 @@
         "data_description": {
           "entite_energie": "The sensor used in the Energy dashboard (Linky meter, clamp, etc.).",
           "puissance": "Shown on the bill (kVA).",
-          "heures_creuses": "Ranges shown on the bill or the Enedis customer area, e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base."
+          "heures_creuses": "Ranges shown on the bill or the distribution network operator's customer area (Enedis or local operator), e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base. If they changed during the year, add each change after \"|\" with its date: \"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00\"."
         }
       }
     },
@@ -22,7 +22,7 @@
       "capteur_absent": "Sensor not found.",
       "unite": "The sensor must be in Wh, kWh or MWh.",
       "state_class": "The sensor must be cumulative (state_class total or total_increasing), like Energy dashboard sensors.",
-      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM format, comma-separated, without overlap."
+      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM, comma-separated, no overlap; changes: \"| YYYY-MM-DD: ranges\", increasing dates."
     },
     "abort": {
       "already_configured": "This sensor is already tracked."
@@ -39,7 +39,7 @@
         },
         "data_description": {
           "puissance": "Shown on the bill (kVA).",
-          "heures_creuses": "Ranges shown on the bill or the Enedis customer area, e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base."
+          "heures_creuses": "Ranges shown on the bill or the distribution network operator's customer area (Enedis or local operator), e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base. If they changed during the year, add each change after \"|\" with its date: \"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00\"."
         }
       }
     },
@@ -47,7 +47,7 @@
       "capteur_absent": "Sensor not found.",
       "unite": "The sensor must be in Wh, kWh or MWh.",
       "state_class": "The sensor must be cumulative (state_class total or total_increasing), like Energy dashboard sensors.",
-      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM format, comma-separated, without overlap."
+      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM, comma-separated, no overlap; changes: \"| YYYY-MM-DD: ranges\", increasing dates."
     }
   },
   "selector": {
