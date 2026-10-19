@@ -7,13 +7,14 @@ Intégration Home Assistant : comparaison des tarifs d'électricité (puis de ga
 ```
 custom_components/tarifenergie/
 ├── modele.py        Grilles CRE (CSV) → Grille, Grilles.en_vigueur(puissance, jour)   — Python pur
-├── calendrier.py    PlagesHC, Calendrier (Base, HP/HC ; Tempo, HSC, week-end à venir) — Python pur
+├── calendrier.py    PlagesHC, Calendrier (Base, HP/HC, Tempo ; HSC, week-end à venir) — Python pur
+├── tempo.py         Couleurs Tempo réelles (jours passés), règles, estimation des manques — Python pur
 ├── calcul.py        cout_option(), comparer() : chaque offre-option séparément        — Python pur
 ├── offres.py        offres/<offre>_<option>.yaml → Offre (une option, une issue)      — Python pur
 ├── coordinateur.py  Statistiques horaires du recorder (kWh, heure locale) → Comparaison, toutes les 6 h
 ├── config_flow.py   Capteur, puissance, option actuelle, heures creuses (+ options)
 ├── sensor.py        Coûts, option la moins chère, économie, consommation, part HC
-└── tarifs/          Copies sans modification de l'open data CRE (scripts/maj_tarifs_cre.py)
+└── tarifs/          Open data CRE copiée telle quelle (scripts/maj_tarifs_cre.py) et couleurs Tempo (scripts/maj_tempo.py)
 ```
 
 ## Conventions

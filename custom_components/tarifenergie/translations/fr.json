@@ -67,7 +67,8 @@
     "option": {
       "options": {
         "base": "Base",
-        "hphc": "Heures pleines / Heures creuses"
+        "hphc": "Heures pleines / Heures creuses",
+        "tempo": "Tempo (jours bleus, blancs, rouges)"
       }
     }
   },
@@ -79,11 +80,15 @@
       "cout_hphc": {
         "name": "Coût sur 12 mois, option Heures creuses"
       },
+      "cout_tempo": {
+        "name": "Coût sur 12 mois, option Tempo"
+      },
       "option_moins_chere": {
         "name": "Option la moins chère",
         "state": {
           "base": "Base",
-          "hphc": "Heures creuses"
+          "hphc": "Heures creuses",
+          "tempo": "Tempo"
         }
       },
       "economie_possible": {

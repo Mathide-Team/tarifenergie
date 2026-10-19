@@ -53,7 +53,7 @@ POSTES_OPTION: dict[str, frozenset[str]] = {
     "base": frozenset({"base"}),
     "hphc": frozenset({"hp", "hc"}),
 }
-LIBELLES_OPTION = {"base": "Base", "hphc": "Off-peak"}
+LIBELLES_OPTION = {"base": "Base", "hphc": "Off-peak", "tempo": "Tempo"}
 TERRITOIRE_PAR_DEFAUT = "enedis"
 _TERRITOIRE = re.compile(r"^(enedis|eld:[a-z0-9_]+)$")
 CHAMPS_OBLIGATOIRES = frozenset(

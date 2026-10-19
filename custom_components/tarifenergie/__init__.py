@@ -14,27 +14,30 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
 from .const import OPTIONS
-from .coordinateur import CoordinateurTarifs
+from .coordinateur import CoordinateurTarifs, Referentiel
 from .modele import Grilles
-from .offres import Offre, grilles_offres, lire_offres
+from .offres import grilles_offres, lire_offres
+from .tempo import Climatologie, lire_couleurs
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 type TarifenergieConfigEntry = ConfigEntry[CoordinateurTarifs]
 
 
-def _charger() -> tuple[dict[str, Grilles], dict[str, Offre]]:
-    """Une entrée par offre-option : TRV Base, TRV HP/HC, puis chaque offre-option de marché."""
+def _charger() -> Referentiel:
+    """Une entrée par offre-option (TRV Base, HP/HC, Tempo, puis chaque offre-option de marché),
+    et l'historique réel des couleurs Tempo."""
     offres = lire_offres()
     grilles = {option: Grilles.charger(option) for option in OPTIONS}
     grilles.update(grilles_offres(offres))
-    return grilles, offres
+    couleurs = lire_couleurs()
+    return Referentiel(grilles, offres, couleurs, Climatologie.depuis(couleurs))
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: TarifenergieConfigEntry) -> bool:
     """Charge les grilles CRE (hors boucle), calcule une première fois, puis crée les capteurs."""
-    grilles, offres = await hass.async_add_executor_job(_charger)
-    coordinateur = CoordinateurTarifs(hass, entry, grilles, offres)
+    referentiel = await hass.async_add_executor_job(_charger)
+    coordinateur = CoordinateurTarifs(hass, entry, referentiel)
     await coordinateur.async_config_entry_first_refresh()
     entry.runtime_data = coordinateur
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

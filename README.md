@@ -30,6 +30,16 @@ au prorata des minutes. La v0.2 y ajoute les offres de marché (voir ci-dessous)
 
 Avec moins de 12 mois d'historique, les coûts portent sur la période disponible (attribut `jours_couverts`).
 
+## Tempo
+
+L'option Tempo du tarif réglementé est une offre-option à part (#340). Chaque heure est
+valorisée selon la **couleur réelle** du jour Tempo (de 6h à 6h le lendemain) et les heures
+creuses Tempo, **fixes de 22h à 6h** (les plages saisies pour le compteur ne s'appliquent
+pas). Les couleurs des jours passés sont livrées dans `tarifs/tempo_couleurs.csv`
+(historique RTE depuis 2014, `scripts/maj_tempo.py`). Un jour qui manque encore est
+**estimé** selon les règles (22 rouges du 1er novembre au 31 mars, en semaine, hors jours
+fériés ; 43 blancs hors dimanche), sur les jours les plus froids de la période, et signalé.
+
 ## Offres de marché (v0.2)
 
 Les grilles des fournisseurs sont livrées dans `custom_components/tarifenergie/offres/*.yaml`
@@ -64,7 +74,8 @@ YAML sur le modèle des existants, une issue d'inventaire la documentant.
 
 - La CRE ne publie l'option Base que jusqu'à 15 kVA : au-delà, elle est signalée indisponible.
 - Statistiques horaires : une heure à cheval sur une limite d'heures creuses (ex. 23:30) est répartie au prorata des minutes.
-- Pas encore de Tempo (#3), de gaz (#4) ni d'offres de marché des fournisseurs (#5).
+- Tempo : estimation sur la consommation réelle passée, avec les couleurs réelles des jours passés (RTE) ; un jour absent de l'historique est estimé selon les règles Tempo et compté dans l'attribut `jours_couleur_estimee`. Jamais de prévision.
+- Pas encore de gaz (#4).
 
 Sources et particularités des données : [docs/sources.md](docs/sources.md).
 
