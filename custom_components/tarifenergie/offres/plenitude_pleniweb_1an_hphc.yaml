@@ -1,0 +1,16 @@
+# Eni Plenitude Pleniweb 1 an — HP/HC (issue #167, inventaire #6).
+# Électricité verte, souscription en ligne uniquement ; prix fixe tout compris 12 mois.
+# Grille TTC de référence pour toute souscription du 01/10/2026 au 03/11/2026 non inclus.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: plenitude_pleniweb_1an_hphc
+fournisseur: Eni Plenitude France
+offre: Pleniweb 1 an
+option: hphc
+issue: 167
+type_prix: fixe
+grille_du: 2026-10-01
+duree_fixite_mois: 12
+source: https://www.eniplenitude.fr/content/dam/plenitude-fr/documents/pages-offres/offre-pleniweb/offre-pleniweb_1an_elec.pdf
+# HC dès 3 kVA ; mêmes abonnements qu'en Base
+abonnement_mensuel_ttc: {3: 14.53, 6: 18.26, 9: 22.28, 12: 26.16, 15: 29.80, 18: 33.54, 24: 41.54, 30: 48.87, 36: 56.81}
+kwh_ttc: {hp: 0.1965, hc: 0.1467}

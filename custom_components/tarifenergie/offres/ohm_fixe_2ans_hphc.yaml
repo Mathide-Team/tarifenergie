@@ -1,0 +1,16 @@
+# Ohm Énergie Fixe 2 ans — HP/HC (issue #146, inventaire #6).
+# Électricité 100 % renouvelable incluse ; prix fixe de la part électricité 2 ans.
+# Grille TTC applicable au 16/10/2026 (grille officielle).
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: ohm_fixe_2ans_hphc
+fournisseur: Ohm Énergie
+offre: Fixe 2 ans
+option: hphc
+issue: 146
+type_prix: fixe
+grille_du: 2026-10-16
+duree_fixite_mois: 24
+source: https://ohm-energie.com/grilles/elec/2026/10/ELEC-Serenite_Fixe_2ans.pdf
+# pas d'option HC en 3 kVA
+abonnement_mensuel_ttc: {6: 16.07, 9: 20.18, 12: 24.15, 15: 27.88, 18: 31.72, 24: 39.90, 30: 47.42, 36: 55.01}
+kwh_ttc: {hp: 0.2421, hc: 0.1771}

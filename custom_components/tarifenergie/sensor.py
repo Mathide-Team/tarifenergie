@@ -23,19 +23,14 @@ from . import TarifenergieConfigEntry
 from .calcul import Comparaison
 from .const import DOMAIN, OPTIONS
 from .coordinateur import CoordinateurTarifs
-from .offres import Offre, lire_offres
+from .offres import LIBELLES_OPTION, Offre
 
 
 def _libelle(cle: str, offres: dict[str, Offre]) -> str:
-    """Nom lisible d'une clé de comparaison : TRV ou « fournisseur Offre (option) »."""
-    if ":" not in cle:
-        return {"base": "Base", "hphc": "Off-peak"}.get(cle, cle)
-    ident, option = cle.split(":", 1)
-    offre = offres.get(ident)
-    if offre is None:
-        return cle
-    option_lisible = {"base": "Base", "hphc": "Off-peak"}.get(option, option)
-    return f"{offre.fournisseur} {offre.offre} ({option_lisible})"
+    """Nom lisible d'une offre-option : TRV (« Base », « Off-peak ») ou « fournisseur Offre (option) »."""
+    if cle in offres:
+        return offres[cle].libelle
+    return LIBELLES_OPTION.get(cle, cle)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -67,7 +62,7 @@ def _cout(option: str, offres: dict[str, Offre]) -> Description:
 
     cles_trv = option in OPTIONS
     return Description(
-        key=f"cout_{option.replace(':', '_')}",
+        key=f"cout_{option}",
         translation_key=f"cout_{option}" if cles_trv else None,
         name=None if cles_trv else f"12-month cost, {_libelle(option, offres)}",
         valeur=valeur,
@@ -89,7 +84,7 @@ def _classement(comp: Comparaison, coord: CoordinateurTarifs, offres: dict[str, 
 
 
 def _descriptions(cles: list[str], offres: dict[str, Offre]) -> tuple[Description, ...]:
-    """Capteurs pour les clés de comparaison disponibles (TRV + offres de marché)."""
+    """Capteurs pour chaque offre-option (TRV + offres de marché), chacune séparément."""
     return (
         *(_cout(cle, offres) for cle in cles),
         Description(
@@ -140,9 +135,9 @@ def _part_hc(comp: Comparaison) -> float | None:
 async def async_setup_entry(
     hass: HomeAssistant, entry: TarifenergieConfigEntry, async_add_entities: AddConfigEntryEntitiesCallback
 ) -> None:
-    """Un capteur par option TRV ou offre de marché, plus le classement et l'économie."""
+    """Un capteur par offre-option (TRV ou marché), plus le classement et l'économie."""
     coord = entry.runtime_data
-    offres = lire_offres()
+    offres = coord.offres
     cles = [cle for cle in coord.grilles if cle in OPTIONS] + [
         cle for cle in coord.grilles if cle not in OPTIONS
     ]

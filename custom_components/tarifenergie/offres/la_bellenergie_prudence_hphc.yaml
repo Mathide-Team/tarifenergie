@@ -1,0 +1,17 @@
+# la bellenergie Prudence — prix fixes 1 an — HP/HC (issue #166, inventaire #6).
+# Électricité verte d'origine France, particuliers ≤ 36 kVA, sans engagement.
+# Grille TTC applicable au 01/08/2026 (TURPE 7) : kWh HT = TRV HT − 2 %,
+# abonnements TRV +2 € TTC/mois (Base) / +2 € TTC/mois (HC).
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: la_bellenergie_prudence_hphc
+fournisseur: la bellenergie
+offre: Prudence
+option: hphc
+issue: 166
+type_prix: fixe
+grille_du: 2026-08-01
+duree_fixite_mois: 12
+source: https://labellenergie.fr/pdf/grille-tarifaire-la-bellenergie-particuliers.pdf
+# pas d'option HC en 3 kVA ; abonnement HC ≠ Base dès 9 kVA (CTA, #19)
+abonnement_mensuel_ttc: {6: 15.36, 9: 19.66, 12: 23.63, 15: 27.36, 18: 31.2, 24: 39.38, 30: 46.9, 36: 54.49}
+kwh_ttc: {hp: 0.2106, hc: 0.1565}

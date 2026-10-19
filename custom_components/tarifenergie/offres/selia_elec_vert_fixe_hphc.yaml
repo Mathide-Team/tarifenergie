@@ -1,0 +1,17 @@
+# SÉLIA Mon Contrat élec vert Fixe — HP/HC (issue #170, inventaire #6).
+# Électricité 100 % renouvelable française ; prix fixe tout compris 12 mois.
+# Grille TTC en vigueur au 21/09/2026 ; abonnements identiques au TRV.
+# Prix du kWh nettement au-dessus du marché (27,36 c€ Base à 6 kVA).
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: selia_elec_vert_fixe_hphc
+fournisseur: SÉLIA
+offre: Mon Contrat élec vert Fixe
+option: hphc
+issue: 170
+type_prix: fixe
+grille_du: 2026-09-21
+duree_fixite_mois: 12
+source: https://www.selia-energies.fr/wp-content/uploads/2026/10/D-R14-SELIA-SU-25-C-Grille-tarifaire-MCE-vert-fixe.pdf
+# pas d'option HC en 3 kVA ; abonnement HC ≠ Base dès 9 kVA (CTA, #19)
+abonnement_mensuel_ttc: {6: 16.05, 9: 20.16, 12: 24.13, 15: 27.86, 18: 31.70, 24: 39.88, 30: 47.40, 36: 54.99}
+kwh_ttc: {hp: 0.2941, hc: 0.2139}

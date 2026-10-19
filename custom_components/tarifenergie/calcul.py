@@ -1,12 +1,16 @@
-"""Moteur de comparaison : coût d'une option tarifaire sur une consommation horaire réelle.
+"""Moteur de comparaison : coût de chaque offre-option sur une consommation horaire réelle.
 
-Principe (issue #2) :
+Principe (issues #2 et #343) :
+    - une **offre-option** (TRV Base, TRV HP/HC, ou une option d'une offre de marché)
+      est calculée seule, avec ses grilles et son calendrier : aucune offre-option
+      n'est regroupée avec une autre, même si elles viennent du même fournisseur ;
     - chaque heure consommée est valorisée au prix TTC **en vigueur ce jour-là**
-      (date locale), selon son poste (base, ou heures pleines / creuses) ;
+      (date locale), selon le poste que lui attribue le calendrier de l'offre-option
+      (``calendrier.py``) ;
     - l'abonnement annuel TTC est compté au jour : 1/365 (ou 1/366) par jour
       couvert, avec la grille du jour ;
-    - une heure à cheval sur une limite d'heures creuses (ex. 23:30) est
-      répartie au prorata des minutes, faute de mesure plus fine.
+    - une offre-option sans grille, non éligible ou de structure non prise en charge
+      est mise de côté avec la raison.
 
 Python pur : aucun import Home Assistant (testable seul).
 """
@@ -14,75 +18,16 @@ Python pur : aucun import Home Assistant (testable seul).
 from __future__ import annotations
 
 import calendar
-import itertools
-import re
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
+from .calendrier import Calendrier, PlagesHC, PostesNonPrisEnCharge, calendrier_pour
+from .calendrier import PlagesInvalides as PlagesInvalides  # réexport (config_flow, tests)
 from .modele import Grilles, TarifIntrouvable
 
 CENTIME = Decimal("0.01")
-MINUTES_JOUR = 24 * 60
-_PLAGE = re.compile(r"^\s*(\d{1,2})[:h](\d{2})\s*-\s*(\d{1,2})[:h](\d{2})\s*$")
-
-
-class PlagesInvalides(ValueError):
-    """Texte d'heures creuses illisible."""
-
-
-@dataclass(frozen=True, slots=True)
-class PlagesHC:
-    """Plages d'heures creuses, en minutes depuis minuit (fin exclue, passage de minuit permis)."""
-
-    plages: tuple[tuple[int, int], ...]
-
-    @classmethod
-    def lire(cls, texte: str) -> PlagesHC:
-        """``"22:00-06:00"`` ou ``"02:00-07:00, 13:00-16:00"`` (le « h » est accepté : ``22h00``)."""
-        plages: list[tuple[int, int]] = []
-        for morceau in filter(None, (m.strip() for m in re.split(r"[,;]", texte))):
-            trouve = _PLAGE.match(morceau)
-            if not trouve:
-                raise PlagesInvalides(f"plage illisible : {morceau!r} (attendu HH:MM-HH:MM)")
-            h1, m1, h2, m2 = (int(x) for x in trouve.groups())
-            if h1 > 23 or h2 > 24 or m1 > 59 or m2 > 59 or (h2 == 24 and m2):
-                raise PlagesInvalides(f"heure impossible : {morceau!r}")
-            debut, fin = h1 * 60 + m1, h2 * 60 + m2
-            if debut == fin % MINUTES_JOUR:
-                raise PlagesInvalides(f"plage vide ou de 24 h : {morceau!r}")
-            plages.append((debut, fin))
-        if not plages:
-            raise PlagesInvalides("aucune plage d'heures creuses")
-        resultat = cls(tuple(plages))
-        intervalles = sorted(resultat._intervalles())
-        for (_, fin_a), (debut_b, _) in itertools.pairwise(intervalles):
-            if debut_b < fin_a:
-                raise PlagesInvalides(f"plages qui se chevauchent : {texte!r}")
-        return resultat
-
-    def _intervalles(self) -> Iterable[tuple[int, int]]:
-        """Intervalles sans passage de minuit, dans [0, 1440]."""
-        for debut, fin in self.plages:
-            if fin > debut:
-                yield debut, fin
-            else:
-                yield debut, MINUTES_JOUR
-                if fin:
-                    yield 0, fin
-
-    def minutes_par_jour(self) -> int:
-        return sum(fin - debut for debut, fin in self._intervalles())
-
-    def fraction_hc(self, heure: int) -> Decimal:
-        """Part (0 à 1) de l'heure locale ``heure``:00-``heure+1``:00 en heures creuses."""
-        debut_h, fin_h = heure * 60, heure * 60 + 60
-        minutes = sum(max(0, min(fin, fin_h) - max(debut, debut_h)) for debut, fin in self._intervalles())
-        return Decimal(min(minutes, 60)) / 60
-
-    def texte(self) -> str:
-        return ", ".join(f"{d // 60:02d}:{d % 60:02d}-{f // 60:02d}:{f % 60:02d}" for d, f in self.plages)
 
 
 @dataclass(slots=True)
@@ -123,16 +68,21 @@ def cout_option(
     plages: PlagesHC | None = None,
     jours: Iterable[date] | None = None,
 ) -> Cout:
-    """Coût TTC de ``option`` pour une consommation horaire.
+    """Coût TTC de l'offre-option ``option`` pour une consommation horaire.
 
     ``conso`` : couples (début d'heure en heure **locale**, kWh consommés dans l'heure).
+    ``plages`` : heures creuses du compteur, pour un calendrier HP/HC.
     ``jours`` : jours d'abonnement à compter ; par défaut, ceux présents dans ``conso``.
-    Lève :class:`TarifIntrouvable` si un jour n'a pas de grille (puissance non proposée…).
+    Lève :class:`TarifIntrouvable` si un jour n'a pas de grille (puissance non proposée…)
+    et :class:`PostesNonPrisEnCharge` pour une structure pas encore implémentée.
     """
     if option == "hphc" and plages is None:
         raise ValueError("l'option heures creuses demande des plages")
     cout = Cout(option)
     vus: set[date] = set()
+    # Calendrier déduit des postes de la grille du jour (une offre-option garde les
+    # mêmes postes d'une grille à l'autre ; le cache évite de le reconstruire).
+    calendriers: dict[frozenset[str], Calendrier] = {}
     for debut, kwh in conso:
         jour = debut.date()
         vus.add(jour)
@@ -140,16 +90,10 @@ def cout_option(
             continue
         grille = grilles.en_vigueur(puissance, jour)
         cout.grilles.add(grille.debut)
-        quantite = Decimal(str(kwh))
-        # Base ou Heures creuses : selon les postes de la grille (TRV « base »/«hphc »
-        # ou offre de marché « <id>:<option> »), pas selon la clé exacte.
-        if set(grille.prix) == {"base"}:
-            repartition = {"base": quantite}
-        else:
-            if plages is None:
-                raise ValueError("l'option heures creuses demande des plages")
-            hc = quantite * plages.fraction_hc(debut.hour)
-            repartition = {"hc": hc, "hp": quantite - hc}
+        postes = frozenset(grille.prix)
+        if postes not in calendriers:
+            calendriers[postes] = calendrier_pour(postes, plages)
+        repartition = calendriers[postes].repartir(debut, Decimal(str(kwh)))
         for poste, q in repartition.items():
             cout.kwh[poste] = cout.kwh.get(poste, Decimal(0)) + q
             cout.energie += q * grille.prix[poste]
@@ -193,15 +137,26 @@ def comparer(
     conso: list[tuple[datetime, float]],
     plages: PlagesHC,
     option_actuelle: str,
+    exclues: dict[str, str] | None = None,
 ) -> Comparaison:
-    """Calcule toutes les options ; une option sans tarif pour cette puissance est mise de côté."""
+    """Calcule chaque offre-option séparément, sur la même consommation.
+
+    ``grilles`` : une entrée par offre-option (clé de comparaison → ses grilles).
+    ``exclues`` : offres-options écartées d'avance (non éligibles…), avec la raison.
+    Une offre-option sans tarif pour cette puissance, ou de structure non prise en
+    charge, est mise de côté avec la raison ; les autres restent comparées.
+    """
+    exclues = exclues or {}
     jours = {debut.date() for debut, _ in conso}
     couts: dict[str, Cout] = {}
     indisponibles: dict[str, str] = {}
     for option, grilles_option in grilles.items():
+        if option in exclues:
+            indisponibles[option] = exclues[option]
+            continue
         try:
             couts[option] = cout_option(option, grilles_option, puissance, conso, plages, jours)
-        except TarifIntrouvable as err:
+        except (TarifIntrouvable, PostesNonPrisEnCharge) as err:
             indisponibles[option] = str(err)
     return Comparaison(couts, indisponibles, option_actuelle, len(jours))
 

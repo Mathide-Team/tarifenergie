@@ -1,0 +1,2548 @@
+{
+ "historique|23:30-07:30|3": {
+  "couts": {
+   "base": {
+    "total": "971.87",
+    "energie": "828.1416144",
+    "abonnement": "143.7267397260273972602739755",
+    "kwh": {
+     "base": "4233.306"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 3 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 3 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 3 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 3 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2025-10-16"
+  }
+ },
+ "historique|23:30-07:30|6": {
+  "couts": {
+   "base": {
+    "total": "1016.22",
+    "energie": "828.1416144",
+    "abonnement": "188.0747397260273972602739672",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "972.41",
+    "energie": "783.11463885",
+    "abonnement": "189.2935940810958904109588971",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 6 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 6 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 6 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 6 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 6 kVA au 2025-10-16"
+  }
+ },
+ "historique|23:30-07:30|9": {
+  "couts": {
+   "base": {
+    "total": "1060.07",
+    "energie": "824.0021701",
+    "abonnement": "236.0694246575342465753424646",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "1021.01",
+    "energie": "783.11463885",
+    "abonnement": "237.8956678936986301369862989",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 9 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 9 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 9 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 9 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 9 kVA au 2025-10-16"
+  }
+ },
+ "historique|23:30-07:30|12": {
+  "couts": {
+   "base": {
+    "total": "1106.61",
+    "energie": "824.0021701",
+    "abonnement": "282.6042191780821917808219210",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "1067.57",
+    "energie": "783.11463885",
+    "abonnement": "284.4591674947945205479452032",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 12 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 12 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 12 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 12 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 12 kVA au 2025-10-16"
+  }
+ },
+ "historique|23:30-07:30|36": {
+  "couts": {
+   "hphc": {
+    "total": "1428.97",
+    "energie": "783.11463885",
+    "abonnement": "645.8525358290410958904109554",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "base": "pas de tarif 36 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 36 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 36 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 36 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 36 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 36 kVA au 2025-10-16"
+  }
+ },
+ "historique|02:00-07:00, 13:00-16:00|3": {
+  "couts": {
+   "base": {
+    "total": "971.87",
+    "energie": "828.1416144",
+    "abonnement": "143.7267397260273972602739755",
+    "kwh": {
+     "base": "4233.306"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 3 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 3 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 3 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 3 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 3 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 3 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2025-10-16"
+  }
+ },
+ "historique|02:00-07:00, 13:00-16:00|6": {
+  "couts": {
+   "base": {
+    "total": "1016.22",
+    "energie": "828.1416144",
+    "abonnement": "188.0747397260273972602739672",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "958.14",
+    "energie": "768.8485776",
+    "abonnement": "189.2935940810958904109588971",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 6 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 6 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 6 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 6 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 6 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 6 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 6 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 6 kVA au 2025-10-16"
+  }
+ },
+ "historique|02:00-07:00, 13:00-16:00|9": {
+  "couts": {
+   "base": {
+    "total": "1060.07",
+    "energie": "824.0021701",
+    "abonnement": "236.0694246575342465753424646",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "1006.74",
+    "energie": "768.8485776",
+    "abonnement": "237.8956678936986301369862989",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 9 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 9 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 9 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 9 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 9 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 9 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 9 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 9 kVA au 2025-10-16"
+  }
+ },
+ "historique|02:00-07:00, 13:00-16:00|12": {
+  "couts": {
+   "base": {
+    "total": "1106.61",
+    "energie": "824.0021701",
+    "abonnement": "282.6042191780821917808219210",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "1053.31",
+    "energie": "768.8485776",
+    "abonnement": "284.4591674947945205479452032",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 12 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 12 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 12 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 12 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 12 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 12 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 12 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 12 kVA au 2025-10-16"
+  }
+ },
+ "historique|02:00-07:00, 13:00-16:00|36": {
+  "couts": {
+   "hphc": {
+    "total": "1414.70",
+    "energie": "768.8485776",
+    "abonnement": "645.8525358290410958904109554",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {
+   "alterna_du_coin_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "alterna_du_coin_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "alterna_fixe_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "alterna_fixe_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "base": "pas de tarif 36 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_base": "pas de tarif 36 kVA au 2025-10-16",
+   "geg_elec_verte_3ans_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_base": "pas de tarif 36 kVA au 2025-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_constance_base": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_garance_base": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_prudence_base": "pas de tarif 36 kVA au 2025-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_fixe_2ans_base": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_base": "pas de tarif 36 kVA au 2025-10-16",
+   "plenitude_pleniweb_1an_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "primeo_fixe_confort_base": "pas de tarif 36 kVA au 2025-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 36 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_base": "pas de tarif 36 kVA au 2025-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 36 kVA au 2025-10-16"
+  }
+ },
+ "recent|23:30-07:30|3": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1000.27",
+    "energie": "833.1146208",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "948.35",
+    "energie": "781.19209650",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "979.53",
+    "energie": "812.3714214",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "929.19",
+    "energie": "762.02540430",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "base": {
+    "total": "992.84",
+    "energie": "847.0845306",
+    "abonnement": "145.7600000000000000000000038",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "923.22",
+    "energie": "777.6583122",
+    "abonnement": "145.5600000000000000000000041",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "939.52",
+    "energie": "793.76065965",
+    "abonnement": "145.7629941000000000000000034",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1234.87",
+    "energie": "1015.99344",
+    "abonnement": "218.8800000000000000000000028",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1002.67",
+    "energie": "833.1146208",
+    "abonnement": "169.5599999999999999999999968",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1032.67",
+    "energie": "833.1146208",
+    "abonnement": "199.5599999999999999999999991",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "972.67",
+    "energie": "833.1146208",
+    "abonnement": "139.5599999999999999999999964",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1097.87",
+    "energie": "952.0705194",
+    "abonnement": "145.8000000000000000000000025",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "979.56",
+    "energie": "847.0845306",
+    "abonnement": "132.4799999999999999999999988",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "952.02",
+    "energie": "777.6583122",
+    "abonnement": "174.3599999999999999999999972",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "904.43",
+    "energie": "730.07118270",
+    "abonnement": "174.3599999999999999999999972",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "987.06",
+    "energie": "708.6554244",
+    "abonnement": "278.3999999999999999999999990",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1303.79",
+    "energie": "1158.2325216",
+    "abonnement": "145.5600000000000000000000041",
+    "kwh": {
+     "base": "4233.306"
+    }
+   }
+  },
+  "indisponibles": {
+   "geg_elec_verte_3ans_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2026-10-16"
+  }
+ },
+ "recent|23:30-07:30|6": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1045.03",
+    "energie": "833.1146208",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "993.11",
+    "energie": "781.19209650",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1024.29",
+    "energie": "812.3714214",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "973.95",
+    "energie": "762.02540430",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "base": {
+    "total": "1037.89",
+    "energie": "847.0845306",
+    "abonnement": "190.8099999999999999999999952",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "967.98",
+    "energie": "777.6583122",
+    "abonnement": "190.3200000000000000000000075",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "950.52",
+    "energie": "757.92320415",
+    "abonnement": "192.6000000000000000000000026",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "hphc": {
+    "total": "984.57",
+    "energie": "793.76065965",
+    "abonnement": "190.8131820999999999999999941",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1317.19",
+    "energie": "1015.99344",
+    "abonnement": "301.1999999999999999999999895",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "1304.61",
+    "energie": "963.09289965",
+    "abonnement": "341.5200000000000000000000034",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1047.55",
+    "energie": "833.1146208",
+    "abonnement": "214.4399999999999999999999937",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "995.41",
+    "energie": "780.97313025",
+    "abonnement": "214.4399999999999999999999937",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1077.43",
+    "energie": "833.1146208",
+    "abonnement": "244.3199999999999999999999995",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1025.29",
+    "energie": "780.97313025",
+    "abonnement": "244.3199999999999999999999995",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1017.43",
+    "energie": "833.1146208",
+    "abonnement": "184.3199999999999999999999944",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "965.29",
+    "energie": "780.97313025",
+    "abonnement": "184.3199999999999999999999944",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1142.63",
+    "energie": "952.0705194",
+    "abonnement": "190.5600000000000000000000041",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1084.89",
+    "energie": "892.04655510",
+    "abonnement": "192.8399999999999999999999974",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1097.53",
+    "energie": "924.1306998",
+    "abonnement": "173.3999999999999999999999986",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1041.71",
+    "energie": "866.03356380",
+    "abonnement": "175.6799999999999999999999924",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "996.78",
+    "energie": "777.6583122",
+    "abonnement": "219.1199999999999999999999972",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "949.19",
+    "energie": "730.07118270",
+    "abonnement": "219.1199999999999999999999972",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "950.58",
+    "energie": "708.6554244",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "907.88",
+    "energie": "665.95837515",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1348.55",
+    "energie": "1158.2325216",
+    "abonnement": "190.3200000000000000000000075",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1273.72",
+    "energie": "1081.11508590",
+    "abonnement": "192.6000000000000000000000026",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {}
+ },
+ "recent|23:30-07:30|9": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1094.12",
+    "energie": "826.7646618",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "1051.91",
+    "energie": "781.19209650",
+    "abonnement": "270.7199999999999999999999964",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1073.38",
+    "energie": "806.0214624",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "1032.75",
+    "energie": "762.02540430",
+    "abonnement": "270.7199999999999999999999964",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "base": {
+    "total": "1080.15",
+    "energie": "840.3112410",
+    "abonnement": "239.8399999999999999999999911",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "1010.29",
+    "energie": "771.7316838",
+    "abonnement": "238.5599999999999999999999980",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "999.84",
+    "energie": "757.92320415",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "hphc": {
+    "total": "1033.60",
+    "energie": "793.76065965",
+    "abonnement": "239.8378787000000000000000074",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1418.84",
+    "energie": "1009.6434810",
+    "abonnement": "409.1999999999999999999999886",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "1434.21",
+    "energie": "963.09289965",
+    "abonnement": "471.1199999999999999999999990",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1089.44",
+    "energie": "826.7646618",
+    "abonnement": "262.6800000000000000000000031",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "1047.01",
+    "energie": "780.97313025",
+    "abonnement": "266.0399999999999999999999922",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1119.32",
+    "energie": "826.7646618",
+    "abonnement": "292.5600000000000000000000105",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1076.89",
+    "energie": "780.97313025",
+    "abonnement": "295.9199999999999999999999990",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1059.32",
+    "energie": "826.7646618",
+    "abonnement": "232.5600000000000000000000010",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "1016.89",
+    "energie": "780.97313025",
+    "abonnement": "235.9199999999999999999999922",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1190.87",
+    "energie": "952.0705194",
+    "abonnement": "238.7999999999999999999999922",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1134.21",
+    "energie": "892.04655510",
+    "abonnement": "242.1600000000000000000000045",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1141.45",
+    "energie": "924.1306998",
+    "abonnement": "217.3199999999999999999999950",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1086.71",
+    "energie": "866.03356380",
+    "abonnement": "220.6800000000000000000000051",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "1039.09",
+    "energie": "771.7316838",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "997.43",
+    "energie": "730.07118270",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "1006.58",
+    "energie": "703.5754572",
+    "abonnement": "302.9999999999999999999999926",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "968.96",
+    "energie": "665.95837515",
+    "abonnement": "302.9999999999999999999999926",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1387.06",
+    "energie": "1148.4959178",
+    "abonnement": "238.5599999999999999999999980",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1323.04",
+    "energie": "1081.11508590",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {}
+ },
+ "recent|23:30-07:30|12": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1140.68",
+    "energie": "826.7646618",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "1099.55",
+    "energie": "781.19209650",
+    "abonnement": "318.3599999999999999999999981",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1119.94",
+    "energie": "806.0214624",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "1080.39",
+    "energie": "762.02540430",
+    "abonnement": "318.3599999999999999999999981",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "base": {
+    "total": "1127.17",
+    "energie": "840.3112410",
+    "abonnement": "286.8599999999999999999999946",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "1056.85",
+    "energie": "771.7316838",
+    "abonnement": "285.1200000000000000000000013",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "1054.27",
+    "energie": "764.71115790",
+    "abonnement": "289.5599999999999999999999883",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "hphc": {
+    "total": "1080.62",
+    "energie": "793.76065965",
+    "abonnement": "286.8590280999999999999999889",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1529.96",
+    "energie": "1009.6434810",
+    "abonnement": "520.3200000000000000000000126",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "1513.05",
+    "energie": "963.09289965",
+    "abonnement": "549.9599999999999999999999990",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1136.00",
+    "energie": "826.7646618",
+    "abonnement": "309.2400000000000000000000069",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "1094.65",
+    "energie": "780.97313025",
+    "abonnement": "313.6799999999999999999999935",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1165.88",
+    "energie": "826.7646618",
+    "abonnement": "339.1199999999999999999999893",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1124.53",
+    "energie": "780.97313025",
+    "abonnement": "343.5600000000000000000000010",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1105.88",
+    "energie": "826.7646618",
+    "abonnement": "279.1200000000000000000000058",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "1064.53",
+    "energie": "780.97313025",
+    "abonnement": "283.5599999999999999999999919",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1237.43",
+    "energie": "952.0705194",
+    "abonnement": "285.3599999999999999999999960",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1181.85",
+    "energie": "892.04655510",
+    "abonnement": "289.8000000000000000000000058",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1183.93",
+    "energie": "924.1306998",
+    "abonnement": "259.8000000000000000000000016",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1130.27",
+    "energie": "866.03356380",
+    "abonnement": "264.2399999999999999999999894",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "1085.65",
+    "energie": "771.7316838",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "1043.99",
+    "energie": "730.07118270",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "1065.26",
+    "energie": "703.5754572",
+    "abonnement": "361.6800000000000000000000109",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "1027.64",
+    "energie": "665.95837515",
+    "abonnement": "361.6800000000000000000000109",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1433.62",
+    "energie": "1148.4959178",
+    "abonnement": "285.1200000000000000000000013",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1370.68",
+    "energie": "1081.11508590",
+    "abonnement": "289.5599999999999999999999883",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {}
+ },
+ "recent|23:30-07:30|36": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1502.12",
+    "energie": "826.7646618",
+    "abonnement": "675.3600000000000000000000044",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "1469.87",
+    "energie": "781.19209650",
+    "abonnement": "688.6800000000000000000000143",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1481.38",
+    "energie": "806.0214624",
+    "abonnement": "675.3600000000000000000000044",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "1450.71",
+    "energie": "762.02540430",
+    "abonnement": "688.6800000000000000000000143",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "1418.29",
+    "energie": "771.7316838",
+    "abonnement": "646.5599999999999999999999917",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "1439.31",
+    "energie": "779.42539110",
+    "abonnement": "659.8800000000000000000000015",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "hphc": {
+    "total": "1444.45",
+    "energie": "793.76065965",
+    "abonnement": "650.6862576000000000000000117",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "2074.64",
+    "energie": "1009.6434810",
+    "abonnement": "1064.999999999999999999999996",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "2031.81",
+    "energie": "963.09289965",
+    "abonnement": "1068.720",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1497.32",
+    "energie": "826.7646618",
+    "abonnement": "670.5600000000000000000000020",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "1464.97",
+    "energie": "780.97313025",
+    "abonnement": "684.0000000000000000000000079",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1527.32",
+    "energie": "826.7646618",
+    "abonnement": "700.5600000000000000000000079",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1494.85",
+    "energie": "780.97313025",
+    "abonnement": "713.8799999999999999999999861",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1467.20",
+    "energie": "826.7646618",
+    "abonnement": "640.4400000000000000000000005",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "1434.85",
+    "energie": "780.97313025",
+    "abonnement": "653.8800000000000000000000064",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1598.75",
+    "energie": "952.0705194",
+    "abonnement": "646.6799999999999999999999878",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1552.17",
+    "energie": "892.04655510",
+    "abonnement": "660.1199999999999999999999936",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1513.69",
+    "energie": "924.1306998",
+    "abonnement": "589.5600000000000000000000087",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1469.03",
+    "energie": "866.03356380",
+    "abonnement": "603.0000000000000000000000145",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "1453.45",
+    "energie": "771.7316838",
+    "abonnement": "681.7199999999999999999999877",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "1411.79",
+    "energie": "730.07118270",
+    "abonnement": "681.7199999999999999999999877",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "1521.62",
+    "energie": "703.5754572",
+    "abonnement": "818.0399999999999999999999853",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "1484.00",
+    "energie": "665.95837515",
+    "abonnement": "818.0399999999999999999999853",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1795.06",
+    "energie": "1148.4959178",
+    "abonnement": "646.5599999999999999999999917",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1741.00",
+    "energie": "1081.11508590",
+    "abonnement": "659.8800000000000000000000015",
+    "kwh": {
+     "hc": "2043.6435",
+     "hp": "2189.6625"
+    }
+   }
+  },
+  "indisponibles": {
+   "base": "pas de tarif 36 kVA au 2026-10-16"
+  }
+ },
+ "recent|02:00-07:00, 13:00-16:00|3": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1000.27",
+    "energie": "833.1146208",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "932.53",
+    "energie": "765.3670244",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "979.53",
+    "energie": "812.3714214",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "913.83",
+    "energie": "746.6674930",
+    "abonnement": "167.1600000000000000000000030",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "base": {
+    "total": "992.84",
+    "energie": "847.0845306",
+    "abonnement": "145.7600000000000000000000038",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "923.22",
+    "energie": "777.6583122",
+    "abonnement": "145.5600000000000000000000041",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "hphc": {
+    "total": "923.38",
+    "energie": "777.6144145",
+    "abonnement": "145.7629941000000000000000034",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1234.87",
+    "energie": "1015.99344",
+    "abonnement": "218.8800000000000000000000028",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1002.67",
+    "energie": "833.1146208",
+    "abonnement": "169.5599999999999999999999968",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1032.67",
+    "energie": "833.1146208",
+    "abonnement": "199.5599999999999999999999991",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "972.67",
+    "energie": "833.1146208",
+    "abonnement": "139.5599999999999999999999964",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1097.87",
+    "energie": "952.0705194",
+    "abonnement": "145.8000000000000000000000025",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "979.56",
+    "energie": "847.0845306",
+    "abonnement": "132.4799999999999999999999988",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "952.02",
+    "energie": "777.6583122",
+    "abonnement": "174.3599999999999999999999972",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "889.89",
+    "energie": "715.5308028",
+    "abonnement": "174.3599999999999999999999972",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "987.06",
+    "energie": "708.6554244",
+    "abonnement": "278.3999999999999999999999990",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1303.79",
+    "energie": "1158.2325216",
+    "abonnement": "145.5600000000000000000000041",
+    "kwh": {
+     "base": "4233.306"
+    }
+   }
+  },
+  "indisponibles": {
+   "geg_elec_verte_3ans_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "ilek_enrfixe_plus_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "la_bellenergie_constance_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "la_bellenergie_garance_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "la_bellenergie_prudence_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "ohm_fixe_2ans_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "ohm_serente_fixe_1an_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2026-10-16"
+  }
+ },
+ "recent|02:00-07:00, 13:00-16:00|6": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1045.03",
+    "energie": "833.1146208",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "977.29",
+    "energie": "765.3670244",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1024.29",
+    "energie": "812.3714214",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "958.59",
+    "energie": "746.6674930",
+    "abonnement": "211.9200000000000000000000049",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "base": {
+    "total": "1037.89",
+    "energie": "847.0845306",
+    "abonnement": "190.8099999999999999999999952",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "967.98",
+    "energie": "777.6583122",
+    "abonnement": "190.3200000000000000000000075",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "938.87",
+    "energie": "746.2733817",
+    "abonnement": "192.6000000000000000000000026",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "hphc": {
+    "total": "968.43",
+    "energie": "777.6144145",
+    "abonnement": "190.8131820999999999999999941",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1317.19",
+    "energie": "1015.99344",
+    "abonnement": "301.1999999999999999999999895",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "1288.47",
+    "energie": "946.9466545",
+    "abonnement": "341.5200000000000000000000034",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1047.55",
+    "energie": "833.1146208",
+    "abonnement": "214.4399999999999999999999937",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "979.62",
+    "energie": "765.1772557",
+    "abonnement": "214.4399999999999999999999937",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1077.43",
+    "energie": "833.1146208",
+    "abonnement": "244.3199999999999999999999995",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1009.50",
+    "energie": "765.1772557",
+    "abonnement": "244.3199999999999999999999995",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1017.43",
+    "energie": "833.1146208",
+    "abonnement": "184.3199999999999999999999944",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "949.50",
+    "energie": "765.1772557",
+    "abonnement": "184.3199999999999999999999944",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1142.63",
+    "energie": "952.0705194",
+    "abonnement": "190.5600000000000000000000041",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1065.91",
+    "energie": "873.0681476",
+    "abonnement": "192.8399999999999999999999974",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1097.53",
+    "energie": "924.1306998",
+    "abonnement": "173.3999999999999999999999986",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1023.49",
+    "energie": "847.8142926",
+    "abonnement": "175.6799999999999999999999924",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "996.78",
+    "energie": "777.6583122",
+    "abonnement": "219.1199999999999999999999972",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "934.65",
+    "energie": "715.5308028",
+    "abonnement": "219.1199999999999999999999972",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "950.58",
+    "energie": "708.6554244",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "894.94",
+    "energie": "653.0238605",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1348.55",
+    "energie": "1158.2325216",
+    "abonnement": "190.3200000000000000000000075",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1250.30",
+    "energie": "1057.6986508",
+    "abonnement": "192.6000000000000000000000026",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {}
+ },
+ "recent|02:00-07:00, 13:00-16:00|9": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1094.12",
+    "energie": "826.7646618",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "1036.09",
+    "energie": "765.3670244",
+    "abonnement": "270.7199999999999999999999964",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1073.38",
+    "energie": "806.0214624",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "1017.39",
+    "energie": "746.6674930",
+    "abonnement": "270.7199999999999999999999964",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "base": {
+    "total": "1080.15",
+    "energie": "840.3112410",
+    "abonnement": "239.8399999999999999999999911",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "1010.29",
+    "energie": "771.7316838",
+    "abonnement": "238.5599999999999999999999980",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "988.19",
+    "energie": "746.2733817",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "hphc": {
+    "total": "1017.45",
+    "energie": "777.6144145",
+    "abonnement": "239.8378787000000000000000074",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1418.84",
+    "energie": "1009.6434810",
+    "abonnement": "409.1999999999999999999999886",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "1418.07",
+    "energie": "946.9466545",
+    "abonnement": "471.1199999999999999999999990",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1089.44",
+    "energie": "826.7646618",
+    "abonnement": "262.6800000000000000000000031",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "1031.22",
+    "energie": "765.1772557",
+    "abonnement": "266.0399999999999999999999922",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1119.32",
+    "energie": "826.7646618",
+    "abonnement": "292.5600000000000000000000105",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1061.10",
+    "energie": "765.1772557",
+    "abonnement": "295.9199999999999999999999990",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1059.32",
+    "energie": "826.7646618",
+    "abonnement": "232.5600000000000000000000010",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "1001.10",
+    "energie": "765.1772557",
+    "abonnement": "235.9199999999999999999999922",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1190.87",
+    "energie": "952.0705194",
+    "abonnement": "238.7999999999999999999999922",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1115.23",
+    "energie": "873.0681476",
+    "abonnement": "242.1600000000000000000000045",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1141.45",
+    "energie": "924.1306998",
+    "abonnement": "217.3199999999999999999999950",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1068.49",
+    "energie": "847.8142926",
+    "abonnement": "220.6800000000000000000000051",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "1039.09",
+    "energie": "771.7316838",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "982.89",
+    "energie": "715.5308028",
+    "abonnement": "267.3600000000000000000000074",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "1006.58",
+    "energie": "703.5754572",
+    "abonnement": "302.9999999999999999999999926",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "956.02",
+    "energie": "653.0238605",
+    "abonnement": "302.9999999999999999999999926",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1387.06",
+    "energie": "1148.4959178",
+    "abonnement": "238.5599999999999999999999980",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1299.62",
+    "energie": "1057.6986508",
+    "abonnement": "241.9200000000000000000000090",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {}
+ },
+ "recent|02:00-07:00, 13:00-16:00|12": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1140.68",
+    "energie": "826.7646618",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "1083.73",
+    "energie": "765.3670244",
+    "abonnement": "318.3599999999999999999999981",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1119.94",
+    "energie": "806.0214624",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "1065.03",
+    "energie": "746.6674930",
+    "abonnement": "318.3599999999999999999999981",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "base": {
+    "total": "1127.17",
+    "energie": "840.3112410",
+    "abonnement": "286.8599999999999999999999946",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "1056.85",
+    "energie": "771.7316838",
+    "abonnement": "285.1200000000000000000000013",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "1041.72",
+    "energie": "752.1562114",
+    "abonnement": "289.5599999999999999999999883",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "hphc": {
+    "total": "1064.47",
+    "energie": "777.6144145",
+    "abonnement": "286.8590280999999999999999889",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "1529.96",
+    "energie": "1009.6434810",
+    "abonnement": "520.3200000000000000000000126",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "1496.91",
+    "energie": "946.9466545",
+    "abonnement": "549.9599999999999999999999990",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1136.00",
+    "energie": "826.7646618",
+    "abonnement": "309.2400000000000000000000069",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "1078.86",
+    "energie": "765.1772557",
+    "abonnement": "313.6799999999999999999999935",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1165.88",
+    "energie": "826.7646618",
+    "abonnement": "339.1199999999999999999999893",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1108.74",
+    "energie": "765.1772557",
+    "abonnement": "343.5600000000000000000000010",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1105.88",
+    "energie": "826.7646618",
+    "abonnement": "279.1200000000000000000000058",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "1048.74",
+    "energie": "765.1772557",
+    "abonnement": "283.5599999999999999999999919",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1237.43",
+    "energie": "952.0705194",
+    "abonnement": "285.3599999999999999999999960",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1162.87",
+    "energie": "873.0681476",
+    "abonnement": "289.8000000000000000000000058",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1183.93",
+    "energie": "924.1306998",
+    "abonnement": "259.8000000000000000000000016",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1112.05",
+    "energie": "847.8142926",
+    "abonnement": "264.2399999999999999999999894",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "1085.65",
+    "energie": "771.7316838",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "1029.45",
+    "energie": "715.5308028",
+    "abonnement": "313.9200000000000000000000117",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "1065.26",
+    "energie": "703.5754572",
+    "abonnement": "361.6800000000000000000000109",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "1014.70",
+    "energie": "653.0238605",
+    "abonnement": "361.6800000000000000000000109",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1433.62",
+    "energie": "1148.4959178",
+    "abonnement": "285.1200000000000000000000013",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1347.26",
+    "energie": "1057.6986508",
+    "abonnement": "289.5599999999999999999999883",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {}
+ },
+ "recent|02:00-07:00, 13:00-16:00|36": {
+  "couts": {
+   "alterna_du_coin_1an_base": {
+    "total": "1502.12",
+    "energie": "826.7646618",
+    "abonnement": "675.3600000000000000000000044",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_du_coin_1an_hphc": {
+    "total": "1454.05",
+    "energie": "765.3670244",
+    "abonnement": "688.6800000000000000000000143",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "alterna_fixe_1an_base": {
+    "total": "1481.38",
+    "energie": "806.0214624",
+    "abonnement": "675.3600000000000000000000044",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "alterna_fixe_1an_hphc": {
+    "total": "1435.35",
+    "energie": "746.6674930",
+    "abonnement": "688.6800000000000000000000143",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "geg_elec_verte_3ans_base": {
+    "total": "1418.29",
+    "energie": "771.7316838",
+    "abonnement": "646.5599999999999999999999917",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "geg_elec_verte_3ans_hphc": {
+    "total": "1428.85",
+    "energie": "768.9726682",
+    "abonnement": "659.8800000000000000000000015",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "hphc": {
+    "total": "1428.30",
+    "energie": "777.6144145",
+    "abonnement": "650.6862576000000000000000117",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ilek_enrfixe_plus_base": {
+    "total": "2074.64",
+    "energie": "1009.6434810",
+    "abonnement": "1064.999999999999999999999996",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ilek_enrfixe_plus_hphc": {
+    "total": "2015.67",
+    "energie": "946.9466545",
+    "abonnement": "1068.720",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_constance_base": {
+    "total": "1497.32",
+    "energie": "826.7646618",
+    "abonnement": "670.5600000000000000000000020",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_constance_hphc": {
+    "total": "1449.18",
+    "energie": "765.1772557",
+    "abonnement": "684.0000000000000000000000079",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_garance_base": {
+    "total": "1527.32",
+    "energie": "826.7646618",
+    "abonnement": "700.5600000000000000000000079",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_garance_hphc": {
+    "total": "1479.06",
+    "energie": "765.1772557",
+    "abonnement": "713.8799999999999999999999861",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "la_bellenergie_prudence_base": {
+    "total": "1467.20",
+    "energie": "826.7646618",
+    "abonnement": "640.4400000000000000000000005",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "la_bellenergie_prudence_hphc": {
+    "total": "1419.06",
+    "energie": "765.1772557",
+    "abonnement": "653.8800000000000000000000064",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_fixe_2ans_base": {
+    "total": "1598.75",
+    "energie": "952.0705194",
+    "abonnement": "646.6799999999999999999999878",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_fixe_2ans_hphc": {
+    "total": "1533.19",
+    "energie": "873.0681476",
+    "abonnement": "660.1199999999999999999999936",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "ohm_serente_fixe_1an_base": {
+    "total": "1513.69",
+    "energie": "924.1306998",
+    "abonnement": "589.5600000000000000000000087",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "ohm_serente_fixe_1an_hphc": {
+    "total": "1450.81",
+    "energie": "847.8142926",
+    "abonnement": "603.0000000000000000000000145",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "plenitude_pleniweb_1an_base": {
+    "total": "1453.45",
+    "energie": "771.7316838",
+    "abonnement": "681.7199999999999999999999877",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "plenitude_pleniweb_1an_hphc": {
+    "total": "1397.25",
+    "energie": "715.5308028",
+    "abonnement": "681.7199999999999999999999877",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "primeo_fixe_confort_base": {
+    "total": "1521.62",
+    "energie": "703.5754572",
+    "abonnement": "818.0399999999999999999999853",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "primeo_fixe_confort_hphc": {
+    "total": "1471.06",
+    "energie": "653.0238605",
+    "abonnement": "818.0399999999999999999999853",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   },
+   "selia_elec_vert_fixe_base": {
+    "total": "1795.06",
+    "energie": "1148.4959178",
+    "abonnement": "646.5599999999999999999999917",
+    "kwh": {
+     "base": "4233.306"
+    }
+   },
+   "selia_elec_vert_fixe_hphc": {
+    "total": "1717.58",
+    "energie": "1057.6986508",
+    "abonnement": "659.8800000000000000000000015",
+    "kwh": {
+     "hc": "2335.619",
+     "hp": "1897.687"
+    }
+   }
+  },
+  "indisponibles": {
+   "base": "pas de tarif 36 kVA au 2026-10-16"
+  }
+ }
+}

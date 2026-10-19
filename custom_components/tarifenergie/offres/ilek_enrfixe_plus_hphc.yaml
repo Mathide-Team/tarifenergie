@@ -1,0 +1,17 @@
+# ilek ÉnRFixe+ Élec — HP/HC (issue #158, inventaire #6).
+# Électricité 100 % verte produite en France (VertVolt « engagé »).
+# Prix fixe de la part électricité 2 ans, grille mensuelle.
+# Grille TTC disponible du 01/10 au 01/11/2026 ; abonnement très au-dessus du TRV.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: ilek_enrfixe_plus_hphc
+fournisseur: ilek
+offre: ÉnRFixe+ Élec
+option: hphc
+issue: 158
+type_prix: fixe
+grille_du: 2026-10-01
+duree_fixite_mois: 24
+source: https://ilek.s3.amazonaws.com/uploads/producer/price_list_file/356/grille_356.pdf
+# pas d'option HC en 3 kVA
+abonnement_mensuel_ttc: {6: 28.46, 9: 39.26, 12: 45.83, 15: 52.27, 18: 57.92, 24: 69.86, 30: 74.81, 36: 89.06}
+kwh_ttc: {hp: 0.2542, hc: 0.1989}

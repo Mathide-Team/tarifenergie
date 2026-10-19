@@ -1,0 +1,25 @@
+# ilek ÉnRFixe+ Élec — Base (issue #57, inventaire #6).
+# Électricité 100 % verte produite en France (VertVolt « engagé »).
+# Prix fixe de la part électricité 2 ans, grille mensuelle.
+# Grille TTC disponible du 01/10 au 01/11/2026 ; abonnement très au-dessus du TRV.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: ilek_enrfixe_plus_base
+fournisseur: ilek
+offre: ÉnRFixe+ Élec
+option: base
+issue: 57
+type_prix: fixe
+grille_du: 2026-10-01
+duree_fixite_mois: 24
+source: https://ilek.s3.amazonaws.com/uploads/producer/price_list_file/356/grille_356.pdf
+abonnement_mensuel_ttc: {3: 18.24, 6: 25.10, 9: 34.10, 12: 43.36, 15: 49.75, 18: 54.61, 24: 65.52, 30: 78.92, 36: 88.75}
+kwh_ttc_par_puissance:
+  3: {base: 0.2400}
+  6: {base: 0.2400}
+  9: {base: 0.2385}
+  12: {base: 0.2385}
+  15: {base: 0.2385}
+  18: {base: 0.2385}
+  24: {base: 0.2385}
+  30: {base: 0.2385}
+  36: {base: 0.2385}

@@ -16,7 +16,7 @@ from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, UnitOfEnergy
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import selector
 
-from .calcul import PlagesHC, PlagesInvalides
+from .calendrier import PlagesHC, PlagesInvalides
 from .const import (
     CONF_ENERGIE,
     CONF_HEURES_CREUSES,

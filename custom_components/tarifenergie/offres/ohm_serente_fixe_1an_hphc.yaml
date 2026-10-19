@@ -1,0 +1,17 @@
+# Ohm Énergie Sérénité Fixe 1 an — HP/HC (issue #148, inventaire #6).
+# Électricité 100 % renouvelable d'origine française, sans engagement.
+# Grille TTC applicable au 14/10/2026 (grille officielle).
+# Coupure inhabituelle : 20,01 c€ (TRV) pour 3-4 kVA, puis 21,83 c€ de 5 à 36 kVA.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: ohm_serente_fixe_1an_hphc
+fournisseur: Ohm Énergie
+offre: Sérénité Fixe 1 an
+option: hphc
+issue: 148
+type_prix: fixe
+grille_du: 2026-10-14
+duree_fixite_mois: 12
+source: https://ohm-energie.com/grilles/elec/2026/10/ELEC-Serenite_Fixe_1an.pdf
+# pas d'option HC en 3 kVA ; abonnements ~TRV − 9 %
+abonnement_mensuel_ttc: {6: 14.64, 9: 18.39, 12: 22.02, 15: 25.44, 18: 28.95, 24: 36.42, 30: 43.3, 36: 50.25}
+kwh_ttc: {hp: 0.2347, hc: 0.1723}
