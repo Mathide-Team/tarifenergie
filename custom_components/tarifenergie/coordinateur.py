@@ -19,11 +19,14 @@ from .const import (
     CONF_HEURES_CREUSES,
     CONF_OPTION,
     CONF_PUISSANCE,
+    CONF_TERRITOIRE,
     DOMAIN,
     FENETRE,
     INTERVALLE_MAJ,
+    TERRITOIRE_PAR_DEFAUT,
 )
 from .modele import Grilles
+from .offres import Offre, exclusions
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -61,16 +64,26 @@ async def async_conso_horaire(
 
 
 class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
-    """Recalcule toutes les 6 h le coût des 12 derniers mois pour chaque option."""
+    """Recalcule toutes les 6 h le coût des 12 derniers mois pour chaque offre-option."""
 
     config_entry: ConfigEntry
 
-    def __init__(self, hass: HomeAssistant, entry: ConfigEntry, grilles: dict[str, Grilles]) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        entry: ConfigEntry,
+        grilles: dict[str, Grilles],
+        offres: dict[str, Offre],
+    ) -> None:
         super().__init__(
             hass, _LOGGER, config_entry=entry, name=f"{DOMAIN} {entry.title}", update_interval=INTERVALLE_MAJ
         )
         config = {**entry.data, **entry.options}
         self.grilles = grilles
+        self.offres = offres
+        self.territoire: str = config.get(CONF_TERRITOIRE, TERRITOIRE_PAR_DEFAUT)
+        # Offres-options d'un autre territoire (ELD ou Enedis) : écartées avec la raison.
+        self.exclues = exclusions(offres, self.territoire)
         self.entite: str = config[CONF_ENERGIE]
         self.puissance = int(config[CONF_PUISSANCE])
         self.option_actuelle: str = config[CONF_OPTION]
@@ -84,4 +97,4 @@ class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
         debut = fin - FENETRE
         conso = await async_conso_horaire(self.hass, self.entite, debut, fin)
         self.debut, self.fin = debut, fin
-        return comparer(self.grilles, self.puissance, conso, self.plages, self.option_actuelle)
+        return comparer(self.grilles, self.puissance, conso, self.plages, self.option_actuelle, self.exclues)

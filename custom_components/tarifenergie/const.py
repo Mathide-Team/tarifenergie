@@ -12,6 +12,10 @@ CONF_ENERGIE: Final = "entite_energie"
 CONF_PUISSANCE: Final = "puissance"
 CONF_OPTION: Final = "option_actuelle"
 CONF_HEURES_CREUSES: Final = "heures_creuses"
+# Gestionnaire de réseau du site : « enedis » ou « eld:<id> » (#345). Pas encore demandé
+# par le config flow (#347) : les entrées existantes restent sur Enedis.
+CONF_TERRITOIRE: Final = "territoire"
+TERRITOIRE_PAR_DEFAUT: Final = "enedis"
 
 NOM_PAR_DEFAUT: Final = "Électricité"
 HEURES_CREUSES_PAR_DEFAUT: Final = "22:00-06:00"

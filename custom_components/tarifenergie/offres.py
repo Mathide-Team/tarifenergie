@@ -1,36 +1,40 @@
-"""Offres de marché : grilles tarifaires des fournisseurs en YAML (issues #5 et #6).
+"""Offres de marché : une offre-option par fichier YAML (issues #5, #6 et #343).
 
-Chaque fichier ``offres/<id>.yaml`` décrit une offre d'électricité pour particuliers,
-telle que publiée dans les grilles des fournisseurs (inventaire #6, une issue par
-offre). Le moteur v0.2 ne sait lire que les offres **à prix fixe** (typologie CRE) ;
-les offres indexées, dynamiques ou à coloration de jours (OctoTempo…) viendront plus
-tard avec leurs structures propres.
+Règle de l'inventaire (#6) : **une offre-option = une issue = un fichier**. Le client ne
+souscrit qu'une option (Base, Heures creuses, puis Tempo, heures super creuses, week-end…)
+et le tarif dépend de l'option : chaque option est donc une offre distincte, avec sa
+grille, comparée seule. Aucun fichier ne regroupe plusieurs options d'une même offre ;
+un fichier qui le fait est refusé.
 
-Format YAML (exemple complet : ``offres/la_bellenergie_prudence.yaml``) ::
+Le moteur ne sait encore lire que les offres-options **à prix fixe** (typologie CRE) aux
+postes Base ou HP/HC ; les offres indexées (#350), les autres structures (#340 à #342) et
+les prix dynamiques (#351) viendront avec leurs calendriers (``calendrier.py``).
 
-    id: la_bellenergie_prudence          # doit être le nom du fichier, sans extension
+Format (exemple : ``offres/la_bellenergie_prudence_hphc.yaml``) ::
+
+    id: la_bellenergie_prudence_hphc      # nom du fichier, terminé par _<option>
     fournisseur: la bellenergie
     offre: Prudence
-    type_prix: fixe                      # seul type supporté en v0.2
+    option: hphc                          # base | hphc
+    issue: 166                            # issue de l'offre-option (inventaire #6)
+    type_prix: fixe                       # seul type supporté pour l'instant
     grille_du: 2026-08-01                 # date d'effet de la grille tarifaire
     duree_fixite_mois: 12
-    source: https://…/grille.pdf         # fiche de référence (registre #27)
-    options:
-      base:
-        abonnement_mensuel_ttc: {3: 11.63, 6: 15.36, …}     # € TTC/mois par puissance
-        kwh_ttc_par_puissance: {3: {base: 0.1968}, …}         # c'→€ TTC/kWh par poste
-      hphc:                              # option facultative (jamais en 3 kVA au TRV)
-        abonnement_mensuel_ttc: {6: 15.36, …}
-        kwh_ttc: {hp: 0.2106, hc: 0.1565}                     # prix uniforme
+    source: https://…/grille.pdf          # fiche de référence (registre #27)
+    territoire: enedis                    # facultatif : enedis (défaut) ou eld:<id> (#345)
+    abonnement_mensuel_ttc: {6: 15.36, 9: 19.66, …}     # € TTC/mois par puissance
+    kwh_ttc: {hp: 0.2106, hc: 0.1565}                    # € TTC/kWh, prix uniforme
+    # ou kwh_ttc_par_puissance: {6: {hp: …, hc: …}, …}   # prix selon la puissance
 
 Les prix sont TTC, en €/kWh (les grilles des fournisseurs sont en c€ TTC/kWh).
 L'abonnement mensuel est converti en €/an (multiplié par 12, en ``Decimal`` exact). Les
-puissances non listées par une offre la rendent « indisponible » pour l'utilisateur
-concerné, avec la raison, comme pour les options du TRV.
+puissances non listées rendent l'offre-option « indisponible » pour l'utilisateur
+concerné, avec la raison, comme pour le TRV.
 """
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
@@ -44,12 +48,34 @@ from .modele import Grille, Grilles
 
 DOSSIER_OFFRES = Path(__file__).parent / "offres"
 TYPE_PRIX: tuple[str, ...] = ("fixe",)
-POSTES = ("base", "hp", "hc")
+# Option → postes tarifaires attendus dans la grille.
+POSTES_OPTION: dict[str, frozenset[str]] = {
+    "base": frozenset({"base"}),
+    "hphc": frozenset({"hp", "hc"}),
+}
+LIBELLES_OPTION = {"base": "Base", "hphc": "Off-peak"}
+TERRITOIRE_PAR_DEFAUT = "enedis"
+_TERRITOIRE = re.compile(r"^(enedis|eld:[a-z0-9_]+)$")
+CHAMPS_OBLIGATOIRES = frozenset(
+    {
+        "id",
+        "fournisseur",
+        "offre",
+        "option",
+        "issue",
+        "type_prix",
+        "grille_du",
+        "duree_fixite_mois",
+        "source",
+        "abonnement_mensuel_ttc",
+    }
+)
+CHAMPS = CHAMPS_OBLIGATOIRES | {"territoire", "kwh_ttc", "kwh_ttc_par_puissance"}
 MOIS_PAR_AN = Decimal("12")
 
 
 class OffreInvalide(ValueError):
-    """L'offre ne respecte pas le schéma. Le message donne le chemin de la valeur fautive."""
+    """L'offre-option ne respecte pas le schéma. Le message donne le chemin de la valeur fautive."""
 
 
 def _exiger(condition: bool, chemin: str, message: str) -> None:
@@ -57,8 +83,12 @@ def _exiger(condition: bool, chemin: str, message: str) -> None:
         raise OffreInvalide(f"{chemin} : {message}")
 
 
-def _texte(d: dict[str, Any], cle: str, chemin: str) -> str:
-    _exiger(isinstance(d.get(cle), str) and d[cle].strip() != "", chemin + f".{cle}", "texte attendu")
+def _entier_positif(valeur: Any) -> bool:
+    return isinstance(valeur, int) and not isinstance(valeur, bool) and valeur > 0
+
+
+def _texte(d: dict[str, Any], cle: str) -> str:
+    _exiger(isinstance(d.get(cle), str) and d[cle].strip() != "", f"offre.{cle}", "texte attendu")
     return d[cle]
 
 
@@ -71,133 +101,132 @@ def _decimal(valeur: Any, chemin: str) -> Decimal:
     return Decimal(str(valeur))
 
 
-def _puissances(d: dict[str, Any], chemin: str) -> dict[int, Decimal]:
+def _abonnements(d: dict[str, Any]) -> dict[int, Decimal]:
     """Mapping puissance (kVA) → montant (€ TTC/mois)."""
+    chemin = "offre.abonnement_mensuel_ttc"
     brutes = d.get("abonnement_mensuel_ttc")
-    _exiger(isinstance(brutes, dict) and brutes != {}, chemin + ".abonnement_mensuel_ttc", "mapping attendu")
-    puissances: dict[int, Decimal] = {}
+    _exiger(isinstance(brutes, dict) and brutes != {}, chemin, "mapping attendu")
+    abonnements: dict[int, Decimal] = {}
     for puissance, montant in brutes.items():
         _exiger(
-            isinstance(puissance, int) and not isinstance(puissance, bool) and puissance in PUISSANCES,
-            chemin + ".abonnement_mensuel_ttc",
+            _entier_positif(puissance) and puissance in PUISSANCES,
+            chemin,
             f"puissance inconnue : {puissance} (attendues : {', '.join(map(str, PUISSANCES))} kVA)",
         )
-        puissances[puissance] = _decimal(montant, f"{chemin}.abonnement_mensuel_ttc[{puissance}]")
-    return puissances
+        abonnements[puissance] = _decimal(montant, f"{chemin}[{puissance}]")
+    return abonnements
 
 
-def _postes(d: dict[str, Any], chemin: str) -> dict[str, Decimal]:
-    """Mapping poste (base / hp / hc) → prix € TTC/kWh."""
-    brutes = d.get("kwh_ttc")
-    _exiger(isinstance(brutes, dict) and brutes != {}, chemin + ".kwh_ttc", "mapping attendu")
-    postes: dict[str, Decimal] = {}
-    for poste, prix in brutes.items():
-        _exiger(poste in POSTES, f"{chemin}.kwh_ttc", f"poste inconnu : {poste}")
-        postes[poste] = _decimal(prix, f"{chemin}.kwh_ttc[{poste}]")
-    return postes
+def _prix(postes: Any, attendus: frozenset[str], chemin: str) -> dict[str, Decimal]:
+    """Mapping poste → prix € TTC/kWh ; les postes doivent être exactement ceux de l'option."""
+    _exiger(isinstance(postes, dict) and postes != {}, chemin, "mapping attendu")
+    _exiger(
+        set(postes) == attendus,
+        chemin,
+        f"postes attendus pour cette option : {', '.join(sorted(attendus))}",
+    )
+    return {poste: _decimal(montant, f"{chemin}.{poste}") for poste, montant in postes.items()}
 
 
-def _grilles_option(
-    donnees: dict[str, Any], chemin: str, cles: tuple[str, ...], debut: date
-) -> dict[int, Grille]:
-    """Grilles d'une option de l'offre : abonnements mensuels x12, prix par poste."""
-    abonnements = _puissances(donnees, chemin)
-    grilles: dict[int, Grille] = {}
-    if "kwh_ttc_par_puissance" in donnees:
-        _exiger("kwh_ttc" not in donnees, chemin, "kwh_ttc et kwh_ttc_par_puissance sont exclusifs")
-        par_puissance = donnees["kwh_ttc_par_puissance"]
-        _exiger(isinstance(par_puissance, dict) and par_puissance != {}, chemin, "mapping attendu")
-        for puissance, postes in par_puissance.items():
-            _exiger(
-                puissance in abonnements,
-                f"{chemin}[{puissance}]",
-                "prix donné sans abonnement à cette puissance",
-            )
-            _exiger(isinstance(postes, dict) and postes != {}, f"{chemin}[{puissance}]", "postes attendus")
-            prix: dict[str, Decimal] = {}
-            for poste, montant in postes.items():
-                _exiger(poste in POSTES, f"{chemin}[{puissance}]", f"poste inconnu : {poste}")
-                prix[poste] = _decimal(montant, f"{chemin}[{puissance}].{poste}")
-            _exiger(
-                set(prix) <= {"base"} or set(prix) == {"hp", "hc"},
-                f"{chemin}[{puissance}]",
-                "base OU hp+hc attendus",
-            )
-            grilles[puissance] = Grille(
-                cles, puissance, debut, None, abonnements[puissance] * MOIS_PAR_AN, prix
-            )
+def _grilles(donnees: dict[str, Any], ident: str, option: str, debut: date) -> Grilles:
+    """Grilles de l'offre-option : abonnements mensuels x12, prix par poste et par puissance."""
+    attendus = POSTES_OPTION[option]
+    abonnements = _abonnements(donnees)
+    uniforme = "kwh_ttc" in donnees
+    _exiger(
+        uniforme != ("kwh_ttc_par_puissance" in donnees),
+        "offre",
+        "kwh_ttc ou kwh_ttc_par_puissance attendu (exclusifs)",
+    )
+    if uniforme:
+        prix = _prix(donnees["kwh_ttc"], attendus, "offre.kwh_ttc")
+        par_puissance = dict.fromkeys(abonnements, prix)
     else:
-        prix_uniforme = _postes(donnees, chemin)
-        _exiger(
-            set(prix_uniforme) <= {"base"} or set(prix_uniforme) == {"hp", "hc"},
-            chemin,
-            "base OU hp+hc attendus",
-        )
-        for puissance, abonnement in abonnements.items():
-            grilles[puissance] = Grille(cles, puissance, debut, None, abonnement * MOIS_PAR_AN, prix_uniforme)
-    return grilles
+        brutes = donnees["kwh_ttc_par_puissance"]
+        _exiger(isinstance(brutes, dict) and brutes != {}, "offre.kwh_ttc_par_puissance", "mapping attendu")
+        par_puissance = {}
+        for puissance, postes in brutes.items():
+            chemin = f"offre.kwh_ttc_par_puissance[{puissance}]"
+            _exiger(puissance in abonnements, chemin, "prix donné sans abonnement à cette puissance")
+            par_puissance[puissance] = _prix(postes, attendus, chemin)
+    return Grilles(
+        [
+            Grille(ident, puissance, debut, None, abonnements[puissance] * MOIS_PAR_AN, prix)
+            for puissance, prix in sorted(par_puissance.items())
+        ]
+    )
 
 
 @dataclass(frozen=True)
 class Offre:
-    """Une offre de marché à prix fixe, convertie en grilles par option."""
+    """Une offre-option de marché à prix fixe : une option, une issue, des grilles."""
 
     id: str
     fournisseur: str
     offre: str
+    option: str
+    issue: int
     grille_du: date
     duree_fixite_mois: int
-    grilles: dict[str, Grilles]  # option du TRV ("base", "hphc") → Grilles
+    territoire: str
+    grilles: Grilles
 
-    def cles(self) -> list[str]:
-        """Clés de comparaison : ``<id>:<option>`` (ex. ``la_bellenergie_prudence:hphc``)."""
-        return [f"{self.id}:{option}" for option in sorted(self.grilles)]
+    @property
+    def libelle(self) -> str:
+        """« fournisseur Offre (Option) », pour les capteurs et le classement."""
+        return f"{self.fournisseur} {self.offre} ({LIBELLES_OPTION[self.option]})"
+
+    def raison_non_eligible(self, territoire: str) -> str | None:
+        """Raison d'exclure l'offre-option pour un site desservi par ``territoire`` (#345)."""
+        if self.territoire == territoire:
+            return None
+        return f"non disponible dans cette zone (offre {self.territoire}, site {territoire})"
 
 
 def offre_depuis_dict(donnees: Any, ident: str) -> Offre:
-    """Valide le contenu d'un fichier d'offre et le convertit en grilles."""
+    """Valide le contenu d'un fichier d'offre-option et le convertit en grilles."""
     _exiger(isinstance(donnees, dict), "offre", "mapping attendu")
-    _exiger(donnees.get("id") == ident, "offre.id", f"doit valoir « {ident} » (nom du fichier)")
     _exiger(
-        ":" not in ident,
-        "offre.id",
-        "le caractère « : » est réservé aux clés de comparaison « <id>:<option> »",
-    )
-    _exiger(donnees.get("type_prix") in TYPE_PRIX, "offre.type_prix", f"attendu : {', '.join(TYPE_PRIX)}")
-    duree = donnees.get("duree_fixite_mois")
-    _exiger(
-        isinstance(duree, int) and not isinstance(duree, bool) and duree > 0,
-        "offre.duree_fixite_mois",
-        "entier positif attendu",
-    )
-    _exiger(
-        donnees.get("grille_du") is not None and hasattr(donnees["grille_du"], "isoformat"),
-        "offre.grille_du",
-        "date attendue (YYYY-MM-DD)",
-    )
-    _texte(donnees, "source", "offre.source")
-    options = donnees.get("options")
-    _exiger(
-        isinstance(options, dict) and set(options) <= {"base", "hphc"} and "base" in options,
+        "options" not in donnees,
         "offre.options",
-        "base attendue, hphc facultative",
+        "un fichier = une offre-option (#343) : une option par fichier, pas de regroupement",
     )
-    grilles: dict[str, Grilles] = {}
-    for option in ("base", "hphc"):
-        if option not in options:
-            continue
-        grilles_option = _grilles_option(
-            options[option], f"offre.options.{option}", f"{ident}:{option}", donnees["grille_du"]
-        )
-        _exiger(grilles_option != {}, f"offre.options.{option}", "aucune puissance définie")
-        grilles[option] = Grilles(tuple(grilles_option[p] for p in sorted(grilles_option)))
+    inconnus = set(donnees) - CHAMPS
+    _exiger(not inconnus, "offre", f"champs inconnus : {', '.join(sorted(map(str, inconnus)))}")
+    manquants = CHAMPS_OBLIGATOIRES - set(donnees)
+    _exiger(not manquants, "offre", f"champs manquants : {', '.join(sorted(manquants))}")
+    _exiger(donnees["id"] == ident, "offre.id", f"doit valoir « {ident} » (nom du fichier)")
+    option = donnees["option"]
+    _exiger(option in POSTES_OPTION, "offre.option", f"attendu : {', '.join(POSTES_OPTION)}")
+    _exiger(
+        ident.endswith(f"_{option}"),
+        "offre.id",
+        f"doit se terminer par « _{option} » (une offre-option par fichier)",
+    )
+    _exiger(_entier_positif(donnees["issue"]), "offre.issue", "numéro d'issue attendu (inventaire #6)")
+    _exiger(donnees["type_prix"] in TYPE_PRIX, "offre.type_prix", f"attendu : {', '.join(TYPE_PRIX)}")
+    _exiger(
+        _entier_positif(donnees["duree_fixite_mois"]), "offre.duree_fixite_mois", "entier positif attendu"
+    )
+    grille_du = donnees["grille_du"]
+    _exiger(isinstance(grille_du, date), "offre.grille_du", "date attendue (YYYY-MM-DD)")
+    _texte(donnees, "source")
+    territoire = donnees.get("territoire", TERRITOIRE_PAR_DEFAUT)
+    _exiger(
+        isinstance(territoire, str) and _TERRITOIRE.match(territoire) is not None,
+        "offre.territoire",
+        "enedis ou eld:<identifiant> attendu",
+    )
     return Offre(
-        _texte(donnees, "id", "offre"),
-        _texte(donnees, "fournisseur", "offre"),
-        _texte(donnees, "offre", "offre"),
-        donnees["grille_du"],
-        duree,
-        grilles,
+        ident,
+        _texte(donnees, "fournisseur"),
+        _texte(donnees, "offre"),
+        option,
+        donnees["issue"],
+        grille_du,
+        donnees["duree_fixite_mois"],
+        territoire,
+        _grilles(donnees, ident, option, grille_du),
     )
 
 
@@ -216,18 +245,33 @@ def charger_offre(chemin: Path) -> Offre:
 
 
 def lire_offres(dossier: Path = DOSSIER_OFFRES) -> dict[str, Offre]:
-    """Toutes les offres livrées avec l'intégration, indexées par identifiant."""
+    """Toutes les offres-options livrées avec l'intégration, indexées par identifiant.
+
+    Deux fichiers ne peuvent pas documenter la même issue : une issue = une offre-option.
+    """
     offres: dict[str, Offre] = {}
+    issues: dict[int, str] = {}
     for chemin in sorted(dossier.glob("*.yaml")):
         offre = charger_offre(chemin)
+        if offre.issue in issues:
+            raise OffreInvalide(
+                f"{chemin.name} : issue #{offre.issue} déjà utilisée par {issues[offre.issue]}"
+                " (une issue = une offre-option)"
+            )
+        issues[offre.issue] = offre.id
         offres[offre.id] = offre
     return offres
 
 
 def grilles_offres(offres: dict[str, Offre]) -> dict[str, Grilles]:
-    """Grilles de toutes les offres, indexées par clé de comparaison ``<id>:<option>``."""
-    resultats: dict[str, Grilles] = {}
-    for offre in offres.values():
-        for option, grilles in offre.grilles.items():
-            resultats[f"{offre.id}:{option}"] = grilles
-    return resultats
+    """Grilles de chaque offre-option, indexées par son identifiant (clé de comparaison)."""
+    return {ident: offre.grilles for ident, offre in offres.items()}
+
+
+def exclusions(offres: dict[str, Offre], territoire: str) -> dict[str, str]:
+    """Offres-options non éligibles pour un site desservi par ``territoire``, avec la raison."""
+    return {
+        ident: raison
+        for ident, offre in offres.items()
+        if (raison := offre.raison_non_eligible(territoire)) is not None
+    }
