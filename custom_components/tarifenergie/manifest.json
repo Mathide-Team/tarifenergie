@@ -1,0 +1,13 @@
+{
+  "domain": "tarifenergie",
+  "name": "tarifenergie",
+  "codeowners": ["@MathildeDec"],
+  "config_flow": true,
+  "dependencies": ["recorder"],
+  "documentation": "https://github.com/Mathide-Team/tarifenergie",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/Mathide-Team/tarifenergie/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}
