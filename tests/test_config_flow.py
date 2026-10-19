@@ -110,3 +110,29 @@ async def test_options(hass: HomeAssistant):
         "option_actuelle": "hphc",
         "heures_creuses": "02:00-07:00, 13:00-16:00",
     }
+
+
+async def test_options_changement_de_plages(hass: HomeAssistant):
+    """#369 : plages qui changent dans l'année, saisies avec leur date et réécrites proprement."""
+    entree = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id=CAPTEUR,
+        data={
+            "entite_energie": CAPTEUR,
+            "puissance": 6,
+            "option_actuelle": "hphc",
+            "heures_creuses": "22:00-06:00",
+        },
+    )
+    entree.add_to_hass(hass)
+    res = await hass.config_entries.options.async_init(entree.entry_id)
+    saisie = {"puissance": "6", "option_actuelle": "hphc"}
+    res = await hass.config_entries.options.async_configure(
+        res["flow_id"], {**saisie, "heures_creuses": "22h00-06h00 | 2026-02-30: 02:00-07:00"}
+    )
+    assert res["errors"] == {"heures_creuses": "plages_invalides"}
+    res = await hass.config_entries.options.async_configure(
+        res["flow_id"], {**saisie, "heures_creuses": "22h00-06h00|2026-03-15:02:00-07:00,13:00-16:00"}
+    )
+    assert res["type"] is FlowResultType.CREATE_ENTRY
+    assert entree.options["heures_creuses"] == "22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00"

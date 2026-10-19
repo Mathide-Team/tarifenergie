@@ -25,8 +25,10 @@ from decimal import ROUND_HALF_UP, Decimal
 
 from .calendrier import (
     Calendrier,
+    CalendrierHPHC,
     CalendrierTempo,
     DonneesManquantes,
+    PlagesDatees,
     PlagesHC,
     PostesNonPrisEnCharge,
     calendrier_pour,
@@ -50,6 +52,8 @@ class Cout:
     grilles: set[date] = field(default_factory=set)
     # Tempo : jours dont la couleur a été estimée (manquante dans l'historique réel).
     jours_estimes: set[date] = field(default_factory=set)
+    # HP/HC : périodes de plages du compteur réellement appliquées (#369).
+    plages_hc: list[dict[str, str | None]] = field(default_factory=list)
 
     @property
     def total(self) -> Decimal:
@@ -64,6 +68,7 @@ class Cout:
             "kwh": {poste: round(float(v), 3) for poste, v in sorted(self.kwh.items())},
             "grilles": sorted(d.isoformat() for d in self.grilles),
             **({"jours_couleur_estimee": len(self.jours_estimes)} if self.jours_estimes else {}),
+            **({"plages_hc": self.plages_hc} if self.plages_hc else {}),
         }
 
 
@@ -76,7 +81,7 @@ def cout_option(
     grilles: Grilles,
     puissance: int,
     conso: Iterable[tuple[datetime, float]],
-    plages: PlagesHC | None = None,
+    plages: PlagesHC | PlagesDatees | None = None,
     jours: Iterable[date] | None = None,
     couleurs: CouleursTempo | None = None,
 ) -> Cout:
@@ -97,6 +102,7 @@ def cout_option(
     # Calendrier déduit des postes de la grille du jour (une offre-option garde les
     # mêmes postes d'une grille à l'autre ; le cache évite de le reconstruire).
     calendriers: dict[frozenset[str], Calendrier] = {}
+    periodes_hc: set[int] = set()
     for debut, kwh in conso:
         jour = debut.date()
         vus.add(jour)
@@ -109,13 +115,18 @@ def cout_option(
             calendriers[postes] = calendrier_pour(postes, plages, couleurs)
         calendrier = calendriers[postes]
         repartition = calendrier.repartir(debut, Decimal(str(kwh)))
-        if isinstance(calendrier, CalendrierTempo):
+        if isinstance(calendrier, CalendrierHPHC):
+            periodes_hc.add(calendrier.plages.rang(jour))
+        elif isinstance(calendrier, CalendrierTempo):
             jour_couleur = jour_tempo(debut)
             if jour_couleur in calendrier.couleurs.estimes:
                 cout.jours_estimes.add(jour_couleur)
         for poste, q in repartition.items():
             cout.kwh[poste] = cout.kwh.get(poste, Decimal(0)) + q
             cout.energie += q * grille.prix[poste]
+    if periodes_hc:
+        calendrier_hc = next(c for c in calendriers.values() if isinstance(c, CalendrierHPHC))
+        cout.plages_hc = calendrier_hc.plages.resume(periodes_hc)
     for jour in sorted(vus if jours is None else set(jours)):
         grille = grilles.en_vigueur(puissance, jour)
         cout.grilles.add(grille.debut)
@@ -154,7 +165,7 @@ def comparer(
     grilles: dict[str, Grilles],
     puissance: int,
     conso: list[tuple[datetime, float]],
-    plages: PlagesHC,
+    plages: PlagesHC | PlagesDatees,
     option_actuelle: str,
     exclues: dict[str, str] | None = None,
     couleurs: CouleursTempo | None = None,

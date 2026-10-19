@@ -14,7 +14,7 @@ au prorata des minutes. La v0.2 y ajoute les offres de marché (voir ci-dessous)
 - Compare les **tarifs réglementés** (tarif Bleu) publiés par la [CRE](https://www.data.gouv.fr/datasets/historique-des-tarifs-reglementes-de-vente-delectricite-pour-les-consommateurs-residentiels) : options **Base** et **Heures pleines / Heures creuses**, prix TTC.
 - Applique à chaque heure le tarif **en vigueur ce jour-là** : un an de consommation à cheval sur le 1er février et le 1er août est compté avec les bonnes grilles.
 - Compte l'abonnement au jour près, pour la puissance souscrite.
-- Prend vos plages d'heures creuses (elles dépendent du compteur, pas du fournisseur), même plusieurs plages (« 02:00-07:00, 13:00-16:00 »).
+- Prend vos plages d'heures creuses (elles dépendent du compteur, pas du fournisseur), même plusieurs plages (« 02:00-07:00, 13:00-16:00 »), et leurs **changements en cours d'année** : `22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00` (nouvelles plages à partir du 15 mars 2026, #369). Les plages appliquées figurent dans l'attribut `plages_hc` des capteurs Heures creuses.
 
 ## Capteurs
 

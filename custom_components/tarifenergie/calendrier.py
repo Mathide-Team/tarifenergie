@@ -10,19 +10,22 @@ toucher au moteur :
 - week-end et heures atypiques : poste par jour de semaine (#342).
 
 Les plages d'heures creuses du TRV et des offres HP/HC sont celles **du compteur**
-(fixées par le gestionnaire de réseau), saisies par l'utilisateur. Les plages propres à
-une offre-option (HSC, week-end) viendront de son fichier YAML, jamais de cette saisie.
+(fixées par le gestionnaire de réseau), saisies par l'utilisateur ou détectées depuis la
+téléinformation (#370). Elles peuvent changer en cours d'année : :class:`PlagesDatees`
+(#369). Les plages propres à une offre-option (Tempo, HSC, Zen Flex, week-end) viennent de
+l'offre-option, jamais de cette saisie.
 
 Python pur : aucun import Home Assistant (testable seul).
 """
 
 from __future__ import annotations
 
+import bisect
 import itertools
 import re
 from collections.abc import Iterable
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from typing import ClassVar, Protocol
 
@@ -30,6 +33,8 @@ from .tempo import COULEURS, HEURE_DEBUT_JOUR_TEMPO, CouleursTempo, jour_tempo
 
 MINUTES_JOUR = 24 * 60
 _PLAGE = re.compile(r"^\s*(\d{1,2})[:h](\d{2})\s*-\s*(\d{1,2})[:h](\d{2})\s*$")
+_PERIODE = re.compile(r"^\s*(\d{4}-\d{2}-\d{2})\s*:\s*(.*)$", re.DOTALL)
+SEPARATEUR_PERIODES = "|"
 
 
 class PlagesInvalides(ValueError):
@@ -97,6 +102,79 @@ class PlagesHC:
         return ", ".join(f"{d // 60:02d}:{d % 60:02d}-{f // 60:02d}:{f % 60:02d}" for d, f in self.plages)
 
 
+@dataclass(frozen=True, slots=True)
+class PlagesDatees:
+    """Plages HC du compteur qui changent en cours d'année (#369).
+
+    ``periodes`` : ``(depuis, plages)`` par date croissante ; la première période n'a pas
+    de date (``None`` : plages d'avant le premier changement). Les plages d'une période
+    valent du jour ``depuis`` à 0h jusqu'à la veille du changement suivant.
+    """
+
+    periodes: tuple[tuple[date | None, PlagesHC], ...]
+
+    @classmethod
+    def uniques(cls, plages: PlagesHC) -> PlagesDatees:
+        return cls(((None, plages),))
+
+    @classmethod
+    def lire(cls, texte: str) -> PlagesDatees:
+        """``"22:00-06:00"`` ou ``"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00"``."""
+        periodes: list[tuple[date | None, PlagesHC]] = []
+        for rang, morceau in enumerate(texte.split(SEPARATEUR_PERIODES)):
+            trouve = _PERIODE.match(morceau)
+            if rang == 0:
+                if trouve:
+                    raise PlagesInvalides(
+                        "la première période n'a pas de date : plages d'avant le premier changement"
+                    )
+                periodes.append((None, PlagesHC.lire(morceau)))
+                continue
+            if not trouve:
+                raise PlagesInvalides(
+                    f"changement sans date : {morceau.strip()!r} (attendu AAAA-MM-JJ: plages)"
+                )
+            try:
+                depuis = date.fromisoformat(trouve.group(1))
+            except ValueError:
+                raise PlagesInvalides(f"date illisible : {trouve.group(1)!r}") from None
+            precedente = periodes[-1][0]
+            if precedente is not None and depuis <= precedente:
+                raise PlagesInvalides(
+                    f"dates non croissantes : {depuis.isoformat()} après {precedente.isoformat()}"
+                )
+            periodes.append((depuis, PlagesHC.lire(trouve.group(2))))
+        return cls(tuple(periodes))
+
+    @property
+    def _dates(self) -> list[date]:
+        return [depuis for depuis, _ in self.periodes[1:] if depuis is not None]
+
+    def rang(self, jour: date) -> int:
+        """Rang de la période en vigueur le ``jour``."""
+        return bisect.bisect_right(self._dates, jour)
+
+    def du_jour(self, jour: date) -> PlagesHC:
+        return self.periodes[self.rang(jour)][1]
+
+    def texte(self) -> str:
+        return f" {SEPARATEUR_PERIODES} ".join(
+            plages.texte() if depuis is None else f"{depuis.isoformat()}: {plages.texte()}"
+            for depuis, plages in self.periodes
+        )
+
+    def resume(self, rangs: Iterable[int] | None = None) -> list[dict[str, str | None]]:
+        """Périodes (toutes, ou les ``rangs`` utilisés) pour un attribut de capteur."""
+        choisis = sorted(set(range(len(self.periodes)) if rangs is None else rangs))
+        return [
+            {
+                "depuis": None if self.periodes[r][0] is None else self.periodes[r][0].isoformat(),
+                "plages": self.periodes[r][1].texte(),
+            }
+            for r in choisis
+        ]
+
+
 class Calendrier(Protocol):
     """Répartit les kWh d'une heure entre les postes d'une offre-option."""
 
@@ -119,14 +197,15 @@ class CalendrierBase:
 
 @dataclass(frozen=True, slots=True)
 class CalendrierHPHC:
-    """Heures pleines / heures creuses du compteur ; une heure à cheval sur une limite
-    (ex. 23:30) est répartie au prorata des minutes, faute de mesure plus fine."""
+    """Heures pleines / heures creuses du compteur, avec les plages **du jour** (#369) ;
+    une heure à cheval sur une limite (ex. 23:30) est répartie au prorata des minutes,
+    faute de mesure plus fine."""
 
-    plages: PlagesHC
+    plages: PlagesDatees
     postes: ClassVar[frozenset[str]] = frozenset({"hp", "hc"})
 
     def repartir(self, debut: datetime, kwh: Decimal) -> dict[str, Decimal]:
-        hc = kwh * self.plages.fraction_hc(debut.hour)
+        hc = kwh * self.plages.du_jour(debut.date()).fraction_hc(debut.hour)
         return {"hc": hc, "hp": kwh - hc}
 
 
@@ -154,7 +233,9 @@ class CalendrierTempo:
 
 
 def calendrier_pour(
-    postes: Iterable[str], plages: PlagesHC | None, couleurs: CouleursTempo | None = None
+    postes: Iterable[str],
+    plages: PlagesHC | PlagesDatees | None,
+    couleurs: CouleursTempo | None = None,
 ) -> Calendrier:
     """Calendrier d'une offre-option d'après les postes de sa grille.
 
@@ -169,7 +250,7 @@ def calendrier_pour(
     if postes == CalendrierHPHC.postes:
         if plages is None:
             raise DonneesManquantes("l'option heures creuses demande des plages")
-        return CalendrierHPHC(plages)
+        return CalendrierHPHC(plages if isinstance(plages, PlagesDatees) else PlagesDatees.uniques(plages))
     if postes == POSTES_TEMPO:
         if couleurs is None:
             raise DonneesManquantes("l'option Tempo demande les couleurs des jours")
