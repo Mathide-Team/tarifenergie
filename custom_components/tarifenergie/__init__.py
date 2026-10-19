@@ -2,7 +2,8 @@
 
 Chaque entrée suit un capteur d'énergie et compare, sur ses 12 derniers mois de
 statistiques horaires, le coût TTC des tarifs réglementés (Base, Heures creuses)
-publiés par la CRE. Le calcul vit dans ``calcul.py`` et ``modele.py``, en Python pur.
+publiés par la CRE et des offres de marché livrées dans ``offres/`` (issues #5 et #6).
+Le calcul vit dans ``calcul.py``, ``modele.py`` et ``offres.py``, en Python pur.
 """
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ from homeassistant.core import HomeAssistant
 from .const import OPTIONS
 from .coordinateur import CoordinateurTarifs
 from .modele import Grilles
+from .offres import grilles_offres, lire_offres
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 
@@ -21,7 +23,10 @@ type TarifenergieConfigEntry = ConfigEntry[CoordinateurTarifs]
 
 
 def _charger_grilles() -> dict[str, Grilles]:
-    return {option: Grilles.charger(option) for option in OPTIONS}
+    """Options du TRV + offres de marché, indexées par clé de comparaison."""
+    grilles = {option: Grilles.charger(option) for option in OPTIONS}
+    grilles.update(grilles_offres(lire_offres()))
+    return grilles
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: TarifenergieConfigEntry) -> bool:

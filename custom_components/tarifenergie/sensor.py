@@ -23,6 +23,19 @@ from . import TarifenergieConfigEntry
 from .calcul import Comparaison
 from .const import DOMAIN, OPTIONS
 from .coordinateur import CoordinateurTarifs
+from .offres import Offre, lire_offres
+
+
+def _libelle(cle: str, offres: dict[str, Offre]) -> str:
+    """Nom lisible d'une clé de comparaison : TRV ou « fournisseur Offre (option) »."""
+    if ":" not in cle:
+        return {"base": "Base", "hphc": "Off-peak"}.get(cle, cle)
+    ident, option = cle.split(":", 1)
+    offre = offres.get(ident)
+    if offre is None:
+        return cle
+    option_lisible = {"base": "Base", "hphc": "Off-peak"}.get(option, option)
+    return f"{offre.fournisseur} {offre.offre} ({option_lisible})"
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -40,7 +53,7 @@ def _periode(comp: Comparaison, coord: CoordinateurTarifs) -> dict[str, Any]:
     }
 
 
-def _cout(option: str) -> Description:
+def _cout(option: str, offres: dict[str, Offre]) -> Description:
     def valeur(comp: Comparaison) -> Decimal | None:
         cout = comp.couts.get(option)
         return cout.total if cout else None
@@ -52,61 +65,68 @@ def _cout(option: str) -> Description:
         detail.pop("total", None)
         return {**detail, **_periode(comp, coord)}
 
+    cles_trv = option in OPTIONS
     return Description(
-        key=f"cout_{option}",
-        translation_key=f"cout_{option}",
+        key=f"cout_{option.replace(':', '_')}",
+        translation_key=f"cout_{option}" if cles_trv else None,
+        name=None if cles_trv else f"12-month cost, {_libelle(option, offres)}",
         valeur=valeur,
         attributs=attributs,
         monetaire=True,
     )
 
 
-def _classement(comp: Comparaison, coord: CoordinateurTarifs) -> dict[str, Any]:
+def _classement(comp: Comparaison, coord: CoordinateurTarifs, offres: dict[str, Offre]) -> dict[str, Any]:
     return {
-        "classement": [{"option": c.option, "total": float(c.total)} for c in comp.classement],
+        "classement": [
+            {"option": c.option, "libelle": _libelle(c.option, offres), "total": float(c.total)}
+            for c in comp.classement
+        ],
         "option_actuelle": comp.option_actuelle,
         "indisponibles": comp.indisponibles,
         **_periode(comp, coord),
     }
 
 
-DESCRIPTIONS: tuple[Description, ...] = (
-    *(_cout(option) for option in OPTIONS),
-    Description(
-        key="option_moins_chere",
-        translation_key="option_moins_chere",
-        device_class=SensorDeviceClass.ENUM,
-        options=list(OPTIONS),
-        valeur=lambda comp: comp.moins_chere.option if comp.moins_chere else None,
-        attributs=_classement,
-    ),
-    Description(
-        key="economie_possible",
-        translation_key="economie_possible",
-        valeur=lambda comp: comp.economie,
-        attributs=_classement,
-        monetaire=True,
-    ),
-    Description(
-        key="consommation",
-        translation_key="consommation",
-        device_class=SensorDeviceClass.ENERGY,
-        native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
-        suggested_display_precision=0,
-        valeur=lambda comp: (
-            round(float(sum(next(iter(comp.couts.values())).kwh.values())), 3) if comp.couts else None
+def _descriptions(cles: list[str], offres: dict[str, Offre]) -> tuple[Description, ...]:
+    """Capteurs pour les clés de comparaison disponibles (TRV + offres de marché)."""
+    return (
+        *(_cout(cle, offres) for cle in cles),
+        Description(
+            key="option_moins_chere",
+            translation_key="option_moins_chere",
+            device_class=SensorDeviceClass.ENUM,
+            options=cles,
+            valeur=lambda comp: comp.moins_chere.option if comp.moins_chere else None,
+            attributs=lambda comp, coord: _classement(comp, coord, offres),
         ),
-        attributs=lambda comp, coord: _periode(comp, coord),
-    ),
-    Description(
-        key="part_heures_creuses",
-        translation_key="part_heures_creuses",
-        native_unit_of_measurement="%",
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=1,
-        valeur=lambda comp: _part_hc(comp),
-    ),
-)
+        Description(
+            key="economie_possible",
+            translation_key="economie_possible",
+            valeur=lambda comp: comp.economie,
+            attributs=lambda comp, coord: _classement(comp, coord, offres),
+            monetaire=True,
+        ),
+        Description(
+            key="consommation",
+            translation_key="consommation",
+            device_class=SensorDeviceClass.ENERGY,
+            native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
+            suggested_display_precision=0,
+            valeur=lambda comp: (
+                round(float(sum(next(iter(comp.couts.values())).kwh.values())), 3) if comp.couts else None
+            ),
+            attributs=lambda comp, coord: _periode(comp, coord),
+        ),
+        Description(
+            key="part_heures_creuses",
+            translation_key="part_heures_creuses",
+            native_unit_of_measurement="%",
+            state_class=SensorStateClass.MEASUREMENT,
+            suggested_display_precision=1,
+            valeur=lambda comp: _part_hc(comp),
+        ),
+    )
 
 
 def _part_hc(comp: Comparaison) -> float | None:
@@ -120,7 +140,13 @@ def _part_hc(comp: Comparaison) -> float | None:
 async def async_setup_entry(
     hass: HomeAssistant, entry: TarifenergieConfigEntry, async_add_entities: AddConfigEntryEntitiesCallback
 ) -> None:
-    async_add_entities(CapteurTarif(entry.runtime_data, entry, d) for d in DESCRIPTIONS)
+    """Un capteur par option TRV ou offre de marché, plus le classement et l'économie."""
+    coord = entry.runtime_data
+    offres = lire_offres()
+    cles = [cle for cle in coord.grilles if cle in OPTIONS] + [
+        cle for cle in coord.grilles if cle not in OPTIONS
+    ]
+    async_add_entities(CapteurTarif(coord, entry, d) for d in _descriptions(cles, offres))
 
 
 class CapteurTarif(CoordinatorEntity[CoordinateurTarifs], SensorEntity):
@@ -139,7 +165,7 @@ class CapteurTarif(CoordinatorEntity[CoordinateurTarifs], SensorEntity):
             identifiers={(DOMAIN, entry.entry_id)},
             name=entry.title,
             entry_type=DeviceEntryType.SERVICE,
-            manufacturer="CRE (tarifs réglementés)",
+            manufacturer="CRE (tarifs réglementés) et offres de marché",
             model="Comparaison sur 12 mois",
         )
         if description.monetaire:
