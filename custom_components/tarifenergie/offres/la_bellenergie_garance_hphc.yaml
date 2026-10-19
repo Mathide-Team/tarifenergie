@@ -1,0 +1,17 @@
+# la bellenergie Garance — prix fixes 3 ans — HP/HC (issue #165, inventaire #6).
+# Même kWh que Prudence, seuls les abonnements augmentent avec la durée
+# de garantie (+5,00 € TTC/mois à 6 kVA Base).
+# Grille TTC applicable au 01/08/2026 (TURPE 7).
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: la_bellenergie_garance_hphc
+fournisseur: la bellenergie
+offre: Garance
+option: hphc
+issue: 165
+type_prix: fixe
+grille_du: 2026-08-01
+duree_fixite_mois: 36
+source: https://labellenergie.fr/pdf/grille-tarifaire-la-bellenergie-particuliers.pdf
+# pas d'option HC en 3 kVA ; abonnement HC ≠ Base dès 9 kVA (CTA, #19)
+abonnement_mensuel_ttc: {6: 20.36, 9: 24.66, 12: 28.63, 15: 32.36, 18: 36.2, 24: 44.38, 30: 51.9, 36: 59.49}
+kwh_ttc: {hp: 0.2106, hc: 0.1565}

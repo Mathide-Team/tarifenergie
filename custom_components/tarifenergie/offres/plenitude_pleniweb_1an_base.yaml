@@ -1,0 +1,24 @@
+# Eni Plenitude Pleniweb 1 an — Base (issue #65, inventaire #6).
+# Électricité verte, souscription en ligne uniquement ; prix fixe tout compris 12 mois.
+# Grille TTC de référence pour toute souscription du 01/10/2026 au 03/11/2026 non inclus.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: plenitude_pleniweb_1an_base
+fournisseur: Eni Plenitude France
+offre: Pleniweb 1 an
+option: base
+issue: 65
+type_prix: fixe
+grille_du: 2026-10-01
+duree_fixite_mois: 12
+source: https://www.eniplenitude.fr/content/dam/plenitude-fr/documents/pages-offres/offre-pleniweb/offre-pleniweb_1an_elec.pdf
+abonnement_mensuel_ttc: {3: 14.53, 6: 18.26, 9: 22.28, 12: 26.16, 15: 29.80, 18: 33.54, 24: 41.54, 30: 48.87, 36: 56.81}
+kwh_ttc_par_puissance:
+  3: {base: 0.1837}
+  6: {base: 0.1837}
+  9: {base: 0.1823}
+  12: {base: 0.1823}
+  15: {base: 0.1823}
+  18: {base: 0.1823}
+  24: {base: 0.1823}
+  30: {base: 0.1823}
+  36: {base: 0.1823}

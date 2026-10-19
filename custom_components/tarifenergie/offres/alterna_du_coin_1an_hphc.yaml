@@ -1,0 +1,17 @@
+# Alterna Mon électricité du coin — 1 an — HP/HC (issue #151, inventaire #6).
+# Électricité verte française, clients résidentiels Enedis ≤ 36 kVA.
+# Grille TTC applicable au 01/09/2026 (nouvelles souscriptions).
+# Abonnements nettement au-dessus du TRV ; HC dès 3 kVA.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: alterna_du_coin_1an_hphc
+fournisseur: Alterna énergie
+offre: Mon électricité du coin — 1 an
+option: hphc
+issue: 151
+type_prix: fixe
+grille_du: 2026-09-01
+duree_fixite_mois: 12
+source: https://www.alterna-energie.fr/tarifs-electricite-locale
+# HC dès 3 kVA ; abonnement HC ≠ Base dès 9 kVA (CTA, #19)
+abonnement_mensuel_ttc: {3: 13.93, 6: 17.66, 9: 22.56, 12: 26.53, 15: 30.26, 18: 34.10, 24: 42.28, 30: 49.80, 36: 57.39}
+kwh_ttc: {hp: 0.2107, hc: 0.1565}

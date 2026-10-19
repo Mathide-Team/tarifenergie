@@ -1,0 +1,25 @@
+# Alterna Mon électricité française — fixe 1 an — Base (issue #44, inventaire #6).
+# Électricité 100 % renouvelable française ; résidentiels Enedis ≤ 36 kVA.
+# Grille TTC applicable au 01/09/2026 (nouvelles souscriptions).
+# Particularité : option Heures creuses disponible dès 3 kVA.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: alterna_fixe_1an_base
+fournisseur: Alterna énergie
+offre: Mon électricité française — fixe 1 an
+option: base
+issue: 44
+type_prix: fixe
+grille_du: 2026-09-01
+duree_fixite_mois: 12
+source: https://www.alterna-energie.fr/tarifs-electricite-francaise
+abonnement_mensuel_ttc: {3: 13.93, 6: 17.66, 9: 22.28, 12: 26.16, 15: 29.8, 18: 33.54, 24: 41.54, 30: 48.87, 36: 56.28}
+kwh_ttc_par_puissance:
+  3: {base: 0.1919}
+  6: {base: 0.1919}
+  9: {base: 0.1904}
+  12: {base: 0.1904}
+  15: {base: 0.1904}
+  18: {base: 0.1904}
+  24: {base: 0.1904}
+  30: {base: 0.1904}
+  36: {base: 0.1904}

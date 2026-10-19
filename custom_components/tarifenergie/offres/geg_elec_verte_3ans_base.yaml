@@ -1,0 +1,25 @@
+# GEG Mon Offre Elec Verte — fixe 3 ans — Base (issue #56, inventaire #6).
+# Électricité verte (garanties d'origine), particuliers ≤ 36 kVA.
+# Grille TTC applicable au 05/10/2026 (grille officielle).
+# Particularité : prix du kWh HC/HP dépendant de la puissance.
+# Offre-option distincte (#343) : un fichier = une option = une issue (inventaire #6).
+id: geg_elec_verte_3ans_base
+fournisseur: GEG Source d'Énergies
+offre: Mon Offre Elec Verte — fixe 3 ans
+option: base
+issue: 56
+type_prix: fixe
+grille_du: 2026-10-05
+duree_fixite_mois: 36
+source: https://www.geg.fr/Medias/content-editor/Tarif%20Part/2026/Octobre/Grille-tarifaire-Mes%20Offres%20Elec%20fixes%203%20ans-PART1026.pdf
+abonnement_mensuel_ttc: {3: 12.13, 6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 53.88}
+kwh_ttc_par_puissance:
+  3: {base: 0.1837}
+  6: {base: 0.1837}
+  9: {base: 0.1823}
+  12: {base: 0.1823}
+  15: {base: 0.1823}
+  18: {base: 0.1823}
+  24: {base: 0.1823}
+  30: {base: 0.1823}
+  36: {base: 0.1823}
