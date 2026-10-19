@@ -53,13 +53,40 @@ async def test_capteurs(hass: HomeAssistant):
     assert base.attributes["kwh"] == {"base": 36.0}
     assert base.attributes["jours_couverts"] == 3
     assert base.attributes["grilles"] == ["2026-08-01"]
-    assert hass.states.get("sensor.maison_cheapest_option").state == "hphc"
+    # Offres de marché (issues #40, #44, #63, #64 et lot 2) : à cette consommation
+    # nocturne, Primeo Fixe Confort HC (13,44 c€) est la moins chère ; les grilles
+    # postérieures au 3 octobre (GEG 05/10, Ohm 14/10 et 16/10) sont indisponibles.
+    prudence = hass.states.get("sensor.maison_12_month_cost_la_bellenergie_prudence_off_peak")
+    assert prudence is not None
+    assert prudence.state == "7.15"
+    assert prudence.attributes["kwh"] == {"hp": 0.0, "hc": 36.0}
+    assert hass.states.get("sensor.maison_cheapest_option").state == "primeo_fixe_confort:hphc"
     economie = hass.states.get("sensor.maison_possible_12_month_saving")
-    assert economie.state == "1.48"
-    assert economie.attributes["classement"] == [
-        {"option": "hphc", "total": 7.29},
-        {"option": "base", "total": 8.77},
+    assert economie.state == "1.94"
+    assert [e["option"] for e in economie.attributes["classement"]] == [
+        "primeo_fixe_confort:hphc",
+        "plenitude_pleniweb_1an:hphc",
+        "la_bellenergie_prudence:hphc",
+        "alterna_fixe_1an:hphc",
+        "hphc",
+        "alterna_du_coin_1an:hphc",
+        "la_bellenergie_constance:hphc",
+        "la_bellenergie_garance:hphc",
+        "primeo_fixe_confort:base",
+        "plenitude_pleniweb_1an:base",
+        "la_bellenergie_prudence:base",
+        "alterna_fixe_1an:base",
+        "base",
+        "alterna_du_coin_1an:base",
+        "la_bellenergie_constance:base",
+        "la_bellenergie_garance:base",
+        "selia_elec_vert_fixe:hphc",
+        "ilek_enrfixe_plus:hphc",
+        "ilek_enrfixe_plus:base",
+        "selia_elec_vert_fixe:base",
     ]
+    assert "2026-10-01" in economie.attributes["indisponibles"]["geg_elec_verte_3ans:base"]
+    assert "2026-10-01" in economie.attributes["indisponibles"]["ohm_serente_fixe_1an:base"]
     assert hass.states.get("sensor.maison_12_month_consumption").state == "36.0"
     assert hass.states.get("sensor.maison_off_peak_share").state == "100.0"
     assert await hass.config_entries.async_unload(entree.entry_id)
@@ -70,13 +97,16 @@ async def test_option_indisponible_au_dela_de_15_kva(hass: HomeAssistant):
     base = hass.states.get("sensor.maison_12_month_cost_base_option")
     assert base.state == "unknown"
     assert "36 kVA" in base.attributes["indisponible"]
-    assert hass.states.get("sensor.maison_cheapest_option").state == "hphc"
-    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.00"
+    # À 36 kVA, Plenitude HC (681,72 €/an, 14,67 c€) passe devant Prudence HC et le TRV HC.
+    assert hass.states.get("sensor.maison_cheapest_option").state == "plenitude_pleniweb_1an:hphc"
+    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.19"
 
 
 async def test_sans_donnees(hass: HomeAssistant):
     await _installer(hass, [])
-    assert hass.states.get("sensor.maison_cheapest_option").state == "base"
+    # Sans consommation, toutes les options coûtent 0,00 € : le classement départage
+    # les ex æquo par ordre alphabétique de la clé de comparaison.
+    assert hass.states.get("sensor.maison_cheapest_option").state == "alterna_du_coin_1an:base"
     assert hass.states.get("sensor.maison_off_peak_share").state == "unknown"
     await _installer_vide_hphc(hass)
 

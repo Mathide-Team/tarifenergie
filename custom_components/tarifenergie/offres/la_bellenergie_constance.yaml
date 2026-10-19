@@ -1,0 +1,27 @@
+# la bellenergie Constance — prix fixes 2 ans (issue #62, inventaire #6).
+# Même kWh que Prudence et Garance ; seul l'abonnement augmente avec la durée
+# de garantie (+2,51 € TTC/mois à 6 kVA Base par rapport à Prudence).
+# Grille TTC applicable au 01/08/2026 (TURPE 7).
+id: la_bellenergie_constance
+fournisseur: la bellenergie
+offre: Constance
+type_prix: fixe
+grille_du: 2026-08-01
+duree_fixite_mois: 24
+source: https://labellenergie.fr/pdf/grille-tarifaire-la-bellenergie-particuliers.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 14.13, 6: 17.87, 9: 21.89, 12: 25.77, 15: 29.40, 18: 33.15, 24: 41.14, 30: 48.47, 36: 55.88}
+    kwh_ttc_par_puissance:
+      3: {base: 0.1968}
+      6: {base: 0.1968}
+      9: {base: 0.1953}
+      12: {base: 0.1953}
+      15: {base: 0.1953}
+      18: {base: 0.1953}
+      24: {base: 0.1953}
+      30: {base: 0.1953}
+      36: {base: 0.1953}
+  hphc:  # pas d'option HC en 3 kVA ; abonnement HC ≠ Base dès 9 kVA (CTA, #19)
+    abonnement_mensuel_ttc: {6: 17.87, 9: 22.17, 12: 26.14, 15: 29.87, 18: 33.71, 24: 41.89, 30: 49.41, 36: 57.00}
+    kwh_ttc: {hp: 0.2106, hc: 0.1565}
