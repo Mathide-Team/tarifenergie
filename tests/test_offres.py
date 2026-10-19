@@ -26,10 +26,18 @@ def offres():
 
 def test_quatre_offres_livrees(offres):
     assert sorted(offres) == [
+        "alterna_du_coin_1an",
         "alterna_fixe_1an",
+        "geg_elec_verte_3ans",
+        "ilek_enrfixe_plus",
+        "la_bellenergie_constance",
         "la_bellenergie_garance",
         "la_bellenergie_prudence",
+        "ohm_fixe_2ans",
         "ohm_serente_fixe_1an",
+        "plenitude_pleniweb_1an",
+        "primeo_fixe_confort",
+        "selia_elec_vert_fixe",
     ]
     assert all(o.grilles["base"] for o in offres.values())
 
@@ -84,6 +92,73 @@ def test_alterna_hc_des_3_kva(offres):
     assert g.prix["base"] == Decimal("0.1919")
 
 
+def test_lot_2_offres_fixes(offres):
+    """Lot 2 (issues #38, #43, #56, #57, #61, #62, #65, #68) : valeurs citées des grilles."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+
+    # Ohm Fixe 2 ans, grille du 16/10/2026 (#38) : 6 kVA 15,88 €/mois, 22,49 c€.
+    g = grilles["ohm_fixe_2ans:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix["base"]) == (
+        datetime(2026, 10, 16).date(),
+        Decimal("190.56"),  # 15,88 x 12
+        Decimal("0.2249"),
+    )
+    g = grilles["ohm_fixe_2ans:hphc"].en_vigueur(6, jour)
+    assert g.prix == {"hp": Decimal("0.2421"), "hc": Decimal("0.1771")}
+
+    # Alterna du coin 1 an, grille du 01/09/2026 (#43) : 6 kVA 17,66 €/mois, 19,68 c€.
+    g = grilles["alterna_du_coin_1an:base"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("211.92")  # 17,66 x 12
+    assert g.prix["base"] == Decimal("0.1968")
+    g = grilles["alterna_du_coin_1an:hphc"].en_vigueur(3, jour)  # HC dès 3 kVA
+    assert g.abonnement_an == Decimal("167.16")  # 13,93 x 12
+    assert g.prix == {"hp": Decimal("0.2107"), "hc": Decimal("0.1565")}
+
+    # GEG fixe 3 ans, grille du 05/10/2026 (#56) : kWh HC/HP selon la puissance.
+    g = grilles["geg_elec_verte_3ans:hphc"].en_vigueur(6, jour)
+    assert g.prix == {"hp": Decimal("0.1983"), "hc": Decimal("0.1584")}
+    g = grilles["geg_elec_verte_3ans:hphc"].en_vigueur(12, jour)
+    assert g.prix == {"hp": Decimal("0.2014"), "hc": Decimal("0.1584")}
+    g = grilles["geg_elec_verte_3ans:hphc"].en_vigueur(18, jour)
+    assert g.prix == {"hp": Decimal("0.2014"), "hc": Decimal("0.1656")}
+    g = grilles["geg_elec_verte_3ans:base"].en_vigueur(3, jour)
+    assert g.prix["base"] == Decimal("0.1837")
+
+    # ilek ÉnRFixe+, grille d'octobre 2026 (#57) : 6 kVA 25,10 €/mois, 24,00 c€.
+    g = grilles["ilek_enrfixe_plus:base"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("301.20")  # 25,10 x 12
+    assert g.prix["base"] == Decimal("0.2400")
+
+    # Primeo Fixe Confort, grille du 01/08/2026 (#61) : 6 kVA 20,16 €/mois, 16,74 c€.
+    g = grilles["primeo_fixe_confort:base"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("241.92")  # 20,16 x 12
+    assert g.prix["base"] == Decimal("0.1674")
+    g = grilles["primeo_fixe_confort:hphc"].en_vigueur(6, jour)
+    assert g.prix == {"hp": Decimal("0.1787"), "hc": Decimal("0.1344")}
+
+    # la bellenergie Constance, grille du 01/08/2026 (#62) : 6 kVA 17,87 €/mois.
+    g = grilles["la_bellenergie_constance:base"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("214.44")  # 17,87 x 12
+    assert g.prix["base"] == Decimal("0.1968")
+    g = grilles["la_bellenergie_constance:hphc"].en_vigueur(9, jour)
+    assert g.abonnement_an == Decimal("266.04")  # 22,17 x 12
+
+    # Plenitude Pleniweb 1 an, grille du 01/10/2026 (#65) : 6 kVA 18,26 €/mois, 18,37 c€.
+    g = grilles["plenitude_pleniweb_1an:base"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("219.12")  # 18,26 x 12
+    assert g.prix["base"] == Decimal("0.1837")
+    g = grilles["plenitude_pleniweb_1an:hphc"].en_vigueur(3, jour)  # HC dès 3 kVA
+    assert g.prix == {"hp": Decimal("0.1965"), "hc": Decimal("0.1467")}
+
+    # Sélia élec vert Fixe, grille du 21/09/2026 (#68) : abonnements TRV, 27,36 c€ Base.
+    g = grilles["selia_elec_vert_fixe:base"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("190.32")  # 15,86 x 12
+    assert g.prix["base"] == Decimal("0.2736")
+    g = grilles["selia_elec_vert_fixe:hphc"].en_vigueur(6, jour)
+    assert g.prix == {"hp": Decimal("0.2941"), "hc": Decimal("0.2139")}
+
+
 def test_cles_de_comparaison_composites(offres):
     cles = grilles_offres(offres)
     assert "la_bellenergie_prudence:base" in cles
@@ -103,9 +178,8 @@ def test_cout_option_prudence_sur_un_kwh(offres):
 def test_comparaison_trv_contre_offres(offres):
     """Le classement mélange TRV et offres.
 
-    Avec 10 kWh dans la journée, Prudence Base (19,68 c€, 184,32 €/an) bat le TRV Base
-    (20,01 c€, 190,81 €/an), Ohm (21,83 c€) et Alterna (19,19 c€ mais 211,92 €/an).
-    À 1 kWh seulement, l'abonnement domine et Ohm (173,40 €/an) gagnerait.
+    Avec 10 kWh dans la journée : Primeo Fixe Confort Base (16,74 c€, 241,92 €/an)
+    bat le TRV Base (20,01 c€, 190,81 €/an) et GEG (18,37 c€ mais grille du 05/10).
     """
     from custom_components.tarifenergie.const import OPTIONS
     from custom_components.tarifenergie.modele import Grilles as GrillesTRV
@@ -113,10 +187,10 @@ def test_comparaison_trv_contre_offres(offres):
     grilles = {option: GrillesTRV.charger(option) for option in OPTIONS}
     grilles.update(grilles_offres(offres))
     comp = comparer(grilles, 6, DIX_KWH, PLAGES, "base")
-    assert comp.moins_chere.option == "la_bellenergie_prudence:base"
+    assert comp.moins_chere.option == "primeo_fixe_confort:base"
     trv = comp.couts["base"]
-    prudence = comp.couts["la_bellenergie_prudence:base"]
-    assert comp.economie == (trv.total - prudence.total).quantize(Decimal("0.01"))
+    moins_chere = comp.couts[comp.moins_chere.option]
+    assert comp.economie == (trv.total - moins_chere.total).quantize(Decimal("0.01"))
     # Puissance non proposée par l'offre : indisponible, avec la raison.
     comp3 = comparer(grilles, 3, DIX_KWH, PLAGES, "base")
     assert "la_bellenergie_prudence:hphc" in comp3.indisponibles

@@ -1,0 +1,26 @@
+# Primeo Energie Offre Fixe Confort (issue #61, inventaire #6).
+# Prix fixe de la part électricité jusqu'au 31/12/2027 ; kWh HT = TRV -20 %.
+# Abonnement bien au-dessus du TRV. Grille TTC applicable au 01/08/2026.
+id: primeo_fixe_confort
+fournisseur: Primeo Energie France
+offre: Offre Fixe Confort
+type_prix: fixe
+grille_du: 2026-08-01
+duree_fixite_mois: 17  # jusqu'au 31/12/2027 depuis le 01/08/2026
+source: https://particuliers.primeo-energie.fr/wp-content/uploads/GT-FD_Offre-Fixe-Confort.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 23.20, 6: 20.16, 9: 25.25, 12: 30.14, 15: 34.73, 18: 39.46, 24: 49.58, 30: 58.84, 36: 68.17}
+    kwh_ttc_par_puissance:
+      3: {base: 0.1674}
+      6: {base: 0.1674}
+      9: {base: 0.1662}
+      12: {base: 0.1662}
+      15: {base: 0.1662}
+      18: {base: 0.1662}
+      24: {base: 0.1662}
+      30: {base: 0.1662}
+      36: {base: 0.1662}
+  hphc:  # pas d'option HC en 3 kVA ; abonnements identiques à la Base
+    abonnement_mensuel_ttc: {6: 20.16, 9: 25.25, 12: 30.14, 15: 34.73, 18: 39.46, 24: 49.58, 30: 58.84, 36: 68.17}
+    kwh_ttc: {hp: 0.1787, hc: 0.1344}
