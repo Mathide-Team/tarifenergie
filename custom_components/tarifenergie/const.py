@@ -12,6 +12,12 @@ CONF_ENERGIE: Final = "entite_energie"
 CONF_PUISSANCE: Final = "puissance"
 CONF_OPTION: Final = "option_actuelle"
 CONF_HEURES_CREUSES: Final = "heures_creuses"
+# Téléinformation (#370) : index HC et HP du compteur (capteurs d'énergie cumulée),
+# facultatifs ; s'ils sont donnés, les plages HC sont détectées et remplacent la saisie.
+CONF_INDEX_HC: Final = "index_hc"
+CONF_INDEX_HP: Final = "index_hp"
+SOURCE_TELEINFO: Final = "teleinformation"
+SOURCE_SAISIE: Final = "saisie"
 # Gestionnaire de réseau du site : « enedis » ou « eld:<id> » (#345). Pas encore demandé
 # par le config flow (#347) : les entrées existantes restent sur Enedis.
 CONF_TERRITOIRE: Final = "territoire"

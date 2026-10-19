@@ -9,12 +9,16 @@
           "entite_energie": "Capteur d'énergie consommée",
           "puissance": "Puissance souscrite",
           "option_actuelle": "Option tarifaire actuelle",
-          "heures_creuses": "Heures creuses du compteur"
+          "heures_creuses": "Heures creuses du compteur",
+          "index_hc": "Index heures creuses (téléinformation, facultatif)",
+          "index_hp": "Index heures pleines (téléinformation, facultatif)"
         },
         "data_description": {
           "entite_energie": "Le capteur utilisé dans le tableau de bord Énergie (compteur Linky, pince, etc.).",
           "puissance": "Indiquée sur la facture (kVA).",
-          "heures_creuses": "Plages indiquées sur la facture ou l'espace client du gestionnaire de réseau (Enedis ou distributeur local), par exemple « 22:00-06:00 » ou « 02:00-07:00, 13:00-16:00 ». Elles servent à simuler l'option Heures creuses, même si votre option actuelle est Base. Si elles ont changé dans l'année, ajoutez chaque changement après « | » avec sa date : « 22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00 »."
+          "heures_creuses": "Plages indiquées sur la facture ou l'espace client du gestionnaire de réseau (Enedis ou distributeur local), par exemple « 22:00-06:00 » ou « 02:00-07:00, 13:00-16:00 ». Elles servent à simuler l'option Heures creuses, même si votre option actuelle est Base. Si elles ont changé dans l'année, ajoutez chaque changement après « | » avec sa date : « 22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00 ».",
+          "index_hc": "Capteur d'énergie cumulée de l'index heures creuses du compteur, fourni par un module de téléinformation (index du gestionnaire de réseau, pas d'un calendrier fournisseur). Avec l'index heures pleines, les plages d'heures creuses sont détectées sur les 12 mois, changements compris, et remplacent la saisie.",
+          "index_hp": "Capteur d'énergie cumulée de l'index heures pleines du compteur (téléinformation). À renseigner avec l'index heures creuses."
         }
       }
     },
@@ -22,7 +26,9 @@
       "capteur_absent": "Capteur introuvable.",
       "unite": "Le capteur doit être en Wh, kWh ou MWh.",
       "state_class": "Le capteur doit être un cumul (state_class total ou total_increasing), comme ceux du tableau de bord Énergie.",
-      "plages_invalides": "Plages illisibles : format HH:MM-HH:MM, séparées par des virgules, sans chevauchement ; changements : « | AAAA-MM-JJ: plages », dates croissantes."
+      "plages_invalides": "Plages illisibles : format HH:MM-HH:MM, séparées par des virgules, sans chevauchement ; changements : « | AAAA-MM-JJ: plages », dates croissantes.",
+      "index_par_paire": "Renseignez les deux index (heures creuses et heures pleines), ou aucun.",
+      "index_identiques": "Les index heures creuses et heures pleines doivent être deux capteurs différents."
     },
     "abort": {
       "already_configured": "Ce capteur est déjà suivi."
@@ -35,11 +41,15 @@
         "data": {
           "puissance": "Puissance souscrite",
           "option_actuelle": "Option tarifaire actuelle",
-          "heures_creuses": "Heures creuses du compteur"
+          "heures_creuses": "Heures creuses du compteur",
+          "index_hc": "Index heures creuses (téléinformation, facultatif)",
+          "index_hp": "Index heures pleines (téléinformation, facultatif)"
         },
         "data_description": {
           "puissance": "Indiquée sur la facture (kVA).",
-          "heures_creuses": "Plages indiquées sur la facture ou l'espace client du gestionnaire de réseau (Enedis ou distributeur local), par exemple « 22:00-06:00 » ou « 02:00-07:00, 13:00-16:00 ». Elles servent à simuler l'option Heures creuses, même si votre option actuelle est Base. Si elles ont changé dans l'année, ajoutez chaque changement après « | » avec sa date : « 22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00 »."
+          "heures_creuses": "Plages indiquées sur la facture ou l'espace client du gestionnaire de réseau (Enedis ou distributeur local), par exemple « 22:00-06:00 » ou « 02:00-07:00, 13:00-16:00 ». Elles servent à simuler l'option Heures creuses, même si votre option actuelle est Base. Si elles ont changé dans l'année, ajoutez chaque changement après « | » avec sa date : « 22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00 ».",
+          "index_hc": "Capteur d'énergie cumulée de l'index heures creuses du compteur, fourni par un module de téléinformation (index du gestionnaire de réseau, pas d'un calendrier fournisseur). Avec l'index heures pleines, les plages d'heures creuses sont détectées sur les 12 mois, changements compris, et remplacent la saisie.",
+          "index_hp": "Capteur d'énergie cumulée de l'index heures pleines du compteur (téléinformation). À renseigner avec l'index heures creuses."
         }
       }
     },
@@ -47,7 +57,9 @@
       "capteur_absent": "Capteur introuvable.",
       "unite": "Le capteur doit être en Wh, kWh ou MWh.",
       "state_class": "Le capteur doit être un cumul (state_class total ou total_increasing), comme ceux du tableau de bord Énergie.",
-      "plages_invalides": "Plages illisibles : format HH:MM-HH:MM, séparées par des virgules, sans chevauchement ; changements : « | AAAA-MM-JJ: plages », dates croissantes."
+      "plages_invalides": "Plages illisibles : format HH:MM-HH:MM, séparées par des virgules, sans chevauchement ; changements : « | AAAA-MM-JJ: plages », dates croissantes.",
+      "index_par_paire": "Renseignez les deux index (heures creuses et heures pleines), ou aucun.",
+      "index_identiques": "Les index heures creuses et heures pleines doivent être deux capteurs différents."
     }
   },
   "selector": {

@@ -6,6 +6,7 @@ Identifiants d'entité en anglais : langue par défaut de Home Assistant en test
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+import pytest
 from homeassistant.components.recorder.models import StatisticMeanType
 from homeassistant.components.recorder.statistics import async_import_statistics
 from homeassistant.config_entries import ConfigEntryState
@@ -164,3 +165,48 @@ async def test_lecture_des_statistiques_en_kwh(hass: HomeAssistant):
     conso = await async_conso_horaire(hass, CAPTEUR, debut - timedelta(hours=1), debut + timedelta(hours=4))
     assert [round(k, 3) for _, k in conso] == [0.0, 1.5, 2.0]
     assert all(h.tzinfo == dt_util.get_default_time_zone() for h, _ in conso)
+
+
+async def test_plages_detectees_par_la_teleinformation(hass: HomeAssistant):
+    """#370 : index HC et HP configurés, plages détectées (23h-7h) au lieu de la saisie (22h-6h)."""
+    debut = datetime(2026, 10, 1, tzinfo=dt_util.get_default_time_zone())
+    heures = [debut + timedelta(hours=i) for i in range(5 * 24)]
+    creuse = [h.hour >= 23 or h.hour < 7 for h in heures]
+    series = {
+        CAPTEUR: [(h, 1.0) for h in heures],
+        "sensor.index_hc": [(h, 1.0 if c else 0.0) for h, c in zip(heures, creuse, strict=True)],
+        "sensor.index_hp": [(h, 0.0 if c else 1.0) for h, c in zip(heures, creuse, strict=True)],
+    }
+    donnees = {**DONNEES, "index_hc": "sensor.index_hc", "index_hp": "sensor.index_hp"}
+    entree = MockConfigEntry(domain=DOMAIN, title="Maison", unique_id=CAPTEUR, data=donnees)
+    entree.add_to_hass(hass)
+
+    async def lire(_hass, entite, _debut, _fin):
+        return series[entite]
+
+    with patch("custom_components.tarifenergie.coordinateur.async_conso_horaire", side_effect=lire):
+        assert await hass.config_entries.async_setup(entree.entry_id)
+        await hass.async_block_till_done()
+    part = hass.states.get("sensor.maison_off_peak_share")
+    assert part.attributes["plages_hc"] == [{"depuis": None, "plages": "23:00-07:00"}]
+    assert part.attributes["source_plages_hc"] == "teleinformation"
+    assert float(part.state) == pytest.approx(8 / 24 * 100, abs=0.01)
+    hphc = hass.states.get("sensor.maison_12_month_cost_off_peak_option")
+    assert hphc.attributes["source_plages_hc"] == "teleinformation"
+
+
+async def test_teleinformation_sans_plages_exploitables(hass: HomeAssistant):
+    """Index muets : la saisie sert, et l'origine l'indique."""
+    donnees = {**DONNEES, "index_hc": "sensor.index_hc", "index_hp": "sensor.index_hp"}
+    entree = MockConfigEntry(domain=DOMAIN, title="Maison", unique_id=CAPTEUR, data=donnees)
+    entree.add_to_hass(hass)
+
+    async def lire(_hass, entite, _debut, _fin):
+        return _nuit() if entite == CAPTEUR else []
+
+    with patch("custom_components.tarifenergie.coordinateur.async_conso_horaire", side_effect=lire):
+        assert await hass.config_entries.async_setup(entree.entry_id)
+        await hass.async_block_till_done()
+    part = hass.states.get("sensor.maison_off_peak_share")
+    assert part.attributes == {**part.attributes, "source_plages_hc": "saisie"}
+    assert part.attributes["plages_hc"] == [{"depuis": None, "plages": "22:00-06:00"}]
