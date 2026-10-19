@@ -23,9 +23,17 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
-from .calendrier import Calendrier, PlagesHC, PostesNonPrisEnCharge, calendrier_pour
+from .calendrier import (
+    Calendrier,
+    CalendrierTempo,
+    DonneesManquantes,
+    PlagesHC,
+    PostesNonPrisEnCharge,
+    calendrier_pour,
+)
 from .calendrier import PlagesInvalides as PlagesInvalides  # réexport (config_flow, tests)
 from .modele import Grilles, TarifIntrouvable
+from .tempo import CouleurInconnue, CouleursTempo, jour_tempo
 
 CENTIME = Decimal("0.01")
 
@@ -40,6 +48,8 @@ class Cout:
     kwh: dict[str, Decimal] = field(default_factory=dict)
     # Débuts des grilles CRE utilisées (traçabilité : « tarif du 01/08/2026 »).
     grilles: set[date] = field(default_factory=set)
+    # Tempo : jours dont la couleur a été estimée (manquante dans l'historique réel).
+    jours_estimes: set[date] = field(default_factory=set)
 
     @property
     def total(self) -> Decimal:
@@ -53,6 +63,7 @@ class Cout:
             "abonnement": self.abonnement.quantize(CENTIME, ROUND_HALF_UP),
             "kwh": {poste: round(float(v), 3) for poste, v in sorted(self.kwh.items())},
             "grilles": sorted(d.isoformat() for d in self.grilles),
+            **({"jours_couleur_estimee": len(self.jours_estimes)} if self.jours_estimes else {}),
         }
 
 
@@ -67,14 +78,17 @@ def cout_option(
     conso: Iterable[tuple[datetime, float]],
     plages: PlagesHC | None = None,
     jours: Iterable[date] | None = None,
+    couleurs: CouleursTempo | None = None,
 ) -> Cout:
     """Coût TTC de l'offre-option ``option`` pour une consommation horaire.
 
     ``conso`` : couples (début d'heure en heure **locale**, kWh consommés dans l'heure).
     ``plages`` : heures creuses du compteur, pour un calendrier HP/HC.
     ``jours`` : jours d'abonnement à compter ; par défaut, ceux présents dans ``conso``.
-    Lève :class:`TarifIntrouvable` si un jour n'a pas de grille (puissance non proposée…)
-    et :class:`PostesNonPrisEnCharge` pour une structure pas encore implémentée.
+    ``couleurs`` : couleurs des jours passés, pour un calendrier Tempo (réelles ou estimées).
+    Lève :class:`TarifIntrouvable` si un jour n'a pas de grille (puissance non proposée…),
+    :class:`PostesNonPrisEnCharge` pour une structure pas encore implémentée et
+    :class:`CouleurInconnue` pour un jour Tempo sans couleur.
     """
     if option == "hphc" and plages is None:
         raise ValueError("l'option heures creuses demande des plages")
@@ -92,8 +106,13 @@ def cout_option(
         cout.grilles.add(grille.debut)
         postes = frozenset(grille.prix)
         if postes not in calendriers:
-            calendriers[postes] = calendrier_pour(postes, plages)
-        repartition = calendriers[postes].repartir(debut, Decimal(str(kwh)))
+            calendriers[postes] = calendrier_pour(postes, plages, couleurs)
+        calendrier = calendriers[postes]
+        repartition = calendrier.repartir(debut, Decimal(str(kwh)))
+        if isinstance(calendrier, CalendrierTempo):
+            jour_couleur = jour_tempo(debut)
+            if jour_couleur in calendrier.couleurs.estimes:
+                cout.jours_estimes.add(jour_couleur)
         for poste, q in repartition.items():
             cout.kwh[poste] = cout.kwh.get(poste, Decimal(0)) + q
             cout.energie += q * grille.prix[poste]
@@ -138,13 +157,16 @@ def comparer(
     plages: PlagesHC,
     option_actuelle: str,
     exclues: dict[str, str] | None = None,
+    couleurs: CouleursTempo | None = None,
 ) -> Comparaison:
     """Calcule chaque offre-option séparément, sur la même consommation.
 
     ``grilles`` : une entrée par offre-option (clé de comparaison → ses grilles).
     ``exclues`` : offres-options écartées d'avance (non éligibles…), avec la raison.
-    Une offre-option sans tarif pour cette puissance, ou de structure non prise en
-    charge, est mise de côté avec la raison ; les autres restent comparées.
+    ``couleurs`` : couleurs Tempo des jours passés (réelles, ou estimées selon les règles).
+    Une offre-option sans tarif pour cette puissance, de structure non prise en charge
+    ou sans donnée nécessaire (couleurs Tempo…) est mise de côté avec la raison ; les
+    autres restent comparées.
     """
     exclues = exclues or {}
     jours = {debut.date() for debut, _ in conso}
@@ -155,8 +177,8 @@ def comparer(
             indisponibles[option] = exclues[option]
             continue
         try:
-            couts[option] = cout_option(option, grilles_option, puissance, conso, plages, jours)
-        except (TarifIntrouvable, PostesNonPrisEnCharge) as err:
+            couts[option] = cout_option(option, grilles_option, puissance, conso, plages, jours, couleurs)
+        except (TarifIntrouvable, PostesNonPrisEnCharge, DonneesManquantes, CouleurInconnue) as err:
             indisponibles[option] = str(err)
     return Comparaison(couts, indisponibles, option_actuelle, len(jours))
 

@@ -35,7 +35,8 @@
    "primeo_fixe_confort_base": "pas de tarif 3 kVA au 2025-10-16",
    "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2025-10-16",
    "selia_elec_vert_fixe_base": "pas de tarif 3 kVA au 2025-10-16",
-   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2025-10-16"
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "tempo": "pas de tarif 3 kVA au 2025-10-16"
   }
  },
  "historique|23:30-07:30|6": {
@@ -55,6 +56,19 @@
     "kwh": {
      "hc": "2043.6435",
      "hp": "2189.6625"
+    }
+   },
+   "tempo": {
+    "total": "884.27",
+    "energie": "696.6039761",
+    "abonnement": "187.6640882805479452054794560",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
     }
    }
   },
@@ -103,6 +117,19 @@
      "hc": "2043.6435",
      "hp": "2189.6625"
     }
+   },
+   "tempo": {
+    "total": "931.35",
+    "energie": "696.6039761",
+    "abonnement": "234.7499042509589041095890459",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
+    }
    }
   },
   "indisponibles": {
@@ -150,6 +177,19 @@
      "hc": "2043.6435",
      "hp": "2189.6625"
     }
+   },
+   "tempo": {
+    "total": "976.96",
+    "energie": "696.6039761",
+    "abonnement": "280.3594901786301369863013708",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
+    }
    }
   },
   "indisponibles": {
@@ -188,6 +228,19 @@
     "kwh": {
      "hc": "2043.6435",
      "hp": "2189.6625"
+    }
+   },
+   "tempo": {
+    "total": "1340.51",
+    "energie": "696.6039761",
+    "abonnement": "643.9049848416438356164383517",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
     }
    }
   },
@@ -255,7 +308,8 @@
    "primeo_fixe_confort_base": "pas de tarif 3 kVA au 2025-10-16",
    "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2025-10-16",
    "selia_elec_vert_fixe_base": "pas de tarif 3 kVA au 2025-10-16",
-   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2025-10-16"
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2025-10-16",
+   "tempo": "pas de tarif 3 kVA au 2025-10-16"
   }
  },
  "historique|02:00-07:00, 13:00-16:00|6": {
@@ -275,6 +329,19 @@
     "kwh": {
      "hc": "2335.619",
      "hp": "1897.687"
+    }
+   },
+   "tempo": {
+    "total": "884.27",
+    "energie": "696.6039761",
+    "abonnement": "187.6640882805479452054794560",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
     }
    }
   },
@@ -323,6 +390,19 @@
      "hc": "2335.619",
      "hp": "1897.687"
     }
+   },
+   "tempo": {
+    "total": "931.35",
+    "energie": "696.6039761",
+    "abonnement": "234.7499042509589041095890459",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
+    }
    }
   },
   "indisponibles": {
@@ -370,6 +450,19 @@
      "hc": "2335.619",
      "hp": "1897.687"
     }
+   },
+   "tempo": {
+    "total": "976.96",
+    "energie": "696.6039761",
+    "abonnement": "280.3594901786301369863013708",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
+    }
    }
   },
   "indisponibles": {
@@ -408,6 +501,19 @@
     "kwh": {
      "hc": "2335.619",
      "hp": "1897.687"
+    }
+   },
+   "tempo": {
+    "total": "1340.51",
+    "energie": "696.6039761",
+    "abonnement": "643.9049848416438356164383517",
+    "kwh": {
+     "hc_blanc": "240.538",
+     "hc_bleu": "1679.748",
+     "hc_rouge": "123.426",
+     "hp_blanc": "258.368",
+     "hp_bleu": "1799.314",
+     "hp_rouge": "131.912"
     }
    }
   },
@@ -591,7 +697,8 @@
    "ohm_fixe_2ans_hphc": "pas de tarif 3 kVA au 2026-10-16",
    "ohm_serente_fixe_1an_hphc": "pas de tarif 3 kVA au 2026-10-16",
    "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2026-10-16",
-   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2026-10-16"
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "tempo": "pas de tarif 3 kVA au 2026-10-16"
   }
  },
  "recent|23:30-07:30|6": {
@@ -816,6 +923,20 @@
      "hc": "2043.6435",
      "hp": "2189.6625"
     }
+   },
+   "tempo": {
+    "total": "914.12",
+    "energie": "724.1414731",
+    "abonnement": "189.9802924000000000000000041",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {}
@@ -1042,6 +1163,20 @@
      "hc": "2043.6435",
      "hp": "2189.6625"
     }
+   },
+   "tempo": {
+    "total": "961.49",
+    "energie": "724.1414731",
+    "abonnement": "237.3436191000000000000000068",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {}
@@ -1268,6 +1403,20 @@
      "hc": "2043.6435",
      "hp": "2189.6625"
     }
+   },
+   "tempo": {
+    "total": "1007.35",
+    "energie": "724.1414731",
+    "abonnement": "283.2120252000000000000000066",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {}
@@ -1486,6 +1635,20 @@
      "hc": "2043.6435",
      "hp": "2189.6625"
     }
+   },
+   "tempo": {
+    "total": "1373.17",
+    "energie": "724.1414731",
+    "abonnement": "649.0236772000000000000000054",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {
@@ -1644,7 +1807,8 @@
    "ohm_fixe_2ans_hphc": "pas de tarif 3 kVA au 2026-10-16",
    "ohm_serente_fixe_1an_hphc": "pas de tarif 3 kVA au 2026-10-16",
    "primeo_fixe_confort_hphc": "pas de tarif 3 kVA au 2026-10-16",
-   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2026-10-16"
+   "selia_elec_vert_fixe_hphc": "pas de tarif 3 kVA au 2026-10-16",
+   "tempo": "pas de tarif 3 kVA au 2026-10-16"
   }
  },
  "recent|02:00-07:00, 13:00-16:00|6": {
@@ -1869,6 +2033,20 @@
      "hc": "2335.619",
      "hp": "1897.687"
     }
+   },
+   "tempo": {
+    "total": "914.12",
+    "energie": "724.1414731",
+    "abonnement": "189.9802924000000000000000041",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {}
@@ -2095,6 +2273,20 @@
      "hc": "2335.619",
      "hp": "1897.687"
     }
+   },
+   "tempo": {
+    "total": "961.49",
+    "energie": "724.1414731",
+    "abonnement": "237.3436191000000000000000068",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {}
@@ -2321,6 +2513,20 @@
      "hc": "2335.619",
      "hp": "1897.687"
     }
+   },
+   "tempo": {
+    "total": "1007.35",
+    "energie": "724.1414731",
+    "abonnement": "283.2120252000000000000000066",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {}
@@ -2539,6 +2745,20 @@
      "hc": "2335.619",
      "hp": "1897.687"
     }
+   },
+   "tempo": {
+    "total": "1373.17",
+    "energie": "724.1414731",
+    "abonnement": "649.0236772000000000000000054",
+    "kwh": {
+     "hc_blanc": "229.305",
+     "hc_bleu": "1696.820",
+     "hc_rouge": "117.587",
+     "hp_blanc": "245.756",
+     "hp_bleu": "1817.760",
+     "hp_rouge": "126.078"
+    },
+    "jours_estimes": 365
    }
   },
   "indisponibles": {

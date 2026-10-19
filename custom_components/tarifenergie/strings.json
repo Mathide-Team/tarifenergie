@@ -67,7 +67,8 @@
     "option": {
       "options": {
         "base": "Base",
-        "hphc": "Peak / Off-peak"
+        "hphc": "Peak / Off-peak",
+        "tempo": "Tempo"
       }
     }
   },
@@ -79,11 +80,15 @@
       "cout_hphc": {
         "name": "12-month cost, Off-peak option"
       },
+      "cout_tempo": {
+        "name": "12-month cost, Tempo option"
+      },
       "option_moins_chere": {
         "name": "Cheapest option",
         "state": {
           "base": "Base",
-          "hphc": "Off-peak"
+          "hphc": "Off-peak",
+          "tempo": "Tempo"
         }
       },
       "economie_possible": {

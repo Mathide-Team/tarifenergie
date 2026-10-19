@@ -5,7 +5,7 @@ Chaque offre-option a **son** calendrier, déduit des postes de sa grille : le m
 offres-options. Les structures à venir s'ajoutent ici, une classe par structure, sans
 toucher au moteur :
 
-- Tempo : jours bleus / blancs / rouges x HP / HC (#340) ;
+- Tempo : jours bleus / blancs / rouges x HP / HC (#340), :class:`CalendrierTempo` ;
 - heures super creuses : HP / HC / HSC, plages saisonnières fixées par le fournisseur (#341) ;
 - week-end et heures atypiques : poste par jour de semaine (#342).
 
@@ -26,12 +26,18 @@ from datetime import datetime
 from decimal import Decimal
 from typing import ClassVar, Protocol
 
+from .tempo import COULEURS, HEURE_DEBUT_JOUR_TEMPO, CouleursTempo, jour_tempo
+
 MINUTES_JOUR = 24 * 60
 _PLAGE = re.compile(r"^\s*(\d{1,2})[:h](\d{2})\s*-\s*(\d{1,2})[:h](\d{2})\s*$")
 
 
 class PlagesInvalides(ValueError):
     """Texte d'heures creuses illisible."""
+
+
+class DonneesManquantes(ValueError):
+    """Le calendrier d'une offre-option demande une donnée absente (plages HC, couleurs Tempo)."""
 
 
 class PostesNonPrisEnCharge(ValueError):
@@ -124,18 +130,48 @@ class CalendrierHPHC:
         return {"hc": hc, "hp": kwh - hc}
 
 
-def calendrier_pour(postes: Iterable[str], plages: PlagesHC | None) -> Calendrier:
+# Tempo : heures creuses fixes de 22h à 6h, sur tout le territoire (pas les plages du compteur).
+TEMPO_DEBUT_HC = 22
+POSTES_TEMPO: frozenset[str] = frozenset(f"{p}_{c}" for p in ("hp", "hc") for c in COULEURS)
+
+
+@dataclass(frozen=True, slots=True)
+class CalendrierTempo:
+    """Tempo (#340) : couleur du jour Tempo (de 6h à 6h) x heures pleines / creuses (22h-6h).
+
+    Les heures de 0h à 6h prennent la couleur de la veille : après un jour rouge, elles
+    sont rouges, même un samedi ou un jour férié. Les couleurs sont celles des jours passés
+    (réelles, ou estimées selon les règles : ``tempo.py``), jamais une prévision.
+    """
+
+    couleurs: CouleursTempo
+    postes: ClassVar[frozenset[str]] = POSTES_TEMPO
+
+    def repartir(self, debut: datetime, kwh: Decimal) -> dict[str, Decimal]:
+        heure = debut.hour
+        poste = "hc" if heure >= TEMPO_DEBUT_HC or heure < HEURE_DEBUT_JOUR_TEMPO else "hp"
+        return {f"{poste}_{self.couleurs.couleur(jour_tempo(debut))}": kwh}
+
+
+def calendrier_pour(
+    postes: Iterable[str], plages: PlagesHC | None, couleurs: CouleursTempo | None = None
+) -> Calendrier:
     """Calendrier d'une offre-option d'après les postes de sa grille.
 
     Lève :class:`PostesNonPrisEnCharge` pour une structure pas encore implémentée
-    (Tempo, heures super creuses, week-end : #340 à #342), et ``ValueError`` si une
-    option heures creuses n'a pas de plages.
+    (heures super creuses, week-end : #341, #342), et ``ValueError`` si une option
+    heures creuses n'a pas de plages ou une option Tempo pas de couleurs
+    (:class:`DonneesManquantes`).
     """
     postes = frozenset(postes)
     if postes == CalendrierBase.postes:
         return CalendrierBase()
     if postes == CalendrierHPHC.postes:
         if plages is None:
-            raise ValueError("l'option heures creuses demande des plages")
+            raise DonneesManquantes("l'option heures creuses demande des plages")
         return CalendrierHPHC(plages)
+    if postes == POSTES_TEMPO:
+        if couleurs is None:
+            raise DonneesManquantes("l'option Tempo demande les couleurs des jours")
+        return CalendrierTempo(couleurs)
     raise PostesNonPrisEnCharge(f"postes non pris en charge : {', '.join(sorted(postes))}")

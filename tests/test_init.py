@@ -53,17 +53,24 @@ async def test_capteurs(hass: HomeAssistant):
     assert base.attributes["kwh"] == {"base": 36.0}
     assert base.attributes["jours_couverts"] == 3
     assert base.attributes["grilles"] == ["2026-08-01"]
+    # Tempo (#340) : 1er-3 octobre 2026, jours bleus réels (veille comprise pour 0h-6h),
+    # 0h-6h en HC Tempo : 36 kWh à 0,1356 + 3 jours de 189,9802924 €/an = 6,44 €.
+    tempo = hass.states.get("sensor.maison_12_month_cost_tempo_option")
+    assert tempo.state == "6.44"
+    assert tempo.attributes["kwh"] == {"hc_bleu": 36.0}
+    assert "jours_couleur_estimee" not in tempo.attributes
     # Offres de marché (issues #40, #44, #63, #64 et lot 2) : à cette consommation
-    # nocturne, Primeo Fixe Confort HC (13,44 c€) est la moins chère ; les grilles
-    # postérieures au 3 octobre (GEG 05/10, Ohm 14/10 et 16/10) sont indisponibles.
+    # nocturne, Tempo puis Primeo Fixe Confort HC (13,44 c€) sont les moins chers ; les
+    # grilles postérieures au 3 octobre (GEG 05/10, Ohm 14/10 et 16/10) sont indisponibles.
     prudence = hass.states.get("sensor.maison_12_month_cost_la_bellenergie_prudence_off_peak")
     assert prudence is not None
     assert prudence.state == "7.15"
     assert prudence.attributes["kwh"] == {"hp": 0.0, "hc": 36.0}
-    assert hass.states.get("sensor.maison_cheapest_option").state == "primeo_fixe_confort_hphc"
+    assert hass.states.get("sensor.maison_cheapest_option").state == "tempo"
     economie = hass.states.get("sensor.maison_possible_12_month_saving")
-    assert economie.state == "1.94"
+    assert economie.state == "2.33"
     assert [e["option"] for e in economie.attributes["classement"]] == [
+        "tempo",
         "primeo_fixe_confort_hphc",
         "plenitude_pleniweb_1an_hphc",
         "la_bellenergie_prudence_hphc",
@@ -97,9 +104,21 @@ async def test_option_indisponible_au_dela_de_15_kva(hass: HomeAssistant):
     base = hass.states.get("sensor.maison_12_month_cost_base_option")
     assert base.state == "unknown"
     assert "36 kVA" in base.attributes["indisponible"]
-    # À 36 kVA, Plenitude HC (681,72 €/an, 14,67 c€) passe devant Prudence HC et le TRV HC.
-    assert hass.states.get("sensor.maison_cheapest_option").state == "plenitude_pleniweb_1an_hphc"
-    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.19"
+    # À 36 kVA, Tempo (649,02 €/an, HC bleu 13,56 c€ : 10,22 €) passe devant Plenitude HC
+    # (681,72 €/an, 14,67 c€), Prudence HC et le TRV HC.
+    assert hass.states.get("sensor.maison_cheapest_option").state == "tempo"
+    assert hass.states.get("sensor.maison_12_month_cost_tempo_option").state == "10.22"
+    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.85"
+
+
+async def test_tempo_jours_estimes(hass: HomeAssistant):
+    """Jours absents de l'historique réel : couleur estimée selon les règles, et signalée."""
+    debut = datetime(2027, 1, 11, tzinfo=dt_util.get_default_time_zone())  # lundi, hors historique
+    conso = [(debut + timedelta(days=j, hours=h), 1.0) for j in range(5) for h in range(24)]
+    await _installer(hass, conso)
+    tempo = hass.states.get("sensor.maison_12_month_cost_tempo_option")
+    assert tempo.attributes["jours_couleur_estimee"] == 6  # du dimanche 10 (0h-6h du lundi) au vendredi 15
+    assert sum(tempo.attributes["kwh"].values()) == 120.0
 
 
 async def test_sans_donnees(hass: HomeAssistant):

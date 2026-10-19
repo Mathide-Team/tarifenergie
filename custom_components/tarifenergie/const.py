@@ -22,7 +22,9 @@ HEURES_CREUSES_PAR_DEFAUT: Final = "22:00-06:00"
 
 OPTION_BASE: Final = "base"
 OPTION_HPHC: Final = "hphc"
-OPTIONS: Final = (OPTION_BASE, OPTION_HPHC)
+OPTION_TEMPO: Final = "tempo"
+# Options du TRV : chacune est une offre-option distincte (#343).
+OPTIONS: Final = (OPTION_BASE, OPTION_HPHC, OPTION_TEMPO)
 
 # Puissances souscrites des tarifs Bleu résidentiels (kVA), voir tarifs/*.csv.
 PUISSANCES: Final = (3, 6, 9, 12, 15, 18, 24, 30, 36)

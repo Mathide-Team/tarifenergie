@@ -19,13 +19,14 @@ Regénérer volontairement (après un changement de grille assumé) :
 from __future__ import annotations
 
 import json
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from custom_components.tarifenergie.calcul import PlagesHC, comparer
 from custom_components.tarifenergie.const import OPTIONS
 from custom_components.tarifenergie.modele import Grilles
 from custom_components.tarifenergie.offres import grilles_offres, lire_offres
+from custom_components.tarifenergie.tempo import estimer, jours_utiles, lire_couleurs
 
 FICHIER = Path(__file__).parent / "donnees" / "reference_couts.json"
 
@@ -42,6 +43,10 @@ PROFILS = {
 PLAGES = ("23:30-07:30", "02:00-07:00, 13:00-16:00")
 PUISSANCES = (3, 6, 9, 12, 36)
 HEURES = 365 * 24
+# Tempo (#340) : historique réel des couleurs **figé** à cette date, pour que la mise à jour
+# quotidienne du fichier de couleurs ne change pas la référence. Au-delà (profil « recent »),
+# les couleurs sont estimées selon les règles Tempo.
+COULEURS_JUSQUAU = date(2026, 10, 15)
 
 
 def profil(debut: datetime) -> list[tuple[datetime, float]]:
@@ -69,12 +74,14 @@ def grilles() -> dict[str, Grilles]:
 def calculer() -> dict[str, object]:
     resultats: dict[str, object] = {}
     toutes = grilles()
+    historique = {j: c for j, c in lire_couleurs().items() if j <= COULEURS_JUSQUAU}
     for nom, debut in PROFILS.items():
         conso = profil(debut)
+        couleurs = estimer(historique, jours_utiles(d.date() for d, _ in conso))
         for texte in PLAGES:
             plages = PlagesHC.lire(texte)
             for puissance in PUISSANCES:
-                comp = comparer(toutes, puissance, conso, plages, "base")
+                comp = comparer(toutes, puissance, conso, plages, "base", couleurs=couleurs)
                 resultats[f"{nom}|{texte}|{puissance}"] = {
                     "couts": {
                         cle: {
@@ -82,6 +89,7 @@ def calculer() -> dict[str, object]:
                             "energie": str(c.energie),
                             "abonnement": str(c.abonnement),
                             "kwh": {poste: str(q) for poste, q in sorted(c.kwh.items())},
+                            **({"jours_estimes": len(c.jours_estimes)} if c.jours_estimes else {}),
                         }
                         for cle, c in sorted(comp.couts.items())
                     },
