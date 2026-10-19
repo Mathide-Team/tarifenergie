@@ -53,13 +53,47 @@ async def test_capteurs(hass: HomeAssistant):
     assert base.attributes["kwh"] == {"base": 36.0}
     assert base.attributes["jours_couverts"] == 3
     assert base.attributes["grilles"] == ["2026-08-01"]
-    assert hass.states.get("sensor.maison_cheapest_option").state == "hphc"
+    # Offres de marché (issues #40, #44, #63, #64) : la moins chère est Prudence HC
+    # (36 kWh à 0,1565 + 3 jours de 184,32 €/an = 7,15) ; Ohm est indisponible car sa
+    # grille du 14/10/2026 ne couvre pas la consommation des 1er-3 octobre.
+    prudence = hass.states.get("sensor.maison_12_month_cost_la_bellenergie_prudence_off_peak")
+    assert prudence is not None
+    assert prudence.state == "7.15"
+    assert prudence.attributes["kwh"] == {"hp": 0.0, "hc": 36.0}
+    assert hass.states.get("sensor.maison_cheapest_option").state == "la_bellenergie_prudence:hphc"
     economie = hass.states.get("sensor.maison_possible_12_month_saving")
-    assert economie.state == "1.48"
+    assert economie.state == "1.62"
     assert economie.attributes["classement"] == [
-        {"option": "hphc", "total": 7.29},
-        {"option": "base", "total": 8.77},
+        {
+            "option": "la_bellenergie_prudence:hphc",
+            "libelle": "la bellenergie Prudence (Off-peak)",
+            "total": 7.15,
+        },
+        {
+            "option": "alterna_fixe_1an:hphc",
+            "libelle": "Alterna énergie Mon électricité française — fixe 1 an (Off-peak)",
+            "total": 7.24,
+        },
+        {"option": "hphc", "libelle": "Off-peak", "total": 7.29},
+        {
+            "option": "la_bellenergie_garance:hphc",
+            "libelle": "la bellenergie Garance (Off-peak)",
+            "total": 7.64,
+        },
+        {
+            "option": "la_bellenergie_prudence:base",
+            "libelle": "la bellenergie Prudence (Base)",
+            "total": 8.60,
+        },
+        {
+            "option": "alterna_fixe_1an:base",
+            "libelle": "Alterna énergie Mon électricité française — fixe 1 an (Base)",
+            "total": 8.65,
+        },
+        {"option": "base", "libelle": "Base", "total": 8.77},
+        {"option": "la_bellenergie_garance:base", "libelle": "la bellenergie Garance (Base)", "total": 9.09},
     ]
+    assert "2026-10-01" in economie.attributes["indisponibles"]["ohm_serente_fixe_1an:base"]
     assert hass.states.get("sensor.maison_12_month_consumption").state == "36.0"
     assert hass.states.get("sensor.maison_off_peak_share").state == "100.0"
     assert await hass.config_entries.async_unload(entree.entry_id)
@@ -70,13 +104,16 @@ async def test_option_indisponible_au_dela_de_15_kva(hass: HomeAssistant):
     base = hass.states.get("sensor.maison_12_month_cost_base_option")
     assert base.state == "unknown"
     assert "36 kVA" in base.attributes["indisponible"]
-    assert hass.states.get("sensor.maison_cheapest_option").state == "hphc"
-    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.00"
+    # À 36 kVA, Prudence HC (653,88 €/an) passe devant le TRV HC (658,24 €/an).
+    assert hass.states.get("sensor.maison_cheapest_option").state == "la_bellenergie_prudence:hphc"
+    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.06"
 
 
 async def test_sans_donnees(hass: HomeAssistant):
     await _installer(hass, [])
-    assert hass.states.get("sensor.maison_cheapest_option").state == "base"
+    # Sans consommation, toutes les options coûtent 0,00 € : le classement départage
+    # les ex æquo par ordre alphabétique de la clé de comparaison.
+    assert hass.states.get("sensor.maison_cheapest_option").state == "alterna_fixe_1an:base"
     assert hass.states.get("sensor.maison_off_peak_share").state == "unknown"
     await _installer_vide_hphc(hass)
 

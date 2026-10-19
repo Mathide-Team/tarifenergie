@@ -141,10 +141,13 @@ def cout_option(
         grille = grilles.en_vigueur(puissance, jour)
         cout.grilles.add(grille.debut)
         quantite = Decimal(str(kwh))
-        if option == "base":
+        # Base ou Heures creuses : selon les postes de la grille (TRV « base »/«hphc »
+        # ou offre de marché « <id>:<option> »), pas selon la clé exacte.
+        if set(grille.prix) == {"base"}:
             repartition = {"base": quantite}
         else:
-            assert plages is not None
+            if plages is None:
+                raise ValueError("l'option heures creuses demande des plages")
             hc = quantite * plages.fraction_hc(debut.hour)
             repartition = {"hc": hc, "hp": quantite - hc}
         for poste, q in repartition.items():
