@@ -23,7 +23,7 @@ au prorata des minutes. La v0.2 y ajoute les offres de marché (voir ci-dessous)
 | Coût sur 12 mois, option Base (TRV) | € TTC | kWh, part énergie et abonnement, grilles CRE utilisées, période couverte |
 | Coût sur 12 mois, option Heures creuses (TRV) | € TTC | kWh HP et HC, idem |
 | Coût sur 12 mois, chaque option de chaque offre de marché | € TTC | idem |
-| Option la moins chère | `base` / `hphc` ou `<offre>:<option>` (ex. `la_bellenergie_prudence:hphc`) | classement complet avec libellés, options indisponibles et pourquoi |
+| Option la moins chère | `base` / `hphc` ou l'identifiant d'une offre-option (ex. `la_bellenergie_prudence_hphc`) | classement complet avec libellés, options indisponibles et pourquoi |
 | Économie possible sur 12 mois | € par rapport à l'option actuelle | classement |
 | Consommation sur 12 mois | kWh | période couverte |
 | Part en heures creuses | % | |
@@ -34,8 +34,10 @@ Avec moins de 12 mois d'historique, les coûts portent sur la période disponibl
 
 Les grilles des fournisseurs sont livrées dans `custom_components/tarifenergie/offres/*.yaml`
 (inventaire [#6](https://github.com/Mathide-Team/tarifenergie/issues/6), moteur [#5](https://github.com/Mathide-Team/tarifenergie/issues/5)) :
-une issue par offre documente la grille, sa date d'effet et ses sources. La v0.2 couvre
-les offres **à prix fixe** avec options Base et Heures creuses — 12 offres :
+**une offre-option = une issue = un fichier** : chaque option (Base, Heures creuses…) est
+une offre distincte, avec sa grille, sa date d'effet et ses sources, comparée seule (#343).
+La v0.2 couvre les offres **à prix fixe** aux options Base et Heures creuses —
+24 offres-options issues de 12 offres :
 
 - la bellenergie Prudence 1 an, Constance 2 ans et Garance 3 ans,
 - Ohm Énergie Sérénité Fixe 1 an et Fixe 2 ans,
