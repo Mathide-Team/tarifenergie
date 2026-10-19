@@ -36,7 +36,8 @@ def _libelle(cle: str, offres: dict[str, Offre]) -> str:
 @dataclass(frozen=True, kw_only=True)
 class Description(SensorEntityDescription):
     valeur: Callable[[Comparaison], Any]
-    attributs: Callable[[Comparaison, CoordinateurTarifs], dict[str, Any]] | None = None
+    # Chaque capteur expose des attributs (période, détail, plages HC appliquées…).
+    attributs: Callable[[Comparaison, CoordinateurTarifs], dict[str, Any]]
     monetaire: bool = False
 
 
@@ -58,6 +59,8 @@ def _cout(option: str, offres: dict[str, Offre]) -> Description:
         detail = cout.arrondi() if cout else {"indisponible": comp.indisponibles.get(option)}
         detail.pop("option", None)
         detail.pop("total", None)
+        if "plages_hc" in detail:
+            detail["source_plages_hc"] = coord.source_plages
         return {**detail, **_periode(comp, coord)}
 
     cles_trv = option in OPTIONS
@@ -120,6 +123,10 @@ def _descriptions(cles: list[str], offres: dict[str, Offre]) -> tuple[Descriptio
             state_class=SensorStateClass.MEASUREMENT,
             suggested_display_precision=1,
             valeur=lambda comp: _part_hc(comp),
+            attributs=lambda comp, coord: {
+                "plages_hc": coord.plages_appliquees.resume(),
+                "source_plages_hc": coord.source_plages,
+            },
         ),
     )
 
@@ -173,7 +180,5 @@ class CapteurTarif(CoordinatorEntity[CoordinateurTarifs], SensorEntity):
         return self.entity_description.valeur(self.coordinator.data)
 
     @property
-    def extra_state_attributes(self) -> dict[str, Any] | None:
-        if self.entity_description.attributs is None:
-            return None
+    def extra_state_attributes(self) -> dict[str, Any]:
         return self.entity_description.attributs(self.coordinator.data, self.coordinator)

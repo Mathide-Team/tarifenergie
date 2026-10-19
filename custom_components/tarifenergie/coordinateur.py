@@ -19,16 +19,21 @@ from .calendrier import PlagesDatees
 from .const import (
     CONF_ENERGIE,
     CONF_HEURES_CREUSES,
+    CONF_INDEX_HC,
+    CONF_INDEX_HP,
     CONF_OPTION,
     CONF_PUISSANCE,
     CONF_TERRITOIRE,
     DOMAIN,
     FENETRE,
     INTERVALLE_MAJ,
+    SOURCE_SAISIE,
+    SOURCE_TELEINFO,
     TERRITOIRE_PAR_DEFAUT,
 )
 from .modele import Grilles
 from .offres import Offre, exclusions
+from .teleinfo import detecter_plages
 from .tempo import Climatologie, estimer, jours_utiles
 
 _LOGGER = logging.getLogger(__name__)
@@ -102,6 +107,11 @@ class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
         self.puissance = int(config[CONF_PUISSANCE])
         self.option_actuelle: str = config[CONF_OPTION]
         self.plages = PlagesDatees.lire(config[CONF_HEURES_CREUSES])
+        self.index_hc: str | None = config.get(CONF_INDEX_HC)
+        self.index_hp: str | None = config.get(CONF_INDEX_HP)
+        # Plages réellement utilisées au dernier calcul, et leur origine.
+        self.plages_appliquees: PlagesDatees = self.plages
+        self.source_plages: str = SOURCE_SAISIE
         self.debut: datetime | None = None
         self.fin: datetime | None = None
 
@@ -111,6 +121,7 @@ class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
         debut = fin - FENETRE
         conso = await async_conso_horaire(self.hass, self.entite, debut, fin)
         self.debut, self.fin = debut, fin
+        self.plages_appliquees, self.source_plages = await self._plages(debut, fin)
         # Tempo : couleurs réelles des jours consommés ; un jour absent de l'historique
         # est estimé selon les règles Tempo et compté dans l'attribut du capteur.
         couleurs = estimer(
@@ -119,5 +130,25 @@ class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
             climatologie=self.referentiel.climatologie,
         )
         return comparer(
-            self.grilles, self.puissance, conso, self.plages, self.option_actuelle, self.exclues, couleurs
+            self.grilles,
+            self.puissance,
+            conso,
+            self.plages_appliquees,
+            self.option_actuelle,
+            self.exclues,
+            couleurs,
         )
+
+    async def _plages(self, debut: datetime, fin: datetime) -> tuple[PlagesDatees, str]:
+        """Plages détectées depuis les index HC / HP de la téléinformation (#370), sinon la saisie."""
+        if not (self.index_hc and self.index_hp):
+            return self.plages, SOURCE_SAISIE
+        index_hc = await async_conso_horaire(self.hass, self.index_hc, debut, fin)
+        index_hp = await async_conso_horaire(self.hass, self.index_hp, debut, fin)
+        detectees = detecter_plages(index_hc, index_hp)
+        if detectees is None:
+            _LOGGER.info(
+                "Plages HC non détectées depuis %s / %s : saisie utilisée", self.index_hc, self.index_hp
+            )
+            return self.plages, SOURCE_SAISIE
+        return detectees, SOURCE_TELEINFO

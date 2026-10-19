@@ -109,6 +109,8 @@ async def test_options(hass: HomeAssistant):
         "puissance": 12,
         "option_actuelle": "hphc",
         "heures_creuses": "02:00-07:00, 13:00-16:00",
+        "index_hc": None,
+        "index_hp": None,
     }
 
 
@@ -136,3 +138,45 @@ async def test_options_changement_de_plages(hass: HomeAssistant):
     )
     assert res["type"] is FlowResultType.CREATE_ENTRY
     assert entree.options["heures_creuses"] == "22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00"
+
+
+INDEX = {"index_hc": "sensor.index_hc", "index_hp": "sensor.index_hp"}
+
+
+@pytest.fixture
+def _index(hass: HomeAssistant):
+    for entite in INDEX.values():
+        hass.states.async_set(entite, "1", {"unit_of_measurement": "kWh", "state_class": "total_increasing"})
+
+
+@pytest.mark.usefixtures("_index")
+@pytest.mark.parametrize(
+    ("saisie", "erreurs"),
+    [
+        ({"index_hc": "sensor.index_hc"}, {"index_hp": "index_par_paire"}),
+        ({"index_hp": "sensor.index_hp"}, {"index_hc": "index_par_paire"}),
+        ({"index_hc": "sensor.index_hc", "index_hp": "sensor.index_hc"}, {"index_hp": "index_identiques"}),
+        ({"index_hc": "sensor.absent", "index_hp": "sensor.index_hp"}, {"index_hc": "capteur_absent"}),
+    ],
+)
+async def test_index_teleinformation_refuses(hass: HomeAssistant, saisie, erreurs):
+    res = await hass.config_entries.flow.async_init(DOMAIN, context={"source": SOURCE_USER})
+    res = await hass.config_entries.flow.async_configure(res["flow_id"], {**SAISIE, **saisie})
+    assert res["errors"] == erreurs
+
+
+@pytest.mark.usefixtures("_index")
+async def test_index_teleinformation_acceptes_puis_retires(hass: HomeAssistant):
+    res = await hass.config_entries.flow.async_init(DOMAIN, context={"source": SOURCE_USER})
+    res = await hass.config_entries.flow.async_configure(res["flow_id"], {**SAISIE, **INDEX})
+    assert res["type"] is FlowResultType.CREATE_ENTRY
+    assert res["data"]["index_hc"] == "sensor.index_hc"
+    assert res["data"]["index_hp"] == "sensor.index_hp"
+    entree = hass.config_entries.async_get_entry(res["result"].entry_id)
+    res = await hass.config_entries.options.async_init(entree.entry_id)
+    res = await hass.config_entries.options.async_configure(
+        res["flow_id"], {"puissance": "9", "option_actuelle": "base", "heures_creuses": "23:30-07:30"}
+    )
+    assert res["type"] is FlowResultType.CREATE_ENTRY
+    assert entree.options["index_hc"] is None
+    assert entree.options["index_hp"] is None

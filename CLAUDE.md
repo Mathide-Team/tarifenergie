@@ -9,6 +9,7 @@ custom_components/tarifenergie/
 ├── modele.py        Grilles CRE (CSV) → Grille, Grilles.en_vigueur(puissance, jour)   — Python pur
 ├── calendrier.py    PlagesHC, Calendrier (Base, HP/HC, Tempo ; HSC, week-end à venir) — Python pur
 ├── tempo.py         Couleurs Tempo réelles (jours passés), règles, estimation des manques — Python pur
+├── teleinfo.py      Détection des plages HC datées depuis les index HC / HP de téléinformation — Python pur
 ├── calcul.py        cout_option(), comparer() : chaque offre-option séparément        — Python pur
 ├── offres.py        offres/<offre>_<option>.yaml → Offre (une option, une issue)      — Python pur
 ├── coordinateur.py  Statistiques horaires du recorder (kWh, heure locale) → Comparaison, toutes les 6 h

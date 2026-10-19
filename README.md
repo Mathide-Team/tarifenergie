@@ -30,6 +30,21 @@ au prorata des minutes. La v0.2 y ajoute les offres de marché (voir ci-dessous)
 
 Avec moins de 12 mois d'historique, les coûts portent sur la période disponible (attribut `jours_couverts`).
 
+## Plages d'heures creuses détectées (téléinformation)
+
+Les plages d'heures creuses sont fixées compteur par compteur par le gestionnaire de réseau
+(Enedis ou distributeur local), et peuvent changer. Si un module de téléinformation branché
+sur le Linky fournit à Home Assistant les **index heures creuses et heures pleines**
+(capteurs d'énergie cumulée), indiquez-les dans la configuration : les plages sont
+**détectées sur les 12 mois** à partir de leurs statistiques horaires (une heure où seul
+l'index HC avance est creuse ; résolution : la demi-heure), changements compris (un nouveau
+jeu de plages doit durer au moins 3 jours). Elles remplacent alors la saisie ; sinon, la
+saisie sert. Le capteur « Part en heures creuses » expose `plages_hc` et
+`source_plages_hc` (`teleinformation` ou `saisie`) (#370).
+
+Utilisez les index **du gestionnaire de réseau**, pas ceux d'un calendrier fournisseur
+(Tempo, Zen Week-End option Flex…), dont les plages sont propres à l'offre.
+
 ## Tempo
 
 L'option Tempo du tarif réglementé est une offre-option à part (#340). Chaque heure est
