@@ -18,7 +18,10 @@ Algorithme, jour par jour, au pas de la demi-heure :
    précédent ; un jour encore incomplet est ignoré ;
 3. regroupement en plages datées : un nouveau jeu de plages ne compte que s'il dure au
    moins :data:`JOURS_MINIMUM` jours consécutifs (un jour atypique ne crée pas de
-   changement) ; le changement est daté de son premier jour.
+   changement) ; le changement est daté de son premier jour ;
+4. saisons (#368) : au moins deux changements successifs qui alternent entre deux jeux
+   de plages, chacun à moins de :data:`TOLERANCE_BASCULE` jours d'un 1er avril (été) ou
+   d'un 1er novembre (hiver), deviennent des plages saisonnières, reconduites chaque année.
 
 Les index doivent être ceux du **gestionnaire de réseau** (plages du compteur), pas ceux
 d'un calendrier fournisseur (Tempo, Zen Flex…).
@@ -31,7 +34,14 @@ from __future__ import annotations
 from collections.abc import Iterable
 from datetime import date, datetime
 
-from .calendrier import MINUTES_JOUR, PlagesDatees, PlagesHC
+from .calendrier import (
+    MINUTES_JOUR,
+    MOIS_DEBUT_ETE,
+    MOIS_DEBUT_HIVER,
+    PlagesDatees,
+    PlagesHC,
+    PlagesSaisonnieres,
+)
 
 PAS_MINUTES = 30
 CRENEAUX = MINUTES_JOUR // PAS_MINUTES
@@ -39,6 +49,7 @@ JOURS_MINIMUM = 3
 SEUIL_KWH = 0.005  # en dessous, l'heure est muette (pas de consommation mesurable)
 PART_CREUSE = 0.75
 PART_PLEINE = 0.25
+TOLERANCE_BASCULE = 3  # jours d'écart admis autour du 1er avril et du 1er novembre
 
 Signature = tuple[bool, ...]
 
@@ -142,7 +153,7 @@ def detecter_plages(
         if suite >= JOURS_MINIMUM or (not periodes and i + suite == len(jours)):
             periodes.append((None if not periodes else jour, signature))
         i += suite
-    resultat: list[tuple[date | None, PlagesHC]] = []
+    resultat: list[tuple[date | None, PlagesHC | PlagesSaisonnieres]] = []
     for depuis, signature in periodes:
         plages = _plages(signature)
         if plages is None:
@@ -150,4 +161,42 @@ def detecter_plages(
         if resultat and resultat[-1][1] == plages:
             continue
         resultat.append((None if not resultat else depuis, plages))
-    return PlagesDatees(tuple(resultat)) if resultat else None
+    return PlagesDatees(tuple(_saisonnaliser(resultat))) if resultat else None
+
+
+def _bascule(jour: date) -> str | None:
+    """``"ete"`` / ``"hiver"`` si le jour est à une bascule de saison (à la tolérance près)."""
+    for mois, saison in ((MOIS_DEBUT_ETE, "ete"), (MOIS_DEBUT_HIVER, "hiver")):
+        if abs((jour - date(jour.year, mois, 1)).days) <= TOLERANCE_BASCULE:
+            return saison
+    return None
+
+
+def _saisonnaliser(
+    periodes: list[tuple[date | None, PlagesHC | PlagesSaisonnieres]],
+) -> list[tuple[date | None, PlagesHC | PlagesSaisonnieres]]:
+    """Remplace les alternances été / hiver (au moins deux bascules) par des plages saisonnières."""
+    sortie: list[tuple[date | None, PlagesHC | PlagesSaisonnieres]] = []
+    i = 0
+    while i < len(periodes):
+        saisons: dict[str, PlagesHC | PlagesSaisonnieres] = {}
+        j = i
+        while j + 1 < len(periodes):
+            depuis, apres = periodes[j + 1]
+            saison = _bascule(depuis) if depuis is not None else None
+            if saison is None:
+                break
+            autre = "hiver" if saison == "ete" else "ete"
+            avant = periodes[j][1]
+            if saisons.get(saison, apres) != apres or saisons.get(autre, avant) != avant:
+                break
+            saisons[saison], saisons[autre] = apres, avant
+            j += 1
+        ete, hiver = saisons.get("ete"), saisons.get("hiver")
+        if j - i >= 2 and isinstance(ete, PlagesHC) and isinstance(hiver, PlagesHC):
+            sortie.append((periodes[i][0], PlagesSaisonnieres(ete, hiver)))
+            i = j + 1
+        else:
+            sortie.append(periodes[i])
+            i += 1
+    return sortie

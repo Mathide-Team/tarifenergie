@@ -5,6 +5,7 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les numéros 
 ## [Non publié]
 
 ### Ajouté
+- **Plages d'heures creuses été / hiver** (#368) : saisie `été … / hiver …` (été du 1er avril au 31 octobre, hiver du 1er novembre au 31 mars), combinable avec les changements datés ; la détection par téléinformation reconnaît une alternance été / hiver (au moins deux bascules, à 3 jours près).
 - **Détection des plages d'heures creuses** (#370) depuis les index HC et HP de la téléinformation (deux capteurs facultatifs) : statistiques horaires sur 12 mois, demi-heures, changements datés (3 jours minimum), repli sur la saisie. Attributs `plages_hc` et `source_plages_hc`.
 - **Plages d'heures creuses datées** (#369) : changements de plages en cours d'année, saisis après « | » avec leur date (`22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00`) ; chaque heure est valorisée avec les plages du jour. Attribut `plages_hc` : périodes appliquées. Saisie d'un seul jeu de plages inchangée.
 - **Tempo** (#340, #355) : option Tempo du TRV, offre-option distincte (grille CRE `Option_Tempo.csv`), calculée avec les couleurs réelles des jours passés (`tarifs/tempo_couleurs.csv`, 4 432 jours depuis le 1er septembre 2014) ; journée de 6h à 6h, heures creuses fixes 22h-6h. Jours absents estimés selon les règles Tempo (quotas, jours éligibles, jours les plus froids de la période), comptés dans l'attribut `jours_couleur_estimee`. Script `scripts/maj_tempo.py` : ajout des jours passés, contrôle des règles.

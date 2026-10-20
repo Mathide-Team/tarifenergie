@@ -180,3 +180,31 @@ async def test_index_teleinformation_acceptes_puis_retires(hass: HomeAssistant):
     assert res["type"] is FlowResultType.CREATE_ENTRY
     assert entree.options["index_hc"] is None
     assert entree.options["index_hp"] is None
+
+
+async def test_options_plages_saisonnieres(hass: HomeAssistant):
+    """#368 : plages été / hiver après un changement daté, réécrites proprement."""
+    entree = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id=CAPTEUR,
+        data={
+            "entite_energie": CAPTEUR,
+            "puissance": 6,
+            "option_actuelle": "hphc",
+            "heures_creuses": "22:00-06:00",
+        },
+    )
+    entree.add_to_hass(hass)
+    res = await hass.config_entries.options.async_init(entree.entry_id)
+    res = await hass.config_entries.options.async_configure(
+        res["flow_id"],
+        {
+            "puissance": "6",
+            "option_actuelle": "hphc",
+            "heures_creuses": "22:00-06:00 | 2026-11-01: hiver 23h00-07h00 / ete 02:00-07:00,13:00-16:00",
+        },
+    )
+    assert res["type"] is FlowResultType.CREATE_ENTRY
+    assert entree.options["heures_creuses"] == (
+        "22:00-06:00 | 2026-11-01: été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00"
+    )

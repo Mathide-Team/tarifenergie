@@ -102,25 +102,76 @@ class PlagesHC:
         return ", ".join(f"{d // 60:02d}:{d % 60:02d}-{f // 60:02d}:{f % 60:02d}" for d, f in self.plages)
 
 
+# Saisons des plages HC du compteur (réforme Enedis, #368) : été du 1er avril au 31 octobre,
+# hiver du 1er novembre au 31 mars.
+MOIS_DEBUT_ETE = 4
+MOIS_DEBUT_HIVER = 11
+SEPARATEUR_SAISONS = "/"
+_SAISON = re.compile(r"^\s*(été|ete|summer|hiver|winter)\s*:?\s*(.*)$", re.IGNORECASE | re.DOTALL)
+_HIVER = ("hiver", "winter")
+
+
+def est_hiver(jour: date) -> bool:
+    return jour.month >= MOIS_DEBUT_HIVER or jour.month < MOIS_DEBUT_ETE
+
+
+@dataclass(frozen=True, slots=True)
+class PlagesSaisonnieres:
+    """Plages HC du compteur différentes en été et en hiver, reconduites chaque année (#368)."""
+
+    ete: PlagesHC
+    hiver: PlagesHC
+
+    @classmethod
+    def lire(cls, texte: str) -> PlagesSaisonnieres:
+        """``"été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00"`` (ordre libre)."""
+        saisons: dict[str, PlagesHC] = {}
+        for morceau in texte.split(SEPARATEUR_SAISONS):
+            trouve = _SAISON.match(morceau)
+            if not trouve:
+                raise PlagesInvalides(f"saison attendue (été ou hiver) : {morceau.strip()!r}")
+            saison = "hiver" if trouve.group(1).lower() in _HIVER else "ete"
+            if saison in saisons:
+                raise PlagesInvalides(f"saison en double : {trouve.group(1)}")
+            saisons[saison] = PlagesHC.lire(trouve.group(2))
+        if len(saisons) != 2:
+            raise PlagesInvalides("plages saisonnières : il faut l'été et l'hiver")
+        return cls(saisons["ete"], saisons["hiver"])
+
+    def du_jour(self, jour: date) -> PlagesHC:
+        return self.hiver if est_hiver(jour) else self.ete
+
+    def texte(self) -> str:
+        return f"été {self.ete.texte()} {SEPARATEUR_SAISONS} hiver {self.hiver.texte()}"
+
+
+def _lire_plages(texte: str) -> PlagesHC | PlagesSaisonnieres:
+    if SEPARATEUR_SAISONS in texte or _SAISON.match(texte):
+        return PlagesSaisonnieres.lire(texte)
+    return PlagesHC.lire(texte)
+
+
 @dataclass(frozen=True, slots=True)
 class PlagesDatees:
     """Plages HC du compteur qui changent en cours d'année (#369).
 
     ``periodes`` : ``(depuis, plages)`` par date croissante ; la première période n'a pas
     de date (``None`` : plages d'avant le premier changement). Les plages d'une période
-    valent du jour ``depuis`` à 0h jusqu'à la veille du changement suivant.
+    valent du jour ``depuis`` à 0h jusqu'à la veille du changement suivant. Une période
+    peut avoir des plages d'été et d'hiver (:class:`PlagesSaisonnieres`, #368).
     """
 
-    periodes: tuple[tuple[date | None, PlagesHC], ...]
+    periodes: tuple[tuple[date | None, PlagesHC | PlagesSaisonnieres], ...]
 
     @classmethod
-    def uniques(cls, plages: PlagesHC) -> PlagesDatees:
+    def uniques(cls, plages: PlagesHC | PlagesSaisonnieres) -> PlagesDatees:
         return cls(((None, plages),))
 
     @classmethod
     def lire(cls, texte: str) -> PlagesDatees:
-        """``"22:00-06:00"`` ou ``"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00"``."""
-        periodes: list[tuple[date | None, PlagesHC]] = []
+        """``"22:00-06:00"``, ``"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00"``,
+        ``"été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00"`` ; périodes et saisons combinables."""
+        periodes: list[tuple[date | None, PlagesHC | PlagesSaisonnieres]] = []
         for rang, morceau in enumerate(texte.split(SEPARATEUR_PERIODES)):
             trouve = _PERIODE.match(morceau)
             if rang == 0:
@@ -128,7 +179,7 @@ class PlagesDatees:
                     raise PlagesInvalides(
                         "la première période n'a pas de date : plages d'avant le premier changement"
                     )
-                periodes.append((None, PlagesHC.lire(morceau)))
+                periodes.append((None, _lire_plages(morceau)))
                 continue
             if not trouve:
                 raise PlagesInvalides(
@@ -143,7 +194,7 @@ class PlagesDatees:
                 raise PlagesInvalides(
                     f"dates non croissantes : {depuis.isoformat()} après {precedente.isoformat()}"
                 )
-            periodes.append((depuis, PlagesHC.lire(trouve.group(2))))
+            periodes.append((depuis, _lire_plages(trouve.group(2))))
         return cls(tuple(periodes))
 
     @property
@@ -155,7 +206,8 @@ class PlagesDatees:
         return bisect.bisect_right(self._dates, jour)
 
     def du_jour(self, jour: date) -> PlagesHC:
-        return self.periodes[self.rang(jour)][1]
+        plages = self.periodes[self.rang(jour)][1]
+        return plages.du_jour(jour) if isinstance(plages, PlagesSaisonnieres) else plages
 
     def texte(self) -> str:
         return f" {SEPARATEUR_PERIODES} ".join(
