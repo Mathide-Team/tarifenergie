@@ -14,7 +14,7 @@ au prorata des minutes. La v0.2 y ajoute les offres de marché (voir ci-dessous)
 - Compare les **tarifs réglementés** (tarif Bleu) publiés par la [CRE](https://www.data.gouv.fr/datasets/historique-des-tarifs-reglementes-de-vente-delectricite-pour-les-consommateurs-residentiels) : options **Base** et **Heures pleines / Heures creuses**, prix TTC.
 - Applique à chaque heure le tarif **en vigueur ce jour-là** : un an de consommation à cheval sur le 1er février et le 1er août est compté avec les bonnes grilles.
 - Compte l'abonnement au jour près, pour la puissance souscrite.
-- Prend vos plages d'heures creuses (elles dépendent du compteur, pas du fournisseur), même plusieurs plages (« 02:00-07:00, 13:00-16:00 »), et leurs **changements en cours d'année** : `22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00` (nouvelles plages à partir du 15 mars 2026, #369). Les plages appliquées figurent dans l'attribut `plages_hc` des capteurs Heures creuses.
+- Prend vos plages d'heures creuses (elles dépendent du compteur, pas du fournisseur), même plusieurs plages (« 02:00-07:00, 13:00-16:00 »), et leurs **changements en cours d'année** : `22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00` (nouvelles plages à partir du 15 mars 2026, #369), et leurs **saisons** : `été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00` (été du 1er avril au 31 octobre, hiver du 1er novembre au 31 mars, reconduites chaque année ; combinables avec un changement daté, #368). Les plages appliquées figurent dans l'attribut `plages_hc` des capteurs Heures creuses.
 
 ## Capteurs
 
@@ -38,7 +38,8 @@ sur le Linky fournit à Home Assistant les **index heures creuses et heures plei
 (capteurs d'énergie cumulée), indiquez-les dans la configuration : les plages sont
 **détectées sur les 12 mois** à partir de leurs statistiques horaires (une heure où seul
 l'index HC avance est creuse ; résolution : la demi-heure), changements compris (un nouveau
-jeu de plages doit durer au moins 3 jours). Elles remplacent alors la saisie ; sinon, la
+jeu de plages doit durer au moins 3 jours). Deux bascules qui alternent autour du 1er avril
+et du 1er novembre (à 3 jours près) sont reconnues comme des plages été / hiver. Elles remplacent alors la saisie ; sinon, la
 saisie sert. Le capteur « Part en heures creuses » expose `plages_hc` et
 `source_plages_hc` (`teleinformation` ou `saisie`) (#370).
 

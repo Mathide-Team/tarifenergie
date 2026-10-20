@@ -117,3 +117,46 @@ def test_variation_negative_ignoree():
     hc, hp = _index(5, _creuse("22:00-06:00"))
     hc[3] = (hc[3][0], -50.0)
     assert detecter_plages(hc, hp) == PlagesDatees.lire("22:00-06:00")
+
+
+# --- Saisons été / hiver (#368) -----------------------------------------------------------
+
+SAISONS = "été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00"
+
+
+def test_saisons_reconnues_sur_douze_mois():
+    """Bascules au 1er novembre puis au 1er avril : plages saisonnières, reconduites."""
+    detectees = detecter_plages(*_index(365, _creuse(SAISONS), debut=datetime(2025, 10, 20)))
+    assert detectees == PlagesDatees.lire(SAISONS)
+
+
+def test_une_seule_bascule_reste_datee():
+    """Une seule bascule visible : plages datées (même calcul sur la fenêtre mesurée)."""
+    detectees = detecter_plages(*_index(200, _creuse(SAISONS), debut=datetime(2026, 1, 1)))
+    assert detectees.texte() == "23:00-07:00 | 2026-04-01: 02:00-07:00, 13:00-16:00"
+
+
+def test_bascule_a_quelques_jours_pres():
+    texte = "02:00-07:00, 13:00-16:00 | 2025-11-03: 23:00-07:00 | 2026-03-30: 02:00-07:00, 13:00-16:00"
+    detectees = detecter_plages(*_index(365, _creuse(texte), debut=datetime(2025, 10, 20)))
+    assert detectees == PlagesDatees.lire(SAISONS)
+
+
+def test_changements_hors_saison_restent_dates():
+    texte = "02:00-07:00, 13:00-16:00 | 2025-12-15: 23:00-07:00 | 2026-04-01: 02:00-07:00, 13:00-16:00"
+    detectees = detecter_plages(*_index(365, _creuse(texte), debut=datetime(2025, 10, 20)))
+    assert detectees.texte() == texte
+
+
+def test_trois_jeux_de_plages_pas_de_saison():
+    """Bascules aux bonnes dates, mais sans alternance (A, B puis C) : plages datées."""
+    texte = "22:00-06:00 | 2025-11-01: 23:00-07:00 | 2026-04-01: 02:00-07:00, 13:00-16:00"
+    detectees = detecter_plages(*_index(365, _creuse(texte), debut=datetime(2025, 10, 20)))
+    assert detectees.texte() == texte
+
+
+def test_changement_puis_saisons():
+    """22h-6h, puis (redéploiement) plages été / hiver vues sur deux bascules."""
+    texte = f"22:00-06:00 | 2025-12-15: {SAISONS}"
+    detectees = detecter_plages(*_index(500, _creuse(texte), debut=datetime(2025, 9, 1)))
+    assert detectees.texte() == texte

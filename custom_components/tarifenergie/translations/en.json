@@ -16,7 +16,7 @@
         "data_description": {
           "entite_energie": "The sensor used in the Energy dashboard (Linky meter, clamp, etc.).",
           "puissance": "Shown on the bill (kVA).",
-          "heures_creuses": "Ranges shown on the bill or the distribution network operator's customer area (Enedis or local operator), e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base. If they changed during the year, add each change after \"|\" with its date: \"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00\".",
+          "heures_creuses": "Ranges shown on the bill or the distribution network operator's customer area (Enedis or local operator), e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base. If they changed during the year, add each change after \"|\" with its date: \"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00\". Different summer (1 April – 31 October) and winter (1 November – 31 March) ranges: \"été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00\" (\"summer\" / \"winter\" also accepted).",
           "index_hc": "Cumulative energy sensor of the meter's off-peak index, from a teleinfo module (network operator index, not a supplier calendar). With the peak index, off-peak ranges are detected over the 12 months, changes included, and replace the typed ranges.",
           "index_hp": "Cumulative energy sensor of the meter's peak index (teleinfo). Fill in together with the off-peak index."
         }
@@ -26,7 +26,7 @@
       "capteur_absent": "Sensor not found.",
       "unite": "The sensor must be in Wh, kWh or MWh.",
       "state_class": "The sensor must be cumulative (state_class total or total_increasing), like Energy dashboard sensors.",
-      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM, comma-separated, no overlap; changes: \"| YYYY-MM-DD: ranges\", increasing dates.",
+      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM, comma-separated, no overlap; changes: \"| YYYY-MM-DD: ranges\", increasing dates; seasons: \"été … / hiver …\".",
       "index_par_paire": "Fill in both indexes (off-peak and peak), or neither.",
       "index_identiques": "The off-peak and peak indexes must be two different sensors."
     },
@@ -47,7 +47,7 @@
         },
         "data_description": {
           "puissance": "Shown on the bill (kVA).",
-          "heures_creuses": "Ranges shown on the bill or the distribution network operator's customer area (Enedis or local operator), e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base. If they changed during the year, add each change after \"|\" with its date: \"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00\".",
+          "heures_creuses": "Ranges shown on the bill or the distribution network operator's customer area (Enedis or local operator), e.g. \"22:00-06:00\" or \"02:00-07:00, 13:00-16:00\". Used to simulate the off-peak option even if your current option is Base. If they changed during the year, add each change after \"|\" with its date: \"22:00-06:00 | 2026-03-15: 02:00-07:00, 13:00-16:00\". Different summer (1 April – 31 October) and winter (1 November – 31 March) ranges: \"été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00\" (\"summer\" / \"winter\" also accepted).",
           "index_hc": "Cumulative energy sensor of the meter's off-peak index, from a teleinfo module (network operator index, not a supplier calendar). With the peak index, off-peak ranges are detected over the 12 months, changes included, and replace the typed ranges.",
           "index_hp": "Cumulative energy sensor of the meter's peak index (teleinfo). Fill in together with the off-peak index."
         }
@@ -57,7 +57,7 @@
       "capteur_absent": "Sensor not found.",
       "unite": "The sensor must be in Wh, kWh or MWh.",
       "state_class": "The sensor must be cumulative (state_class total or total_increasing), like Energy dashboard sensors.",
-      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM, comma-separated, no overlap; changes: \"| YYYY-MM-DD: ranges\", increasing dates.",
+      "plages_invalides": "Unreadable ranges: HH:MM-HH:MM, comma-separated, no overlap; changes: \"| YYYY-MM-DD: ranges\", increasing dates; seasons: \"été … / hiver …\".",
       "index_par_paire": "Fill in both indexes (off-peak and peak), or neither.",
       "index_identiques": "The off-peak and peak indexes must be two different sensors."
     }

@@ -102,3 +102,57 @@ def test_comparer_avec_changement():
     sans = cout_option("hphc", GRILLES, 6, conso, PlagesHC.lire(AVANT))
     assert sans.energie == Decimal(2)  # sans le changement, les deux heures seraient creuses
     assert "plages_hc" in sans.arrondi()
+
+
+# --- Plages saisonnières été / hiver (#368) -----------------------------------------------
+
+SAISONS = "été 02:00-07:00, 13:00-16:00 / hiver 23:00-07:00"
+
+
+def test_saisons_lecture_et_bascules():
+    from custom_components.tarifenergie.calendrier import PlagesSaisonnieres, est_hiver
+
+    plages = PlagesDatees.lire(SAISONS)
+    saison = plages.periodes[0][1]
+    assert saison == PlagesSaisonnieres(PlagesHC.lire(APRES), PlagesHC.lire("23:00-07:00"))
+    assert plages.texte() == SAISONS
+    # Ordre libre, sans accent, deux-points facultatifs, en anglais.
+    assert PlagesDatees.lire("hiver: 23:00-07:00 / ete 02:00-07:00,13:00-16:00") == plages
+    assert PlagesDatees.lire("winter 23:00-07:00 / summer 02:00-07:00, 13:00-16:00") == plages
+    for jour, hiver in (
+        (date(2026, 3, 31), True),
+        (date(2026, 4, 1), False),
+        (date(2026, 10, 31), False),
+        (date(2026, 11, 1), True),
+        (date(2027, 1, 15), True),
+    ):
+        assert est_hiver(jour) is hiver
+        assert plages.du_jour(jour).texte() == ("23:00-07:00" if hiver else APRES)
+
+
+@pytest.mark.parametrize(
+    ("texte", "message"),
+    [
+        ("été 02:00-07:00", "il faut l'été et l'hiver"),
+        ("été 02:00-07:00 / été 23:00-07:00", "saison en double"),
+        ("printemps 02:00-07:00 / hiver 23:00-07:00", "saison attendue"),
+        ("été 02:00-07:00 / hiver", "aucune plage"),
+    ],
+)
+def test_saisons_refusees(texte, message):
+    with pytest.raises(PlagesInvalides, match=message):
+        PlagesDatees.lire(texte)
+
+
+def test_changement_vers_des_plages_saisonnieres():
+    """Redéploiement Enedis : 22h-6h jusqu'au 31 octobre 2026, puis plages été / hiver."""
+    plages = PlagesDatees.lire(f"22:00-06:00 | 2026-11-01: {SAISONS}")
+    assert plages.du_jour(date(2026, 10, 31)).texte() == "22:00-06:00"
+    assert plages.du_jour(date(2026, 11, 1)).texte() == "23:00-07:00"
+    assert plages.du_jour(date(2027, 4, 1)).texte() == APRES
+    assert plages.resume([1]) == [{"depuis": "2026-11-01", "plages": SAISONS}]
+    calendrier = calendrier_pour({"hp", "hc"}, plages)
+    assert calendrier.repartir(datetime(2027, 1, 10, 6), UN) == {"hc": UN, "hp": 0}  # hiver : 23h-7h
+    assert calendrier.repartir(datetime(2027, 6, 10, 6), UN) == {"hc": UN, "hp": 0}  # été : 2h-7h
+    assert calendrier.repartir(datetime(2027, 6, 10, 14), UN) == {"hc": UN, "hp": 0}
+    assert calendrier.repartir(datetime(2027, 1, 10, 14), UN) == {"hc": 0, "hp": UN}
