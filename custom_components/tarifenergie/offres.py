@@ -22,9 +22,11 @@ Format YAML (exemple complet : ``offres/la_bellenergie_prudence.yaml``) ::
       hphc:                              # option facultative (jamais en 3 kVA au TRV)
         abonnement_mensuel_ttc: {6: 15.36, …}
         kwh_ttc: {hp: 0.2106, hc: 0.1565}                     # prix uniforme
+        # ou abonnement_annuel_ttc: {6: 190.36, …} pour une grille publiée en €/an
 
 Les prix sont TTC, en €/kWh (les grilles des fournisseurs sont en c€ TTC/kWh).
-L'abonnement mensuel est converti en €/an (multiplié par 12, en ``Decimal`` exact). Les
+L'abonnement mensuel est converti en €/an (multiplié par 12, en ``Decimal`` exact) ;
+``abonnement_annuel_ttc`` (grilles publiées en €/an) est repris tel quel. Les
 puissances non listées par une offre la rendent « indisponible » pour l'utilisateur
 concerné, avec la raison, comme pour les options du TRV.
 """
@@ -82,18 +84,33 @@ def _decimal(valeur: Any, chemin: str) -> Decimal:
 
 
 def _puissances(d: dict[str, Any], chemin: str) -> dict[int, Decimal]:
-    """Mapping puissance (kVA) → montant (€ TTC/mois)."""
+    """Mapping puissance (kVA) → abonnement (€ TTC/an).
+
+    ``abonnement_mensuel_ttc`` (multiplié par 12) ou ``abonnement_annuel_ttc``
+    (tel quel, pour les grilles publiées en €/an : diviser par 12 ne tombe pas
+    juste, ex. GEDIA 190,36 €/an), exclusifs.
+    """
     _LOGGER.debug("_puissances: entrée")
-    brutes = d.get("abonnement_mensuel_ttc")
-    _exiger(isinstance(brutes, dict) and brutes != {}, chemin + ".abonnement_mensuel_ttc", "mapping attendu")
+    _exiger(
+        not ("abonnement_mensuel_ttc" in d and "abonnement_annuel_ttc" in d),
+        chemin,
+        "abonnement_mensuel_ttc et abonnement_annuel_ttc sont exclusifs",
+    )
+    champ, facteur = (
+        ("abonnement_annuel_ttc", Decimal(1))
+        if "abonnement_annuel_ttc" in d
+        else ("abonnement_mensuel_ttc", MOIS_PAR_AN)
+    )
+    brutes = d.get(champ)
+    _exiger(isinstance(brutes, dict) and brutes != {}, f"{chemin}.{champ}", "mapping attendu")
     puissances: dict[int, Decimal] = {}
     for puissance, montant in brutes.items():
         _exiger(
             isinstance(puissance, int) and not isinstance(puissance, bool) and puissance in PUISSANCES,
-            chemin + ".abonnement_mensuel_ttc",
+            f"{chemin}.{champ}",
             f"puissance inconnue : {puissance} (attendues : {', '.join(map(str, PUISSANCES))} kVA)",
         )
-        puissances[puissance] = _decimal(montant, f"{chemin}.abonnement_mensuel_ttc[{puissance}]")
+        puissances[puissance] = _decimal(montant, f"{chemin}.{champ}[{puissance}]") * facteur
     _LOGGER.debug("_puissances: %s", puissances)
     return puissances
 
@@ -138,9 +155,7 @@ def _grilles_option(
                 f"{chemin}[{puissance}]",
                 "base OU hp+hc attendus",
             )
-            grilles[puissance] = Grille(
-                cles, puissance, debut, None, abonnements[puissance] * MOIS_PAR_AN, prix
-            )
+            grilles[puissance] = Grille(cles, puissance, debut, None, abonnements[puissance], prix)
     else:
         prix_uniforme = _postes(donnees, chemin)
         _exiger(
@@ -149,7 +164,7 @@ def _grilles_option(
             "base OU hp+hc attendus",
         )
         for puissance, abonnement in abonnements.items():
-            grilles[puissance] = Grille(cles, puissance, debut, None, abonnement * MOIS_PAR_AN, prix_uniforme)
+            grilles[puissance] = Grille(cles, puissance, debut, None, abonnement, prix_uniforme)
     _LOGGER.debug("_grilles_option: %s grille(s)", len(grilles))
     return grilles
 

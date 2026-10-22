@@ -30,6 +30,7 @@ def test_quatre_offres_livrees(offres):
         "alterna_fixe_1an",
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
+        "gedia_all_inclusive",
         "geg_elec_verte_3ans",
         "hunelec_prix_fixe_1an",
         "hunelec_prix_fixe_1an_vert",
@@ -92,6 +93,45 @@ def test_es_grilles_du_1er_octobre_2026(offres):
     # 100 % régionale : + 2,27 € TTC/mois, ajouté à l'abonnement.
     assert grilles["es_verte_regionale_fixe_1an:base"].en_vigueur(3, jour).abonnement_an == Decimal("173.40")
     assert grilles["es_verte_regionale_fixe_1an:hphc"].en_vigueur(6, jour).abonnement_an == Decimal("221.40")
+
+
+def test_gedia_grille_du_19_octobre_2026(offres):
+    """GEDIA All Inclusive, tableau « Domestique » du 19-25/10/2026 (#54, #335) : abonnement en €/an."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["gedia_all_inclusive:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 10, 19).date(),
+        Decimal("190.36"),  # publié en €/an, repris tel quel
+        {"base": Decimal("0.26948")},
+    )
+    assert grilles["gedia_all_inclusive:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.26725")}
+    g = grilles["gedia_all_inclusive:hphc"].en_vigueur(15, jour)
+    assert g.abonnement_an == Decimal("328.78")
+    assert g.prix == {"hp": Decimal("0.28965"), "hc": Decimal("0.21082")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):
+        grilles["gedia_all_inclusive:hphc"].en_vigueur(3, jour)
+
+
+def test_abonnement_annuel_et_mensuel_exclusifs():
+    """abonnement_annuel_ttc repris tel quel ; les deux champs ensemble sont refusés."""
+    from datetime import date
+
+    base = {
+        "id": "x",
+        "fournisseur": "F",
+        "offre": "O",
+        "type_prix": "fixe",
+        "grille_du": date(2026, 10, 1),
+        "duree_fixite_mois": 12,
+        "source": "https://exemple.fr/grille.pdf",
+    }
+    annuel = {"abonnement_annuel_ttc": {6: 190.36}, "kwh_ttc": {"base": 0.2}}
+    offre = offre_depuis_dict({**base, "options": {"base": annuel}}, "x")
+    assert offre.grilles["base"].en_vigueur(6, date(2026, 10, 2)).abonnement_an == Decimal("190.36")
+    deux = {**annuel, "abonnement_mensuel_ttc": {6: 15.0}}
+    with pytest.raises(OffreInvalide, match="exclusifs"):
+        offre_depuis_dict({**base, "options": {"base": deux}}, "x")
 
 
 def test_prudence_grille_du_1er_aout_2026(offres):
