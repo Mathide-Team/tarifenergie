@@ -1,0 +1,30 @@
+# Hunélec — Offre à prix fixe 1 an (issues #325 Base, #326 HC ; inventaire #6).
+# ELD de Huningue (Haut-Rhin) : offre réservée au territoire du réseau Hunélec
+# (le moteur n'a pas encore de filtre par zone, comme pour GEG #56).
+# Grille TTC du 01/07/2026, fiche descriptive « mise à jour : 01/07/2026 », page 4
+# (image, lue après pdftoppm). Aucune version plus récente dans la médiathèque
+# Hunélec au 22/10/2026. kWh Base : 0,23506 € jusqu'à 6 kVA, 0,23346 € au-delà.
+# HC : 8 h par jour (22h-6h), pas d'option HC en 3 kVA.
+id: hunelec_prix_fixe_1an
+fournisseur: Hunélec
+offre: Offre à prix fixe 1 an
+type_prix: fixe
+grille_du: 2026-07-01
+duree_fixite_mois: 12
+source: https://www.hunelec.fr/wp-content/uploads/2026/07/2026-07-01-PART_Offre-a-prix-fixe-1-an.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.07, 6: 15.74, 9: 19.69, 12: 23.49, 15: 27.06, 18: 30.75, 24: 38.59, 30: 45.80, 36: 53.06}
+    kwh_ttc_par_puissance:
+      3: {base: 0.23506}
+      6: {base: 0.23506}
+      9: {base: 0.23346}
+      12: {base: 0.23346}
+      15: {base: 0.23346}
+      18: {base: 0.23346}
+      24: {base: 0.23346}
+      30: {base: 0.23346}
+      36: {base: 0.23346}
+  hphc:
+    abonnement_mensuel_ttc: {6: 15.96, 9: 20.02, 12: 23.93, 15: 27.61, 18: 31.40, 24: 39.46, 30: 46.89, 36: 54.37}
+    kwh_ttc: {hp: 0.25019, hc: 0.19129}

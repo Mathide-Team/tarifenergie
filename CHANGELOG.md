@@ -2,6 +2,11 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les numéros suivent [SemVer](https://semver.org/lang/fr/), et la version de `manifest.json` est égale au tag.
 
+## [Non publié]
+
+### Ajouté
+- **Offres Hunélec** (#325, #326, #327, #328) : Offre à prix fixe 1 an, Base et Heures creuses, et sa variante 100 % énergie verte. Grilles TTC du 01/07/2026, lues dans les fiches descriptives page 4. Le supplément « vert » de 2,27 € TTC/mois est ajouté à l'abonnement. Ces offres sont réservées au réseau Hunélec (Haut-Rhin) : le moteur ne filtre pas encore par zone, comme pour GEG.
+
 ## [0.1.0] - 2026-10-22
 
 ### Ajouté

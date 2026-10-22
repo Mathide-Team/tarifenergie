@@ -74,14 +74,21 @@ async def test_capteurs(hass: HomeAssistant):
         "la_bellenergie_garance:hphc",
         "primeo_fixe_confort:base",
         "plenitude_pleniweb_1an:base",
+        # Hunélec HC (#326) : 36 x 0,19129 + 3/365 x 191,52 = 8,46 € ;
+        # 100 % vert (#328) : + 2,27 €/mois = 8,68 € ; TRV Base : 8,77 €.
+        "hunelec_prix_fixe_1an:hphc",
         "la_bellenergie_prudence:base",
         "alterna_fixe_1an:base",
+        "hunelec_prix_fixe_1an_vert:hphc",
         "base",
         "alterna_du_coin_1an:base",
         "la_bellenergie_constance:base",
         "la_bellenergie_garance:base",
         "selia_elec_vert_fixe:hphc",
         "ilek_enrfixe_plus:hphc",
+        # Hunélec Base (#325, #327) : 36 x 0,23506 + 3/365 x 188,88 = 10,01 € (vert : 10,24 €).
+        "hunelec_prix_fixe_1an:base",
+        "hunelec_prix_fixe_1an_vert:base",
         "ilek_enrfixe_plus:base",
         "selia_elec_vert_fixe:base",
     ]
