@@ -9,17 +9,23 @@ license = "MIT"
 # Versions figées (socle) : à monter volontairement.
 test = [
     "pytest-homeassistant-custom-component==0.13.316",  # Home Assistant 2026.2.3, Python 3.13
+    "loguru==0.7.3",  # tests des règles de journalisation et des scripts (issue #418)
 ]
+# Journalisation des scripts du dépôt (SOCLE §8, issue #418). Jamais dans
+# manifest.json : l'intégration Home Assistant garde `logging`.
+scripts = ["loguru==0.7.3"]
 lint = ["ruff==0.17.1"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+pythonpath = ["scripts"]  # tests des scripts du socle (test_check_branch_protection.py)
 
 [tool.ruff]
 line-length = 110
 target-version = "py313"
-extend-exclude = ["scripts/check_branch_protection.py"]  # script du socle (modele-depot), gardé tel quel
+# Scripts du socle (modele-depot), gardés tels quels.
+extend-exclude = ["scripts/check_branch_protection.py", "scripts/audit_debug_sorties.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
