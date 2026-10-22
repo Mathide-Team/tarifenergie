@@ -30,6 +30,7 @@ _LOGGER = logging.getLogger(__name__)
 
 def _lire_conso(hass: HomeAssistant, statistic_id: str, debut: datetime, fin: datetime) -> list:
     """Statistiques horaires « change » en kWh (exécuté dans le thread du recorder)."""
+    _LOGGER.debug("_lire_conso: entrée")
     lignes = statistics_during_period(
         hass,
         debut,
@@ -39,6 +40,7 @@ def _lire_conso(hass: HomeAssistant, statistic_id: str, debut: datetime, fin: da
         {"energy": UnitOfEnergy.KILO_WATT_HOUR},
         {"change"},
     )
+    _LOGGER.debug("_lire_conso: sortie")
     return lignes.get(statistic_id, [])
 
 
@@ -50,6 +52,7 @@ async def async_conso_horaire(
     Une variation négative (compteur remis à zéro mal déclaré) est ignorée : elle
     fausserait le comparatif plus qu'elle ne l'éclaire.
     """
+    _LOGGER.debug("async_conso_horaire: entrée")
     lignes = await get_instance(hass).async_add_executor_job(_lire_conso, hass, statistic_id, debut, fin)
     conso: list[tuple[datetime, float]] = []
     for ligne in lignes:
@@ -57,6 +60,7 @@ async def async_conso_horaire(
         if change is None or change < 0:
             continue
         conso.append((dt_util.as_local(dt_util.utc_from_timestamp(ligne["start"])), float(change)))
+    _LOGGER.debug("async_conso_horaire: %s relevé(s) horaire(s)", len(conso))
     return conso
 
 
@@ -66,6 +70,7 @@ class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
     config_entry: ConfigEntry
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry, grilles: dict[str, Grilles]) -> None:
+        _LOGGER.debug("CoordinateurTarifs.__init__: entrée")
         super().__init__(
             hass, _LOGGER, config_entry=entry, name=f"{DOMAIN} {entry.title}", update_interval=INTERVALLE_MAJ
         )
@@ -77,11 +82,14 @@ class CoordinateurTarifs(DataUpdateCoordinator[Comparaison]):
         self.plages = PlagesHC.lire(config[CONF_HEURES_CREUSES])
         self.debut: datetime | None = None
         self.fin: datetime | None = None
+        _LOGGER.debug("CoordinateurTarifs.__init__: fin")
 
     async def _async_update_data(self) -> Comparaison:
         # Heures complètes uniquement : la dernière heure entamée n'a pas encore de statistique.
+        _LOGGER.debug("CoordinateurTarifs._async_update_data: entrée")
         fin = dt_util.utcnow().replace(minute=0, second=0, microsecond=0)
         debut = fin - FENETRE
         conso = await async_conso_horaire(self.hass, self.entite, debut, fin)
         self.debut, self.fin = debut, fin
+        _LOGGER.debug("CoordinateurTarifs._async_update_data: sortie")
         return comparer(self.grilles, self.puissance, conso, self.plages, self.option_actuelle)

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import calendar
 import itertools
+import logging
 import re
 from collections.abc import Iterable
 from dataclasses import dataclass, field
@@ -22,6 +23,8 @@ from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
 from .modele import Grilles, TarifIntrouvable
+
+_LOGGER = logging.getLogger(__name__)
 
 CENTIME = Decimal("0.01")
 MINUTES_JOUR = 24 * 60
@@ -41,29 +44,37 @@ class PlagesHC:
     @classmethod
     def lire(cls, texte: str) -> PlagesHC:
         """``"22:00-06:00"`` ou ``"02:00-07:00, 13:00-16:00"`` (le « h » est accepté : ``22h00``)."""
+        _LOGGER.debug("PlagesHC.lire: entrée")
         plages: list[tuple[int, int]] = []
         for morceau in filter(None, (m.strip() for m in re.split(r"[,;]", texte))):
             trouve = _PLAGE.match(morceau)
             if not trouve:
+                _LOGGER.debug("PlagesHC.lire: lève une exception")
                 raise PlagesInvalides(f"plage illisible : {morceau!r} (attendu HH:MM-HH:MM)")
             h1, m1, h2, m2 = (int(x) for x in trouve.groups())
             if h1 > 23 or h2 > 24 or m1 > 59 or m2 > 59 or (h2 == 24 and m2):
+                _LOGGER.debug("PlagesHC.lire: lève une exception")
                 raise PlagesInvalides(f"heure impossible : {morceau!r}")
             debut, fin = h1 * 60 + m1, h2 * 60 + m2
             if debut == fin % MINUTES_JOUR:
+                _LOGGER.debug("PlagesHC.lire: lève une exception")
                 raise PlagesInvalides(f"plage vide ou de 24 h : {morceau!r}")
             plages.append((debut, fin))
         if not plages:
+            _LOGGER.debug("PlagesHC.lire: lève une exception")
             raise PlagesInvalides("aucune plage d'heures creuses")
         resultat = cls(tuple(plages))
         intervalles = sorted(resultat._intervalles())
         for (_, fin_a), (debut_b, _) in itertools.pairwise(intervalles):
             if debut_b < fin_a:
+                _LOGGER.debug("PlagesHC.lire: lève une exception")
                 raise PlagesInvalides(f"plages qui se chevauchent : {texte!r}")
+        _LOGGER.debug("PlagesHC.lire: %s", resultat)
         return resultat
 
     def _intervalles(self) -> Iterable[tuple[int, int]]:
         """Intervalles sans passage de minuit, dans [0, 1440]."""
+        _LOGGER.debug("PlagesHC._intervalles: entrée")
         for debut, fin in self.plages:
             if fin > debut:
                 yield debut, fin
@@ -71,17 +82,24 @@ class PlagesHC:
                 yield debut, MINUTES_JOUR
                 if fin:
                     yield 0, fin
+        _LOGGER.debug("PlagesHC._intervalles: fin")
 
     def minutes_par_jour(self) -> int:
+        _LOGGER.debug("PlagesHC.minutes_par_jour: entrée")
+        _LOGGER.debug("PlagesHC.minutes_par_jour: sortie")
         return sum(fin - debut for debut, fin in self._intervalles())
 
     def fraction_hc(self, heure: int) -> Decimal:
         """Part (0 à 1) de l'heure locale ``heure``:00-``heure+1``:00 en heures creuses."""
+        _LOGGER.debug("PlagesHC.fraction_hc: entrée")
         debut_h, fin_h = heure * 60, heure * 60 + 60
         minutes = sum(max(0, min(fin, fin_h) - max(debut, debut_h)) for debut, fin in self._intervalles())
+        _LOGGER.debug("PlagesHC.fraction_hc: sortie")
         return Decimal(min(minutes, 60)) / 60
 
     def texte(self) -> str:
+        _LOGGER.debug("PlagesHC.texte: entrée")
+        _LOGGER.debug("PlagesHC.texte: sortie")
         return ", ".join(f"{d // 60:02d}:{d % 60:02d}-{f // 60:02d}:{f % 60:02d}" for d, f in self.plages)
 
 
@@ -98,9 +116,13 @@ class Cout:
 
     @property
     def total(self) -> Decimal:
+        _LOGGER.debug("Cout.total: entrée")
+        _LOGGER.debug("Cout.total: sortie")
         return (self.energie + self.abonnement).quantize(CENTIME, ROUND_HALF_UP)
 
     def arrondi(self) -> dict[str, object]:
+        _LOGGER.debug("Cout.arrondi: entrée")
+        _LOGGER.debug("Cout.arrondi: sortie")
         return {
             "option": self.option,
             "total": self.total,
@@ -112,6 +134,8 @@ class Cout:
 
 
 def _jours_annee(jour: date) -> int:
+    _LOGGER.debug("_jours_annee: entrée")
+    _LOGGER.debug("_jours_annee: sortie")
     return 366 if calendar.isleap(jour.year) else 365
 
 
@@ -129,7 +153,9 @@ def cout_option(
     ``jours`` : jours d'abonnement à compter ; par défaut, ceux présents dans ``conso``.
     Lève :class:`TarifIntrouvable` si un jour n'a pas de grille (puissance non proposée…).
     """
+    _LOGGER.debug("cout_option: entrée")
     if option == "hphc" and plages is None:
+        _LOGGER.debug("cout_option: lève une exception")
         raise ValueError("l'option heures creuses demande des plages")
     cout = Cout(option)
     vus: set[date] = set()
@@ -147,6 +173,7 @@ def cout_option(
             repartition = {"base": quantite}
         else:
             if plages is None:
+                _LOGGER.debug("cout_option: lève une exception")
                 raise ValueError("l'option heures creuses demande des plages")
             hc = quantite * plages.fraction_hc(debut.hour)
             repartition = {"hc": hc, "hp": quantite - hc}
@@ -157,6 +184,7 @@ def cout_option(
         grille = grilles.en_vigueur(puissance, jour)
         cout.grilles.add(grille.debut)
         cout.abonnement += grille.abonnement_an / _jours_annee(jour)
+    _LOGGER.debug("cout_option: %s", cout)
     return cout
 
 
@@ -171,19 +199,26 @@ class Comparaison:
 
     @property
     def classement(self) -> list[Cout]:
+        _LOGGER.debug("Comparaison.classement: entrée")
+        _LOGGER.debug("Comparaison.classement: sortie")
         return sorted(self.couts.values(), key=lambda c: (c.total, c.option))
 
     @property
     def moins_chere(self) -> Cout | None:
+        _LOGGER.debug("Comparaison.moins_chere: entrée")
+        _LOGGER.debug("Comparaison.moins_chere: sortie")
         return self.classement[0] if self.couts else None
 
     @property
     def economie(self) -> Decimal | None:
         """Économie de l'option la moins chère par rapport à l'option actuelle (0 si déjà la meilleure)."""
+        _LOGGER.debug("Comparaison.economie: entrée")
         actuelle = self.couts.get(self.option_actuelle)
         meilleure = self.moins_chere
         if actuelle is None or meilleure is None:
+            _LOGGER.debug("Comparaison.economie: -> None")
             return None
+        _LOGGER.debug("Comparaison.economie: sortie")
         return actuelle.total - meilleure.total
 
 
@@ -195,6 +230,7 @@ def comparer(
     option_actuelle: str,
 ) -> Comparaison:
     """Calcule toutes les options ; une option sans tarif pour cette puissance est mise de côté."""
+    _LOGGER.debug("comparer: entrée")
     jours = {debut.date() for debut, _ in conso}
     couts: dict[str, Cout] = {}
     indisponibles: dict[str, str] = {}
@@ -202,15 +238,19 @@ def comparer(
         try:
             couts[option] = cout_option(option, grilles_option, puissance, conso, plages, jours)
         except TarifIntrouvable as err:
+            _LOGGER.debug("comparer: %s : %s", type(err).__name__, err)
             indisponibles[option] = str(err)
+    _LOGGER.debug("comparer: sortie")
     return Comparaison(couts, indisponibles, option_actuelle, len(jours))
 
 
 def heures_locales(debut: datetime, fin: datetime) -> list[datetime]:
     """Débuts d'heure de ``debut`` (inclus) à ``fin`` (exclu) — aide pour les tests."""
+    _LOGGER.debug("heures_locales: entrée")
     heures = []
     courant = debut
     while courant < fin:
         heures.append(courant)
         courant += timedelta(hours=1)
+    _LOGGER.debug("heures_locales: %s heure(s)", len(heures))
     return heures

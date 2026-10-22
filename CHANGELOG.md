@@ -2,6 +2,14 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les numéros suivent [SemVer](https://semver.org/lang/fr/), et la version de `manifest.json` est égale au tag.
 
+## [Non publié]
+
+### Ajouté
+- **Journalisation SOCLE §8** (#418). Dans l'intégration Home Assistant, chaque module à fonctions a son `_LOGGER = logging.getLogger(__name__)`, avec des messages `%s` et sans f-string ; elle n'importe jamais loguru. Les scripts passent à loguru (groupe `scripts`, jamais dans `manifest.json`), à `WARNING` par défaut et à `DEBUG` avec `SOCLE_DEBUG=1`. Chaque fonction trace son entrée et ses sorties, y compris les `raise` volontaires, et chaque `except` journalise le type et le message de l'exception. Les grandes valeurs (relevés horaires, grilles) sont résumées par leur taille.
+- **Tests AST des règles** (`tests/test_journal_regles.py`, d'après `modele-depot`) et **audit** `scripts/audit_debug_sorties.py`. La référence `scripts/audit_debug_sorties.baseline` est à **0**. Le job Qualité échoue si un écart est ajouté.
+- `scripts/check_branch_protection.py` est remplacé par la version loguru de `modele-depot`, avec ses tests. Les workflows de release et de protection installent loguru (`uv run --only-group scripts`).
+- 4 tests de `offres.py` (`Offre.cles`, erreurs de `charger_offre`) : couverture de 98,0 % à 98,9 %.
+
 ## [0.1.0] - 2026-10-22
 
 ### Ajouté
