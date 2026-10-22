@@ -1,0 +1,31 @@
+# Hunélec — Offre à prix fixe 1 an – 100 % énergie verte (issues #327 Base,
+# #328 HC ; inventaire #6). Électricité produite dans le Grand Est (garanties
+# d'origine). Même grille que hunelec_prix_fixe_1an + supplément « Électricité
+# Verte 100 % Régionale » de 2,27 € TTC/mois à toutes les puissances : le moteur
+# n'a pas de champ supplément, il est donc AJOUTÉ à l'abonnement ci-dessous
+# (ex. 3 kVA Base : 12,07 + 2,27 = 14,34 € TTC/mois).
+# Réservée au territoire du réseau Hunélec (Haut-Rhin), comme l'offre classique.
+# Grille TTC du 01/07/2026, fiche « mise à jour : 01/07/2026 », page 4 (image).
+id: hunelec_prix_fixe_1an_vert
+fournisseur: Hunélec
+offre: Offre à prix fixe 1 an – 100 % énergie verte
+type_prix: fixe
+grille_du: 2026-07-01
+duree_fixite_mois: 12
+source: https://www.hunelec.fr/wp-content/uploads/2026/07/2026-07-01-PART-Offre-a-prix-fixe-1-an-100-vert_Hunelec.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 14.34, 6: 18.01, 9: 21.96, 12: 25.76, 15: 29.33, 18: 33.02, 24: 40.86, 30: 48.07, 36: 55.33}
+    kwh_ttc_par_puissance:
+      3: {base: 0.23506}
+      6: {base: 0.23506}
+      9: {base: 0.23346}
+      12: {base: 0.23346}
+      15: {base: 0.23346}
+      18: {base: 0.23346}
+      24: {base: 0.23346}
+      30: {base: 0.23346}
+      36: {base: 0.23346}
+  hphc:
+    abonnement_mensuel_ttc: {6: 18.23, 9: 22.29, 12: 26.20, 15: 29.88, 18: 33.67, 24: 41.73, 30: 49.16, 36: 56.64}
+    kwh_ttc: {hp: 0.25019, hc: 0.19129}

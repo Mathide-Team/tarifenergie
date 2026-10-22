@@ -1,0 +1,36 @@
+# ÉS Énergies — Prix fixe 1 an, Électricité verte 100 % régionale (issues #74
+# Base, #332 HC ; inventaire #6). Même grille que es_verte_fixe_1an + colonne
+# « Électricité Verte 100 % Régionale » de 2,27 € TTC/mois (1,90 € HTT) à toutes
+# les puissances : le moteur n'a pas de champ supplément, il est AJOUTÉ à
+# l'abonnement ci-dessous (ex. 3 kVA Base : 12,18 + 2,27 = 14,45 € TTC/mois).
+# Offre réservée aux particuliers du territoire Strasbourg Électricité Réseaux
+# (≤ 36 kVA) : le moteur n'a pas encore de filtre par zone (comme GEG #56).
+# Grille TTC « applicable à compter du 1er octobre 2026 », page 1 (« Mise à
+# jour : 01/10/2026 »), lue sur le rendu de la page. kWh Base : 0,30216 € pour
+# 3 et 6 kVA, 0,29981 € de 9 à 36 kVA (cellules fusionnées). Pas d'HC en 3 kVA.
+# Options Week-end (#330, #331, #333, #334) non reprises : le moteur ne connaît
+# que Base et Heures creuses. Abonnement Linky « légèrement inférieur de
+# quelques centimes » selon la fiche : non modélisé (prix affichés retenus).
+id: es_verte_regionale_fixe_1an
+fournisseur: ÉS Énergies
+offre: Prix fixe 1 an, Électricité verte 100 % régionale
+type_prix: fixe
+grille_du: 2026-10-01
+duree_fixite_mois: 12
+source: https://particuliers.es.fr/sites/default/files/documents/Offre_a_prix_fixe_1_an_electricite_verte.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 14.45, 6: 18.22, 9: 22.29, 12: 26.21, 15: 29.89, 18: 33.68, 24: 41.76, 30: 49.19, 36: 56.68}
+    kwh_ttc_par_puissance:
+      3: {base: 0.30216}
+      6: {base: 0.30216}
+      9: {base: 0.29981}
+      12: {base: 0.29981}
+      15: {base: 0.29981}
+      18: {base: 0.29981}
+      24: {base: 0.29981}
+      30: {base: 0.29981}
+      36: {base: 0.29981}
+  hphc:
+    abonnement_mensuel_ttc: {6: 18.45, 9: 22.62, 12: 26.66, 15: 30.45, 18: 34.35, 24: 42.66, 30: 50.31, 36: 58.03}
+    kwh_ttc: {hp: 0.32356, hc: 0.24000}
