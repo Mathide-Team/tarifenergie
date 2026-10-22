@@ -8,6 +8,8 @@ Le calcul vit dans ``calcul.py``, ``modele.py`` et ``offres.py``, en Python pur.
 
 from __future__ import annotations
 
+import logging
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -17,6 +19,8 @@ from .coordinateur import CoordinateurTarifs
 from .modele import Grilles
 from .offres import grilles_offres, lire_offres
 
+_LOGGER = logging.getLogger(__name__)
+
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 type TarifenergieConfigEntry = ConfigEntry[CoordinateurTarifs]
@@ -24,20 +28,26 @@ type TarifenergieConfigEntry = ConfigEntry[CoordinateurTarifs]
 
 def _charger_grilles() -> dict[str, Grilles]:
     """Options du TRV + offres de marché, indexées par clé de comparaison."""
+    _LOGGER.debug("_charger_grilles: entrée")
     grilles = {option: Grilles.charger(option) for option in OPTIONS}
     grilles.update(grilles_offres(lire_offres()))
+    _LOGGER.debug("_charger_grilles: options %s", sorted(grilles))
     return grilles
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: TarifenergieConfigEntry) -> bool:
     """Charge les grilles CRE (hors boucle), calcule une première fois, puis crée les capteurs."""
+    _LOGGER.debug("async_setup_entry: entrée")
     grilles = await hass.async_add_executor_job(_charger_grilles)
     coordinateur = CoordinateurTarifs(hass, entry, grilles)
     await coordinateur.async_config_entry_first_refresh()
     entry.runtime_data = coordinateur
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    _LOGGER.debug("async_setup_entry: -> True")
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: TarifenergieConfigEntry) -> bool:
+    _LOGGER.debug("async_unload_entry: entrée")
+    _LOGGER.debug("async_unload_entry: sortie")
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass
 from decimal import Decimal
@@ -25,16 +26,22 @@ from .const import DOMAIN, OPTIONS
 from .coordinateur import CoordinateurTarifs
 from .offres import Offre, lire_offres
 
+_LOGGER = logging.getLogger(__name__)
+
 
 def _libelle(cle: str, offres: dict[str, Offre]) -> str:
     """Nom lisible d'une clé de comparaison : TRV ou « fournisseur Offre (option) »."""
+    _LOGGER.debug("_libelle: entrée")
     if ":" not in cle:
+        _LOGGER.debug("_libelle: sortie")
         return {"base": "Base", "hphc": "Off-peak"}.get(cle, cle)
     ident, option = cle.split(":", 1)
     offre = offres.get(ident)
     if offre is None:
+        _LOGGER.debug("_libelle: %s", cle)
         return cle
     option_lisible = {"base": "Base", "hphc": "Off-peak"}.get(option, option)
+    _LOGGER.debug("_libelle: sortie")
     return f"{offre.fournisseur} {offre.offre} ({option_lisible})"
 
 
@@ -46,6 +53,8 @@ class Description(SensorEntityDescription):
 
 
 def _periode(comp: Comparaison, coord: CoordinateurTarifs) -> dict[str, Any]:
+    _LOGGER.debug("_periode: entrée")
+    _LOGGER.debug("_periode: sortie")
     return {
         "debut": coord.debut.isoformat() if coord.debut else None,
         "fin": coord.fin.isoformat() if coord.fin else None,
@@ -54,18 +63,25 @@ def _periode(comp: Comparaison, coord: CoordinateurTarifs) -> dict[str, Any]:
 
 
 def _cout(option: str, offres: dict[str, Offre]) -> Description:
+    _LOGGER.debug("_cout: entrée")
+
     def valeur(comp: Comparaison) -> Decimal | None:
+        _LOGGER.debug("_cout.valeur: entrée")
         cout = comp.couts.get(option)
+        _LOGGER.debug("_cout.valeur: sortie")
         return cout.total if cout else None
 
     def attributs(comp: Comparaison, coord: CoordinateurTarifs) -> dict[str, Any]:
+        _LOGGER.debug("_cout.attributs: entrée")
         cout = comp.couts.get(option)
         detail = cout.arrondi() if cout else {"indisponible": comp.indisponibles.get(option)}
         detail.pop("option", None)
         detail.pop("total", None)
+        _LOGGER.debug("_cout.attributs: sortie")
         return {**detail, **_periode(comp, coord)}
 
     cles_trv = option in OPTIONS
+    _LOGGER.debug("_cout: sortie")
     return Description(
         key=f"cout_{option.replace(':', '_')}",
         translation_key=f"cout_{option}" if cles_trv else None,
@@ -77,6 +93,8 @@ def _cout(option: str, offres: dict[str, Offre]) -> Description:
 
 
 def _classement(comp: Comparaison, coord: CoordinateurTarifs, offres: dict[str, Offre]) -> dict[str, Any]:
+    _LOGGER.debug("_classement: entrée")
+    _LOGGER.debug("_classement: sortie")
     return {
         "classement": [
             {"option": c.option, "libelle": _libelle(c.option, offres), "total": float(c.total)}
@@ -90,6 +108,8 @@ def _classement(comp: Comparaison, coord: CoordinateurTarifs, offres: dict[str, 
 
 def _descriptions(cles: list[str], offres: dict[str, Offre]) -> tuple[Description, ...]:
     """Capteurs pour les clés de comparaison disponibles (TRV + offres de marché)."""
+    _LOGGER.debug("_descriptions: entrée")
+    _LOGGER.debug("_descriptions: sortie")
     return (
         *(_cout(cle, offres) for cle in cles),
         Description(
@@ -130,10 +150,13 @@ def _descriptions(cles: list[str], offres: dict[str, Offre]) -> tuple[Descriptio
 
 
 def _part_hc(comp: Comparaison) -> float | None:
+    _LOGGER.debug("_part_hc: entrée")
     cout = comp.couts.get("hphc")
     if cout is None:
+        _LOGGER.debug("_part_hc: -> None")
         return None
     total = sum(cout.kwh.values())
+    _LOGGER.debug("_part_hc: sortie")
     return round(float(cout.kwh.get("hc", 0) / total * 100), 2) if total else None
 
 
@@ -141,12 +164,14 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: TarifenergieConfigEntry, async_add_entities: AddConfigEntryEntitiesCallback
 ) -> None:
     """Un capteur par option TRV ou offre de marché, plus le classement et l'économie."""
+    _LOGGER.debug("async_setup_entry: entrée")
     coord = entry.runtime_data
     offres = lire_offres()
     cles = [cle for cle in coord.grilles if cle in OPTIONS] + [
         cle for cle in coord.grilles if cle not in OPTIONS
     ]
     async_add_entities(CapteurTarif(coord, entry, d) for d in _descriptions(cles, offres))
+    _LOGGER.debug("async_setup_entry: fin")
 
 
 class CapteurTarif(CoordinatorEntity[CoordinateurTarifs], SensorEntity):
@@ -158,6 +183,7 @@ class CapteurTarif(CoordinatorEntity[CoordinateurTarifs], SensorEntity):
     def __init__(
         self, coord: CoordinateurTarifs, entry: TarifenergieConfigEntry, description: Description
     ) -> None:
+        _LOGGER.debug("CapteurTarif.__init__: entrée")
         super().__init__(coord)
         self.entity_description = description
         self._attr_unique_id = f"{entry.entry_id}_{description.key}"
@@ -172,13 +198,19 @@ class CapteurTarif(CoordinatorEntity[CoordinateurTarifs], SensorEntity):
             self._attr_device_class = SensorDeviceClass.MONETARY
             self._attr_native_unit_of_measurement = coord.hass.config.currency
             self._attr_suggested_display_precision = 2
+        _LOGGER.debug("CapteurTarif.__init__: fin")
 
     @property
     def native_value(self) -> Any:
+        _LOGGER.debug("CapteurTarif.native_value: entrée")
+        _LOGGER.debug("CapteurTarif.native_value: sortie")
         return self.entity_description.valeur(self.coordinator.data)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any] | None:
+        _LOGGER.debug("CapteurTarif.extra_state_attributes: entrée")
         if self.entity_description.attributs is None:
+            _LOGGER.debug("CapteurTarif.extra_state_attributes: -> None")
             return None
+        _LOGGER.debug("CapteurTarif.extra_state_attributes: sortie")
         return self.entity_description.attributs(self.coordinator.data, self.coordinator)

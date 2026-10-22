@@ -7,41 +7,58 @@ Code de sortie 1 si le tag ne correspond pas à manifest.json ou si la version m
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from pathlib import Path
+
+from loguru import logger
 
 RACINE = Path(__file__).resolve().parents[1]
 
 
 def version_manifest() -> str:
-    return json.loads((RACINE / "custom_components/tarifenergie/manifest.json").read_text(encoding="utf-8"))[
-        "version"
-    ]
+    logger.debug("version_manifest: entrée")
+    manifest = RACINE / "custom_components/tarifenergie/manifest.json"
+    version = json.loads(manifest.read_text(encoding="utf-8"))["version"]
+    logger.debug("version_manifest: {}", version)
+    return version
 
 
 def notes(version: str, journal: str) -> str:
     """Section ``## [version]`` du journal, sans son titre."""
+    logger.debug("notes: version={} journal={} caractère(s)", version, len(journal))
     motif = re.compile(rf"^## \[{re.escape(version)}\].*?$(.*?)(?=^## \[|\Z)", re.MULTILINE | re.DOTALL)
     trouve = motif.search(journal)
     if trouve is None or not trouve.group(1).strip():
+        logger.debug("notes: section {} absente ou vide", version)
         raise ValueError(f"version {version} absente de CHANGELOG.md")
-    return trouve.group(1).strip() + "\n"
+    section = trouve.group(1).strip() + "\n"
+    logger.debug("notes: {} caractère(s)", len(section))
+    return section
 
 
 def main(argv: list[str]) -> int:
+    logger.trace("main: entrée (avant configuration des puits)")
+    logger.remove()
+    logger.add(sys.stderr, level="DEBUG" if os.environ.get("SOCLE_DEBUG") else "WARNING")
+    logger.debug("main: argv={}", argv[1:])
     if len(argv) != 2:
         print(__doc__, file=sys.stderr)
+        logger.debug("main: -> 2")
         return 2
     version = argv[1].removeprefix("v")
     if version != version_manifest():
-        print(f"tag v{version} ≠ manifest.json {version_manifest()}", file=sys.stderr)
+        logger.error("tag v{} ≠ manifest.json {}", version, version_manifest())
+        logger.debug("main: -> 1")
         return 1
     try:
         sys.stdout.write(notes(version, (RACINE / "CHANGELOG.md").read_text(encoding="utf-8")))
     except ValueError as err:
-        print(err, file=sys.stderr)
+        logger.error("{}", err)
+        logger.debug("main: -> 1")
         return 1
+    logger.debug("main: -> 0")
     return 0
 
 

@@ -7,6 +7,7 @@ tout sauf le capteur. Une entrée par capteur.
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 import voluptuous as vol
@@ -30,23 +31,32 @@ from .const import (
     PUISSANCES,
 )
 
+_LOGGER = logging.getLogger(__name__)
+
 STATE_CLASSES = {SensorStateClass.TOTAL, SensorStateClass.TOTAL_INCREASING}
 UNITES = {u.value for u in UnitOfEnergy}
 
 
 def _verifier_capteur(hass: HomeAssistant, entity_id: str) -> str | None:
     """Code d'erreur si le capteur ne fournit pas de statistiques d'énergie cumulée."""
+    _LOGGER.debug("_verifier_capteur: entrée")
     etat = hass.states.get(entity_id)
     if etat is None:
+        _LOGGER.debug("_verifier_capteur: sortie")
         return "capteur_absent"
     if etat.attributes.get(ATTR_UNIT_OF_MEASUREMENT) not in UNITES:
+        _LOGGER.debug("_verifier_capteur: sortie")
         return "unite"
     if etat.attributes.get("state_class") not in STATE_CLASSES:
+        _LOGGER.debug("_verifier_capteur: sortie")
         return "state_class"
+    _LOGGER.debug("_verifier_capteur: -> None")
     return None
 
 
 def _schema_contrat(valeurs: dict[str, Any]) -> dict[vol.Marker, Any]:
+    _LOGGER.debug("_schema_contrat: entrée")
+    _LOGGER.debug("_schema_contrat: sortie")
     return {
         vol.Required(CONF_PUISSANCE, default=str(valeurs.get(CONF_PUISSANCE, 6))): selector.SelectSelector(
             selector.SelectSelectorConfig(
@@ -66,10 +76,14 @@ def _schema_contrat(valeurs: dict[str, Any]) -> dict[vol.Marker, Any]:
 
 def _verifier_contrat(saisie: dict[str, Any]) -> tuple[dict[str, Any], dict[str, str]]:
     """Normalise la saisie (puissance en entier, plages réécrites) ; erreurs par champ."""
+    _LOGGER.debug("_verifier_contrat: entrée")
     try:
         plages = PlagesHC.lire(saisie[CONF_HEURES_CREUSES])
-    except PlagesInvalides:
+    except PlagesInvalides as exc:
+        _LOGGER.debug("_verifier_contrat: %s : %s", type(exc).__name__, exc)
+        _LOGGER.debug("_verifier_contrat: sortie")
         return saisie, {CONF_HEURES_CREUSES: "plages_invalides"}
+    _LOGGER.debug("_verifier_contrat: sortie")
     return {**saisie, CONF_PUISSANCE: int(saisie[CONF_PUISSANCE]), CONF_HEURES_CREUSES: plages.texte()}, {}
 
 
@@ -79,6 +93,7 @@ class TarifenergieConfigFlow(ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        _LOGGER.debug("TarifenergieConfigFlow.async_step_user: entrée")
         erreurs: dict[str, str] = {}
         if user_input is not None:
             await self.async_set_unique_id(user_input[CONF_ENERGIE])
@@ -88,6 +103,7 @@ class TarifenergieConfigFlow(ConfigFlow, domain=DOMAIN):
             else:
                 donnees, erreurs = _verifier_contrat(user_input)
                 if not erreurs:
+                    _LOGGER.debug("TarifenergieConfigFlow.async_step_user: sortie")
                     return self.async_create_entry(title=donnees.pop(CONF_NOM), data=donnees)
         valeurs = user_input or {}
         schema = vol.Schema(
@@ -103,11 +119,14 @@ class TarifenergieConfigFlow(ConfigFlow, domain=DOMAIN):
                 **_schema_contrat(valeurs),
             }
         )
+        _LOGGER.debug("TarifenergieConfigFlow.async_step_user: sortie")
         return self.async_show_form(step_id="user", data_schema=schema, errors=erreurs)
 
     @staticmethod
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> TarifenergieOptionsFlow:
+        _LOGGER.debug("TarifenergieConfigFlow.async_get_options_flow: entrée")
+        _LOGGER.debug("TarifenergieConfigFlow.async_get_options_flow: sortie")
         return TarifenergieOptionsFlow()
 
 
@@ -115,12 +134,15 @@ class TarifenergieOptionsFlow(OptionsFlowWithReload):
     """Changement de puissance, d'option ou d'heures creuses (recharge l'entrée)."""
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        _LOGGER.debug("TarifenergieOptionsFlow.async_step_init: entrée")
         erreurs: dict[str, str] = {}
         if user_input is not None:
             donnees, erreurs = _verifier_contrat(user_input)
             if not erreurs:
+                _LOGGER.debug("TarifenergieOptionsFlow.async_step_init: sortie")
                 return self.async_create_entry(data=donnees)
         valeurs = user_input or {**self.config_entry.data, **self.config_entry.options}
+        _LOGGER.debug("TarifenergieOptionsFlow.async_step_init: sortie")
         return self.async_show_form(
             step_id="init", data_schema=vol.Schema(_schema_contrat(valeurs)), errors=erreurs
         )
