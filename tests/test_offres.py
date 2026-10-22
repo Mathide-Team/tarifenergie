@@ -28,6 +28,8 @@ def test_quatre_offres_livrees(offres):
     assert sorted(offres) == [
         "alterna_du_coin_1an",
         "alterna_fixe_1an",
+        "es_verte_fixe_1an",
+        "es_verte_regionale_fixe_1an",
         "geg_elec_verte_3ans",
         "hunelec_prix_fixe_1an",
         "hunelec_prix_fixe_1an_vert",
@@ -68,6 +70,28 @@ def test_hunelec_grilles_du_1er_juillet_2026(offres):
     g = grilles["hunelec_prix_fixe_1an_vert:hphc"].en_vigueur(6, jour)
     assert g.abonnement_an == Decimal("218.76")  # (15,96 + 2,27) x 12
     assert g.prix == {"hp": Decimal("0.25019"), "hc": Decimal("0.19129")}
+
+
+def test_es_grilles_du_1er_octobre_2026(offres):
+    """Grilles TTC ÉS Énergies du 01/10/2026, page 1 des fiches (#73, #74, #329, #332)."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["es_verte_fixe_1an:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 10, 1).date(),
+        Decimal("191.40"),  # 15,95 x 12
+        {"base": Decimal("0.30216")},
+    )
+    # Cellules fusionnées : 0,30216 € pour 3-6 kVA, 0,29981 € de 9 à 36 kVA.
+    assert grilles["es_verte_fixe_1an:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.29981")}
+    g = grilles["es_verte_fixe_1an:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("669.12")  # 55,76 x 12
+    assert g.prix == {"hp": Decimal("0.32356"), "hc": Decimal("0.24000")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):  # pas d'option HC en 3 kVA
+        grilles["es_verte_fixe_1an:hphc"].en_vigueur(3, jour)
+    # 100 % régionale : + 2,27 € TTC/mois, ajouté à l'abonnement.
+    assert grilles["es_verte_regionale_fixe_1an:base"].en_vigueur(3, jour).abonnement_an == Decimal("173.40")
+    assert grilles["es_verte_regionale_fixe_1an:hphc"].en_vigueur(6, jour).abonnement_an == Decimal("221.40")
 
 
 def test_prudence_grille_du_1er_aout_2026(offres):
