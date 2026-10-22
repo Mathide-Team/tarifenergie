@@ -31,6 +31,7 @@ concerné, avec la raison, comme pour les options du TRV.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
@@ -41,6 +42,8 @@ import yaml
 
 from .const import PUISSANCES
 from .modele import Grille, Grilles
+
+_LOGGER = logging.getLogger(__name__)
 
 DOSSIER_OFFRES = Path(__file__).parent / "offres"
 TYPE_PRIX: tuple[str, ...] = ("fixe",)
@@ -53,26 +56,34 @@ class OffreInvalide(ValueError):
 
 
 def _exiger(condition: bool, chemin: str, message: str) -> None:
+    _LOGGER.debug("_exiger: entrée")
     if not condition:
+        _LOGGER.debug("_exiger: lève une exception")
         raise OffreInvalide(f"{chemin} : {message}")
+    _LOGGER.debug("_exiger: fin")
 
 
 def _texte(d: dict[str, Any], cle: str, chemin: str) -> str:
+    _LOGGER.debug("_texte: entrée")
     _exiger(isinstance(d.get(cle), str) and d[cle].strip() != "", chemin + f".{cle}", "texte attendu")
+    _LOGGER.debug("_texte: sortie")
     return d[cle]
 
 
 def _decimal(valeur: Any, chemin: str) -> Decimal:
+    _LOGGER.debug("_decimal: entrée")
     _exiger(
         isinstance(valeur, (int, float)) and not isinstance(valeur, bool) and valeur > 0,
         chemin,
         "nombre positif attendu (€ TTC, c€ TTC/kWh convertis en €)",
     )
+    _LOGGER.debug("_decimal: sortie")
     return Decimal(str(valeur))
 
 
 def _puissances(d: dict[str, Any], chemin: str) -> dict[int, Decimal]:
     """Mapping puissance (kVA) → montant (€ TTC/mois)."""
+    _LOGGER.debug("_puissances: entrée")
     brutes = d.get("abonnement_mensuel_ttc")
     _exiger(isinstance(brutes, dict) and brutes != {}, chemin + ".abonnement_mensuel_ttc", "mapping attendu")
     puissances: dict[int, Decimal] = {}
@@ -83,17 +94,20 @@ def _puissances(d: dict[str, Any], chemin: str) -> dict[int, Decimal]:
             f"puissance inconnue : {puissance} (attendues : {', '.join(map(str, PUISSANCES))} kVA)",
         )
         puissances[puissance] = _decimal(montant, f"{chemin}.abonnement_mensuel_ttc[{puissance}]")
+    _LOGGER.debug("_puissances: %s", puissances)
     return puissances
 
 
 def _postes(d: dict[str, Any], chemin: str) -> dict[str, Decimal]:
     """Mapping poste (base / hp / hc) → prix € TTC/kWh."""
+    _LOGGER.debug("_postes: entrée")
     brutes = d.get("kwh_ttc")
     _exiger(isinstance(brutes, dict) and brutes != {}, chemin + ".kwh_ttc", "mapping attendu")
     postes: dict[str, Decimal] = {}
     for poste, prix in brutes.items():
         _exiger(poste in POSTES, f"{chemin}.kwh_ttc", f"poste inconnu : {poste}")
         postes[poste] = _decimal(prix, f"{chemin}.kwh_ttc[{poste}]")
+    _LOGGER.debug("_postes: %s", postes)
     return postes
 
 
@@ -101,6 +115,7 @@ def _grilles_option(
     donnees: dict[str, Any], chemin: str, cles: tuple[str, ...], debut: date
 ) -> dict[int, Grille]:
     """Grilles d'une option de l'offre : abonnements mensuels x12, prix par poste."""
+    _LOGGER.debug("_grilles_option: entrée")
     abonnements = _puissances(donnees, chemin)
     grilles: dict[int, Grille] = {}
     if "kwh_ttc_par_puissance" in donnees:
@@ -135,6 +150,7 @@ def _grilles_option(
         )
         for puissance, abonnement in abonnements.items():
             grilles[puissance] = Grille(cles, puissance, debut, None, abonnement * MOIS_PAR_AN, prix_uniforme)
+    _LOGGER.debug("_grilles_option: %s grille(s)", len(grilles))
     return grilles
 
 
@@ -151,11 +167,14 @@ class Offre:
 
     def cles(self) -> list[str]:
         """Clés de comparaison : ``<id>:<option>`` (ex. ``la_bellenergie_prudence:hphc``)."""
+        _LOGGER.debug("Offre.cles: entrée")
+        _LOGGER.debug("Offre.cles: sortie")
         return [f"{self.id}:{option}" for option in sorted(self.grilles)]
 
 
 def offre_depuis_dict(donnees: Any, ident: str) -> Offre:
     """Valide le contenu d'un fichier d'offre et le convertit en grilles."""
+    _LOGGER.debug("offre_depuis_dict: entrée")
     _exiger(isinstance(donnees, dict), "offre", "mapping attendu")
     _exiger(donnees.get("id") == ident, "offre.id", f"doit valoir « {ident} » (nom du fichier)")
     _exiger(
@@ -191,6 +210,7 @@ def offre_depuis_dict(donnees: Any, ident: str) -> Offre:
         )
         _exiger(grilles_option != {}, f"offre.options.{option}", "aucune puissance définie")
         grilles[option] = Grilles(tuple(grilles_option[p] for p in sorted(grilles_option)))
+    _LOGGER.debug("offre_depuis_dict: sortie")
     return Offre(
         _texte(donnees, "id", "offre"),
         _texte(donnees, "fournisseur", "offre"),
@@ -203,31 +223,43 @@ def offre_depuis_dict(donnees: Any, ident: str) -> Offre:
 
 def charger_offre(chemin: Path) -> Offre:
     """Lit et valide un fichier YAML du dossier ``offres/``."""
+    _LOGGER.debug("charger_offre: entrée")
     try:
         donnees = yaml.safe_load(chemin.read_text(encoding="utf-8"))
     except yaml.YAMLError as err:
+        _LOGGER.debug("charger_offre: %s : %s", type(err).__name__, err)
+        _LOGGER.debug("charger_offre: lève une exception")
         raise OffreInvalide(f"{chemin.name} : YAML invalide ({err})") from None
     except (OSError, UnicodeDecodeError) as err:
+        _LOGGER.debug("charger_offre: %s : %s", type(err).__name__, err)
+        _LOGGER.debug("charger_offre: lève une exception")
         raise OffreInvalide(f"{chemin.name} : fichier illisible ({err})") from None
     try:
+        _LOGGER.debug("charger_offre: sortie")
         return offre_depuis_dict(donnees, chemin.stem)
     except OffreInvalide as err:
+        _LOGGER.debug("charger_offre: %s : %s", type(err).__name__, err)
+        _LOGGER.debug("charger_offre: lève une exception")
         raise OffreInvalide(f"{chemin.name} : {err}") from None
 
 
 def lire_offres(dossier: Path = DOSSIER_OFFRES) -> dict[str, Offre]:
     """Toutes les offres livrées avec l'intégration, indexées par identifiant."""
+    _LOGGER.debug("lire_offres: entrée")
     offres: dict[str, Offre] = {}
     for chemin in sorted(dossier.glob("*.yaml")):
         offre = charger_offre(chemin)
         offres[offre.id] = offre
+    _LOGGER.debug("lire_offres: %s offre(s) %s", len(offres), sorted(offres))
     return offres
 
 
 def grilles_offres(offres: dict[str, Offre]) -> dict[str, Grilles]:
     """Grilles de toutes les offres, indexées par clé de comparaison ``<id>:<option>``."""
+    _LOGGER.debug("grilles_offres: entrée")
     resultats: dict[str, Grilles] = {}
     for offre in offres.values():
         for option, grilles in offre.grilles.items():
             resultats[f"{offre.id}:{option}"] = grilles
+    _LOGGER.debug("grilles_offres: %s grille(s) %s", len(resultats), sorted(resultats))
     return resultats

@@ -20,6 +20,7 @@ custom_components/tarifenergie/
 - Prix du **jour** de consommation (date locale) ; abonnement à 1/365 (ou 1/366) par jour.
 - Une valeur vérifiée dans un fichier CRE est citée dans les tests avec sa grille (ex. « 01/08/2026, 6 kVA »).
 - Couverture 100 % ; `recorder_mock` activé pour tous les tests (`tests/conftest.py`).
+- Journalisation (SOCLE §8, #418) : `custom_components/` → `logging` (`_LOGGER`, `%s`, jamais de f-string ni loguru) ; ailleurs → loguru (`{}`). `debug` en entrée et avant chaque sortie/`raise` volontaire, chaque `except` journalise ; vérifié par `tests/test_journal_regles.py`, référence `scripts/audit_debug_sorties.baseline` à 0 (`uv run --only-group scripts python scripts/audit_debug_sorties.py --details`).
 - Socle Mathide-Team : PR vers `dev` (modèle Objet / Closes / Vérifications), relais `dev` → `main`, merge commit, pas de force push.
 
 ## Instructions reçues dans le chat

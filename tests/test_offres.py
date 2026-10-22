@@ -236,3 +236,39 @@ def test_offres_invalides(donnees, chemin_fautif):
         donnees["grille_du"] = date.fromisoformat(donnees["grille_du"])
     with pytest.raises(OffreInvalide, match=chemin_fautif):
         offre_depuis_dict(donnees, "x")
+
+
+def test_cles_par_option(offres):
+    """``Offre.cles()`` : une clé ``<id>:<option>`` par option proposée, triée."""
+    for offre in offres.values():
+        assert offre.cles() == [f"{offre.id}:{option}" for option in sorted(offre.grilles)]
+
+
+def test_charger_offre_yaml_invalide(tmp_path):
+    """YAML illisible : OffreInvalide qui nomme le fichier (issue #418 : cause journalisée)."""
+    from custom_components.tarifenergie.offres import charger_offre
+
+    chemin = tmp_path / "casse.yaml"
+    chemin.write_text("id: [non fermé\n", encoding="utf-8")
+    with pytest.raises(OffreInvalide, match=r"casse\.yaml : YAML invalide"):
+        charger_offre(chemin)
+
+
+def test_charger_offre_fichier_illisible(tmp_path):
+    """Octets non UTF-8 : OffreInvalide « fichier illisible »."""
+    from custom_components.tarifenergie.offres import charger_offre
+
+    chemin = tmp_path / "binaire.yaml"
+    chemin.write_bytes(b"\xff\xfe\x00offre")
+    with pytest.raises(OffreInvalide, match=r"binaire\.yaml : fichier illisible"):
+        charger_offre(chemin)
+
+
+def test_charger_offre_contenu_invalide(tmp_path):
+    """YAML valide mais offre incomplète : le nom du fichier préfixe l'erreur de validation."""
+    from custom_components.tarifenergie.offres import charger_offre
+
+    chemin = tmp_path / "incomplete.yaml"
+    chemin.write_text("id: x\n", encoding="utf-8")
+    with pytest.raises(OffreInvalide, match=r"^incomplete\.yaml : "):
+        charger_offre(chemin)
