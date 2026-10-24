@@ -32,6 +32,7 @@ def test_quatre_offres_livrees(offres):
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
         "gedia_all_inclusive",
+        "gedia_trv_local",
         "geg_elec_verte_3ans",
         "hunelec_prix_fixe_1an",
         "hunelec_prix_fixe_1an_vert",
@@ -133,6 +134,25 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     assert grilles["es_trv_local:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.19850")}
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
+    assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_gedia_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local Gedia (#192, #193) : réseau de Dreux, Base 9-36 kVA en extinction, HC dès 3 kVA."""
+    offre = offres["gedia_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "gedia", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 24).date()
+    g = grilles["gedia_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("190.32"),  # 15,86 x 12
+        {"base": Decimal("0.20006")},
+    )
+    g = grilles["gedia_trv_local:base"].en_vigueur(36, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("646.56"), {"base": Decimal("0.19850")})  # 53,88 x 12
+    g = grilles["gedia_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
+    assert g.abonnement_an == Decimal("145.56")  # 12,13 x 12, comme la Base
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
 
 
