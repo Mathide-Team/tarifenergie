@@ -147,7 +147,8 @@ def test_edf_zen_fixe_grille_du_1er_octobre_2026(offres):
     )
     # kWh Base : 0,2082 € en 3 et 6 kVA, 0,2065 € de 9 à 36 kVA.
     assert grilles["edf_zen_fixe_2ans:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.2065")}
-    assert grilles["edf_zen_fixe_2ans:base"].en_vigueur(36, jour).abonnement_an == Decimal("646.56")  # 53,88 x 12
+    # 36 kVA : 53,88 x 12.
+    assert grilles["edf_zen_fixe_2ans:base"].en_vigueur(36, jour).abonnement_an == Decimal("646.56")
     g = grilles["edf_zen_fixe_2ans:hphc"].en_vigueur(36, jour)
     assert g.abonnement_an == Decimal("646.56")  # même abonnement qu'en Base
     assert g.prix == {"hp": Decimal("0.2231"), "hc": Decimal("0.1650")}
