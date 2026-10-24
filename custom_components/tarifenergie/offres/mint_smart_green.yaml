@@ -1,0 +1,31 @@
+# Mint Énergie Smart & Green (issues #36 Base, #144 HC ; inventaire #6).
+# Prix fixe (typologie CRE) : abonnement et kWh HTT fixes 2 ans ; 100 % d'électricité
+# verte (garanties d'origine françaises). Grille TTC applicable du 08/10/2026
+# (réf. 273, puis 272), page 1 du PDF officiel. Base : 20,15 c€ de 3 à 6 kVA,
+# 20,02 c€ de 9 à 36 kVA (prix centrés sur leurs lignes, coupure comme au TRV).
+# Pas d'HC en 3 kVA. Non modélisés : réduction de 60 € TTC après 24 puis 36 mois,
+# majoration HTT au renouvellement (+2,50 €/mois, +0,0149 €/kWh Base et HP,
+# +0,0110 €/kWh HC).
+id: mint_smart_green
+fournisseur: Mint Énergie
+offre: Smart & Green
+type_prix: fixe
+grille_du: 2026-10-08
+duree_fixite_mois: 24
+source: https://www.mint-energie.com/wp-content/uploads/2026/10/MINT_ENERGIE_Fiche_Tarifs_27324_SMART_GREEN.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 17.27, 6: 18.94, 9: 21.80, 12: 25.87, 15: 28.74, 18: 32.81, 24: 40.95, 30: 47.89, 36: 54.82}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2015}
+      6: {base: 0.2015}
+      9: {base: 0.2002}
+      12: {base: 0.2002}
+      15: {base: 0.2002}
+      18: {base: 0.2002}
+      24: {base: 0.2002}
+      30: {base: 0.2002}
+      36: {base: 0.2002}
+  hphc:
+    abonnement_mensuel_ttc: {6: 19.12, 9: 22.08, 12: 26.25, 15: 29.21, 18: 33.37, 24: 41.69, 30: 48.82, 36: 55.94}
+    kwh_ttc: {hp: 0.2147, hc: 0.1636}
