@@ -43,6 +43,7 @@ def test_quatre_offres_livrees(offres):
         "plenitude_pleniweb_1an",
         "primeo_fixe_confort",
         "selia_elec_vert_fixe",
+        "totalenergies_fixe_2ans",
     ]
     assert all(o.grilles["base"] for o in offres.values())
 
@@ -132,6 +133,26 @@ def test_abonnement_annuel_et_mensuel_exclusifs():
     deux = {**annuel, "abonnement_mensuel_ttc": {6: 15.0}}
     with pytest.raises(OffreInvalide, match="exclusifs"):
         offre_depuis_dict({**base, "options": {"base": deux}}, "x")
+
+
+def test_totalenergies_fixe_2ans_grille_du_24_septembre_2026(offres):
+    """Grille TTC TotalEnergies Fixe 2 ans du 24/09/2026, PDF officiel (#25 Base, #126 HC)."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["totalenergies_fixe_2ans:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 9, 24).date(),
+        Decimal("190.32"),  # 15,86 x 12
+        {"base": Decimal("0.2270")},
+    )
+    # kWh Base : 0,2270 € en 3 et 6 kVA, 0,2252 € au-delà.
+    assert grilles["totalenergies_fixe_2ans:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.2252")}
+    g = grilles["totalenergies_fixe_2ans:hphc"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("192.60")  # 16,05 x 12
+    assert g.prix == {"hp": Decimal("0.2435"), "hc": Decimal("0.1791")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):  # pas d'option HC en 3 kVA
+        grilles["totalenergies_fixe_2ans:hphc"].en_vigueur(3, jour)
+    assert offres["totalenergies_fixe_2ans"].duree_fixite_mois == 24
 
 
 def test_prudence_grille_du_1er_aout_2026(offres):

@@ -35,7 +35,7 @@ Avec moins de 12 mois d'historique, les coûts portent sur la période disponibl
 Les grilles des fournisseurs sont livrées dans `custom_components/tarifenergie/offres/*.yaml`
 (inventaire [#6](https://github.com/Mathide-Team/tarifenergie/issues/6), moteur [#5](https://github.com/Mathide-Team/tarifenergie/issues/5)) :
 une issue par offre documente la grille, sa date d'effet et ses sources. La v0.2 couvre
-les offres **à prix fixe** avec options Base et Heures creuses — 17 offres :
+les offres **à prix fixe** avec options Base et Heures creuses — 18 offres :
 
 - la bellenergie Prudence 1 an, Constance 2 ans et Garance 3 ans,
 - Ohm Énergie Sérénité Fixe 1 an et Fixe 2 ans,
@@ -47,7 +47,8 @@ les offres **à prix fixe** avec options Base et Heures creuses — 17 offres :
 - ilek ÉnRFixe+ Élec,
 - Primeo Energie Offre Fixe Confort,
 - Eni Plenitude Pleniweb 1 an,
-- SÉLIA Mon Contrat élec vert Fixe.
+- SÉLIA Mon Contrat élec vert Fixe,
+- TotalEnergies Fixe 2 ans.
 
 Chaque offre est comparée sur la consommation réelle comme les tarifs réglementés :
 puissances non proposées (ex. Heures creuses en 3 kVA) signalées comme indisponibles,
