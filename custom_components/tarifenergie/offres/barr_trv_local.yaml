@@ -1,0 +1,23 @@
+# Barr Energies — TRV local, Tarif Bleu résidentiel (issues #197 Base, #198 HC ;
+# phase 2 des ELD, #189). Seul fournisseur du TRV sur son réseau (Barr et Villé,
+# ≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme ÉS #72).
+# Fiche descriptive de l'offre TRVE clients résidentiels « TURPE 4 postes » du
+# 01/08/2026, relevée le 24/10/2026 avec pdftotext -layout. La Base n'y est
+# publiée que pour 3 et 6 kVA (9 à 36 kVA en extinction, arrêté du 28/01/2025) :
+# les autres puissances Base sont donc indisponibles dans le moteur. HC dès
+# 3 kVA, abonnement HC propre (plus cher que la Base). Tempo (#199) non repris :
+# le moteur ne connaît que Base et HC.
+id: barr_trv_local
+fournisseur: Barr Energies
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: barr_energies
+grille_du: 2026-08-01
+source: https://barr-energies.fr/dynamic/pdf/fiches_descriptives_electricite/260801_barr_energies_fiche_descriptive_de_l_offre_trve_clients_residentiels_turpe_4_postes.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86}
+    kwh_ttc: {base: 0.2001}
+  hphc:
+    abonnement_mensuel_ttc: {3: 12.23, 6: 16.04, 9: 20.16, 12: 24.13, 15: 27.86, 18: 31.70, 24: 39.88, 30: 47.40, 36: 55.00}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
