@@ -5,6 +5,7 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les numéros 
 ## [Non publié]
 
 ### Ajouté
+- **Offres Gaz de Bordeaux NovaFixe Élec et NovaFixe Bonus Élec** (#111, #372, #99, #371), Base de 3 à 15 kVA et HC de 6 à 36 kVA. Grille de Bordeaux du 01/10/2026, vérifiée sur la fiche officielle ; prix fixes 36 mois. La remise Bonus de 100 € après 11 mois n'est pas modélisée.
 - **Offre GEDIA All Inclusive GES Électricité** (#54, #335), Base et Heures creuses : tableau « Domestique » de la grille TTC du 19-25/10/2026. Elle est réservée au réseau GEDIA (Dreux). Les offres acceptent maintenant **`abonnement_annuel_ttc`**, exclusif de `abonnement_mensuel_ttc`, pour les grilles publiées en €/an (repris sans division par 12).
 - **Offres ÉS Énergies** (#73, #74, #329, #332) : Électricité verte à prix fixe 1 an et Prix fixe 1 an Électricité verte 100 % régionale, Base et Heures creuses. Grilles TTC du 01/10/2026 ; le supplément régional de 2,27 € TTC/mois est ajouté à l'abonnement. Les options Week-end (#330, #331, #333, #334) ne sont pas reprises, car le moteur ne gère que Base et HC. Ces offres sont réservées au territoire Strasbourg Électricité Réseaux.
 - **Offres Hunélec** (#325, #326, #327, #328) : Offre à prix fixe 1 an, Base et Heures creuses, et sa variante 100 % énergie verte. Grilles TTC du 01/07/2026, lues dans les fiches descriptives page 4. Le supplément « vert » de 2,27 € TTC/mois est ajouté à l'abonnement. Ces offres sont réservées au réseau Hunélec (Haut-Rhin) : le moteur ne filtre pas encore par zone, comme pour GEG.

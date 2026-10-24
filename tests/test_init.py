@@ -65,6 +65,10 @@ async def test_capteurs(hass: HomeAssistant):
     assert economie.state == "1.94"
     assert [e["option"] for e in economie.attributes["classement"]] == [
         "primeo_fixe_confort:hphc",
+        # Gaz de Bordeaux NovaFixe HC (#372, #371) : 36 x 0,14669 + 3/365 x 190,44 = 6,85 €
+        # (remise de 100 € du Bonus non modélisée : même total).
+        "gaz_de_bordeaux_novafixe:hphc",
+        "gaz_de_bordeaux_novafixe_bonus:hphc",
         "plenitude_pleniweb_1an:hphc",
         "la_bellenergie_prudence:hphc",
         "alterna_fixe_1an:hphc",
@@ -73,6 +77,9 @@ async def test_capteurs(hass: HomeAssistant):
         "la_bellenergie_constance:hphc",
         "la_bellenergie_garance:hphc",
         "primeo_fixe_confort:base",
+        # Gaz de Bordeaux NovaFixe Base (#111, #99) : 36 x 0,18373 + 3/365 x 190,44 = 8,18 €.
+        "gaz_de_bordeaux_novafixe:base",
+        "gaz_de_bordeaux_novafixe_bonus:base",
         "plenitude_pleniweb_1an:base",
         # Hunélec HC (#326) : 36 x 0,19129 + 3/365 x 191,52 = 8,46 € ;
         # 100 % vert (#328) : + 2,27 €/mois = 8,68 € ; TRV Base : 8,77 €.
@@ -112,9 +119,10 @@ async def test_option_indisponible_au_dela_de_15_kva(hass: HomeAssistant):
     base = hass.states.get("sensor.maison_12_month_cost_base_option")
     assert base.state == "unknown"
     assert "36 kVA" in base.attributes["indisponible"]
-    # À 36 kVA, Plenitude HC (681,72 €/an, 14,67 c€) passe devant Prudence HC et le TRV HC.
-    assert hass.states.get("sensor.maison_cheapest_option").state == "plenitude_pleniweb_1an:hphc"
-    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.19"
+    # À 36 kVA, Gaz de Bordeaux NovaFixe HC (646,56 €/an, 14,669 c€, #372) passe devant
+    # Plenitude HC (681,72 €/an, 14,67 c€), Prudence HC et le TRV HC.
+    assert hass.states.get("sensor.maison_cheapest_option").state == "gaz_de_bordeaux_novafixe:hphc"
+    assert hass.states.get("sensor.maison_possible_12_month_saving").state == "0.47"
 
 
 async def test_sans_donnees(hass: HomeAssistant):
