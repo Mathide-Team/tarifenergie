@@ -72,6 +72,8 @@ async def test_capteurs(hass: HomeAssistant):
         # TRV local ÉS HC (#190) : 36 x 0,15890 + 3/365 x 194,16 = 7,316 €, juste
         # après le TRV national HC (abonnement un peu plus cher).
         "es_trv_local:hphc",
+        # TRV local UME HC (#322) : mêmes montants que l'ÉS, ex æquo départagé par la clé.
+        "ume_trv_local:hphc",
         "alterna_du_coin_1an:hphc",
         "la_bellenergie_constance:hphc",
         "la_bellenergie_garance:hphc",
@@ -86,6 +88,7 @@ async def test_capteurs(hass: HomeAssistant):
         "base",
         # TRV local ÉS Base (#72) : 36 x 0,20006 + 3/365 x 191,40 = 8,775 € (TRV national : 8,772 €).
         "es_trv_local:base",
+        "ume_trv_local:base",  # TRV local UME Base (#321), ex æquo avec l'ÉS
         "alterna_du_coin_1an:base",
         "la_bellenergie_constance:base",
         "la_bellenergie_garance:base",
