@@ -41,6 +41,7 @@ def test_quatre_offres_livrees(offres):
         "la_bellenergie_prudence",
         "ohm_fixe_2ans",
         "ohm_serente_fixe_1an",
+        "oya_trv_local",
         "plenitude_pleniweb_1an",
         "primeo_fixe_confort",
         "selia_elec_vert_fixe",
@@ -134,6 +135,26 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_oya_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local Oya énergies (#215, #216)."""
+    offre = offres["oya_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "oya_energies", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 24).date()
+    g = grilles["oya_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("190.32"),
+        {"base": Decimal("0.2001")},
+    )
+    # Base 9-36 kVA en extinction, publiée pour les contrats en cours
+    g = grilles["oya_trv_local:base"].en_vigueur(36, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("646.56"), {"base": Decimal("0.1985")})
+    g = grilles["oya_trv_local:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("646.56")
+    assert g.prix == {"hp": Decimal("0.2142"), "hc": Decimal("0.1589")}
 
 
 @pytest.mark.parametrize(
