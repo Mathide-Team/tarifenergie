@@ -28,6 +28,7 @@ def test_quatre_offres_livrees(offres):
     assert sorted(offres) == [
         "alterna_du_coin_1an",
         "alterna_fixe_1an",
+        "edf_zen_fixe_2ans",
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
         "gedia_all_inclusive",
@@ -132,6 +133,27 @@ def test_abonnement_annuel_et_mensuel_exclusifs():
     deux = {**annuel, "abonnement_mensuel_ttc": {6: 15.0}}
     with pytest.raises(OffreInvalide, match="exclusifs"):
         offre_depuis_dict({**base, "options": {"base": deux}}, "x")
+
+
+def test_edf_zen_fixe_grille_du_1er_octobre_2026(offres):
+    """Grille TTC EDF Zen Fixe 2 ans du 01/10/2026, PDF EDF (#8 Base, #114 HC)."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["edf_zen_fixe_2ans:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 10, 1).date(),
+        Decimal("190.32"),  # 15,86 x 12
+        {"base": Decimal("0.2082")},
+    )
+    # kWh Base : 0,2082 € en 3 et 6 kVA, 0,2065 € de 9 à 36 kVA.
+    assert grilles["edf_zen_fixe_2ans:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.2065")}
+    assert grilles["edf_zen_fixe_2ans:base"].en_vigueur(36, jour).abonnement_an == Decimal("646.56")  # 53,88 x 12
+    g = grilles["edf_zen_fixe_2ans:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("646.56")  # même abonnement qu'en Base
+    assert g.prix == {"hp": Decimal("0.2231"), "hc": Decimal("0.1650")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):  # pas d'option HC en 3 kVA
+        grilles["edf_zen_fixe_2ans:hphc"].en_vigueur(3, jour)
+    assert offres["edf_zen_fixe_2ans"].duree_fixite_mois == 25  # 2 ans et 1 mois
 
 
 def test_prudence_grille_du_1er_aout_2026(offres):
