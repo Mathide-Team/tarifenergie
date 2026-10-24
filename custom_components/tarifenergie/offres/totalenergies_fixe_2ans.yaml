@@ -1,0 +1,30 @@
+# TotalEnergies Offre Fixe 2 ans (issues #25 Base, #126 Heures creuses ;
+# inventaire #6).
+# Prix du kWh HT et de l'abonnement HT fixes 2 ans (hors évolution des taxes).
+# Grille officielle « Offre Fixe 2 ans - 24 sept. 2026 », vérifiée sur le PDF.
+# kWh Base : 0,2270 € en 3 et 6 kVA, 0,2252 € de 7 à 36 kVA. Pas d'HC en 3 kVA.
+# Puissances réservées aux compteurs Linky (4, 5, 7, 8 kVA…) non reprises : le
+# moteur ne connaît que les puissances standard. TTC indicatifs (TCCFE communale).
+id: totalenergies_fixe_2ans
+fournisseur: TotalEnergies
+offre: Fixe 2 ans
+type_prix: fixe
+grille_du: 2026-09-24
+duree_fixite_mois: 24
+source: https://www.totalenergies.fr/fileadmin/Digital/Groupe/PDF/Documents_contractuels/Particuliers/Tarifs_TotalEnergies/fr/grille-tarifaire-fixe-2ans-particuliers.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 53.88}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2270}
+      6: {base: 0.2270}
+      9: {base: 0.2252}
+      12: {base: 0.2252}
+      15: {base: 0.2252}
+      18: {base: 0.2252}
+      24: {base: 0.2252}
+      30: {base: 0.2252}
+      36: {base: 0.2252}
+  hphc:  # pas d'option HC en 3 kVA
+    abonnement_mensuel_ttc: {6: 16.05, 9: 20.16, 12: 24.13, 15: 27.86, 18: 31.70, 24: 39.88, 30: 47.40, 36: 54.99}
+    kwh_ttc: {hp: 0.2435, hc: 0.1791}
