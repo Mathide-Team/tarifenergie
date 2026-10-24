@@ -1,0 +1,31 @@
+# GEDIA — All Inclusive GES Électricité (issues #54 Base, #335 HC ; inventaire #6).
+# ELD de Dreux (Eure-et-Loir) : offre réservée au territoire du réseau GEDIA, dont
+# les heures creuses s'appliquent ; pas de filtre de zone dans le moteur (comme GEG #56).
+# Grille TTC « Prix applicables du 19-10-2026 au 25-10-2026 », page 2, tableau
+# « Domestique » (le second tableau est celui des professionnels). GEDIA publie une
+# grille par semaine de souscription ; les prix sont ensuite fixes 12 ou 24 mois
+# (12 retenu). Abonnement publié en €/an : abonnement_annuel_ttc, sans division par 12.
+# kWh Base : 0,26948 € pour 3 et 6 kVA, 0,26725 € de 9 à 36 kVA. Pas d'HC en 3 kVA.
+id: gedia_all_inclusive
+fournisseur: GEDIA
+offre: All Inclusive GES Électricité
+type_prix: fixe
+grille_du: 2026-10-19
+duree_fixite_mois: 12
+source: https://egbyjwbrxlxdjopgyome.supabase.co/storage/v1/object/public/gediaenergies/all-inclusive-electricite-fixe/grille-tarifaire.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.36, 9: 238.61, 12: 285.13, 15: 328.78, 18: 373.71, 24: 469.64, 30: 557.65, 36: 646.52}
+    kwh_ttc_par_puissance:
+      3: {base: 0.26948}
+      6: {base: 0.26948}
+      9: {base: 0.26725}
+      12: {base: 0.26725}
+      15: {base: 0.26725}
+      18: {base: 0.26725}
+      24: {base: 0.26725}
+      30: {base: 0.26725}
+      36: {base: 0.26725}
+  hphc:
+    abonnement_annuel_ttc: {6: 190.36, 9: 238.61, 12: 285.13, 15: 328.78, 18: 373.71, 24: 469.64, 30: 557.65, 36: 646.52}
+    kwh_ttc: {hp: 0.28965, hc: 0.21082}
