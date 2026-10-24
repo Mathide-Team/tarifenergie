@@ -44,6 +44,7 @@ def test_quatre_offres_livrees(offres):
         "plenitude_pleniweb_1an",
         "primeo_fixe_confort",
         "selia_elec_vert_fixe",
+        "sicae_somme_trv_local",
     ]
     assert all(o.grilles["base"] for o in offres.values())
 
@@ -134,6 +135,25 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_sicae_somme_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local SICAE Somme et Cambraisis (#304, #305) : abonnement en €/an, HC dès 6 kVA."""
+    offre = offres["sicae_somme_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "sicae_somme", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["sicae_somme_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("190.35"),
+        {"base": Decimal("0.2001")},
+    )
+    g = grilles["sicae_somme_trv_local:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("659.92")
+    assert g.prix == {"hp": Decimal("0.2142"), "hc": Decimal("0.1589")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):
+        grilles["sicae_somme_trv_local:hphc"].en_vigueur(3, jour)
 
 
 @pytest.mark.parametrize(
