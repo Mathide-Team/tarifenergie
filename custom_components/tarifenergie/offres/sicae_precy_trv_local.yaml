@@ -1,0 +1,23 @@
+# SICAE-Précy (Précy-Saint-Martin, Aube) — TRV local, Tarif Bleu résidentiel
+# (issues #301 Base, #302 HC ; phase 2 des ELD, #189). Fournisseur historique
+# sur le réseau de la SICAE-Précy (≤ 36 kVA) ; pas de filtre de zone dans le
+# moteur (comme GEG #56).
+# Fiche descriptive, article 4 des CGV, « Prix TTC en vigueur au 1er août
+# 2026 », page 2, recoupée avec le texte du PDF le 24/10/2026. Abonnements
+# publiés en €/an. Base publiée de 3 à 15 kVA seulement, à 20,01 c€ pour toutes
+# ces puissances (tel que publié) ; HC à partir de 6 kVA. Tempo (#303) non
+# repris : le moteur ne connaît que Base et HC.
+id: sicae_precy_trv_local
+fournisseur: SICAE-Précy
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: sicae_precy
+grille_du: 2026-08-01
+source: https://www.sicae-precy.fr/images/uploads//Fiche%20descriptive%20offre%2001082026.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.35, 9: 238.60, 12: 285.13, 15: 328.77}
+    kwh_ttc: {base: 0.2001}
+  hphc:
+    abonnement_annuel_ttc: {6: 192.59, 9: 241.96, 12: 289.60, 15: 334.36, 18: 380.41, 24: 478.58, 30: 568.82, 36: 659.92}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
