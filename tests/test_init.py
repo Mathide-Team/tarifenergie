@@ -105,6 +105,7 @@ async def test_capteurs(hass: HomeAssistant):
         "es_verte_regionale_fixe_1an:base",
     ]
     assert "2026-10-01" in economie.attributes["indisponibles"]["geg_elec_verte_3ans:base"]
+    assert "2026-10-01" in economie.attributes["indisponibles"]["geg_direct_producteur_3ans:hphc"]
     assert "2026-10-01" in economie.attributes["indisponibles"]["ohm_serente_fixe_1an:base"]
     assert "2026-10-01" in economie.attributes["indisponibles"]["gedia_all_inclusive:hphc"]
     assert hass.states.get("sensor.maison_12_month_consumption").state == "36.0"

@@ -1,0 +1,37 @@
+# GEG Mon Offre Elec Verte Direct Producteur — fixe 3 ans (issues #55 Base,
+# #136 HC ; inventaire #6). Électricité 100 % renouvelable et locale, producteurs
+# connus, label VertVolt « Très engagé ». Particuliers ≤ 36 kVA.
+# Grille TTC applicable au 05/10/2026 (même PDF que geg_elec_verte_3ans) : même
+# kWh Base que l'offre Elec Verte, abonnement plus élevé ; HP 19,83 c€ jusqu'à
+# 9 kVA puis 20,16 c€, HC 15,86 c€ à toutes les puissances. Pas d'HC en 3 kVA.
+id: geg_direct_producteur_3ans
+fournisseur: GEG Source d'Énergies
+offre: Mon Offre Elec Verte Direct Producteur — fixe 3 ans
+type_prix: fixe
+grille_du: 2026-10-05
+duree_fixite_mois: 36
+source: https://www.geg.fr/Medias/content-editor/Tarif%20Part/2026/Octobre/Grille-tarifaire-Mes%20Offres%20Elec%20fixes%203%20ans-PART1026.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 13.24, 6: 17.30, 9: 21.67, 12: 25.89, 15: 29.84, 18: 33.92, 24: 42.61, 30: 50.59, 36: 58.64}
+    kwh_ttc_par_puissance:
+      3: {base: 0.1837}
+      6: {base: 0.1837}
+      9: {base: 0.1823}
+      12: {base: 0.1823}
+      15: {base: 0.1823}
+      18: {base: 0.1823}
+      24: {base: 0.1823}
+      30: {base: 0.1823}
+      36: {base: 0.1823}
+  hphc:
+    abonnement_mensuel_ttc: {6: 17.48, 9: 21.95, 12: 26.26, 15: 30.31, 18: 34.47, 24: 43.36, 30: 51.52, 36: 59.76}
+    kwh_ttc_par_puissance:
+      6: {hp: 0.1983, hc: 0.1586}
+      9: {hp: 0.1983, hc: 0.1586}
+      12: {hp: 0.2016, hc: 0.1586}
+      15: {hp: 0.2016, hc: 0.1586}
+      18: {hp: 0.2016, hc: 0.1586}
+      24: {hp: 0.2016, hc: 0.1586}
+      30: {hp: 0.2016, hc: 0.1586}
+      36: {hp: 0.2016, hc: 0.1586}

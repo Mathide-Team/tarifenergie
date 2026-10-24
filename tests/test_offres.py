@@ -32,6 +32,7 @@ def test_quatre_offres_livrees(offres):
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
         "gedia_all_inclusive",
+        "geg_direct_producteur_3ans",
         "geg_elec_verte_3ans",
         "hunelec_prix_fixe_1an",
         "hunelec_prix_fixe_1an_vert",
@@ -112,6 +113,26 @@ def test_gedia_grille_du_19_octobre_2026(offres):
     assert g.prix == {"hp": Decimal("0.28965"), "hc": Decimal("0.21082")}
     with pytest.raises(TarifIntrouvable, match="3 kVA"):
         grilles["gedia_all_inclusive:hphc"].en_vigueur(3, jour)
+
+
+def test_geg_direct_producteur_grille_du_5_octobre_2026(offres):
+    """GEG Direct Producteur fixe 3 ans, grille TTC du 05/10/2026 (#55, #136) : HP selon la puissance."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["geg_direct_producteur_3ans:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 10, 5).date(),
+        Decimal("207.60"),  # 17,30 x 12
+        {"base": Decimal("0.1837")},
+    )
+    assert grilles["geg_direct_producteur_3ans:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.1823")}
+    g = grilles["geg_direct_producteur_3ans:hphc"].en_vigueur(9, jour)
+    assert g.prix == {"hp": Decimal("0.1983"), "hc": Decimal("0.1586")}
+    g = grilles["geg_direct_producteur_3ans:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("717.12")  # 59,76 x 12
+    assert g.prix == {"hp": Decimal("0.2016"), "hc": Decimal("0.1586")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):
+        grilles["geg_direct_producteur_3ans:hphc"].en_vigueur(3, jour)
 
 
 def test_es_trv_local_grille_du_1er_aout_2026(offres):
