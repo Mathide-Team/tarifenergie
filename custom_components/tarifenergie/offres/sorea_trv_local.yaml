@@ -1,0 +1,35 @@
+# Soréa (Maurienne) — TRV local, Tarif Bleu résidentiel (issues #318 Base,
+# #319 HC ; phase 2 des ELD, #189). Seul fournisseur du TRV dans la vallée de
+# la Maurienne (Savoie, ≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme
+# GEG #56).
+# « Grille de prix […] Applicable au 1er Août 2026 », page 1, recoupée avec le
+# texte du PDF le 24/10/2026. Prix publiés en c€ à deux décimales. kWh Base :
+# 0,2001 € pour 3 et 6 kVA, 0,1985 € de 9 à 36 kVA — ces puissances sont EN
+# EXTINCTION (arrêté du 28/01/2025) : publiées pour les contrats en cours, plus
+# proposées à la souscription. HC à partir de 6 kVA, même abonnement qu'en
+# Base. Non repris : Tempo (#320, le moteur ne connaît que Base et HC), rabais
+# communaux de 5 % (page 2 : Saint-Julien-Montdenis, Saint-Léger,
+# Villargondran, Montricher, Valmeinier), majorations hors Linky.
+id: sorea_trv_local
+fournisseur: Soréa
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: sorea
+grille_du: 2026-08-01
+source: https://www.sorea-maurienne.fr/wp-content/uploads/2026/08/Tarif-Bleu-Particuliers-au-01082026.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 53.88}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2001}
+      6: {base: 0.2001}
+      9: {base: 0.1985}
+      12: {base: 0.1985}
+      15: {base: 0.1985}
+      18: {base: 0.1985}
+      24: {base: 0.1985}
+      30: {base: 0.1985}
+      36: {base: 0.1985}
+  hphc:
+    abonnement_mensuel_ttc: {6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 53.88}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
