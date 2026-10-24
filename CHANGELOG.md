@@ -5,6 +5,7 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les numéros 
 ## [Non publié]
 
 ### Ajouté
+- **TRV local Énergies Services Lannemezan** (#210 Base, #211 HC) : Tarif Bleu résidentiel du plateau de Lannemezan, grille du 01/08/2026. Base 9-36 kVA en extinction mais publiée (contrats en cours) ; HC dès 3 kVA.
 - **TRV local des ELD** (#189) : `type_prix: reglemente`, sans `duree_fixite_mois` (le prix suit le TRV) et avec le réseau dans `eld:` ; `Offre` porte `type_prix` et `eld`. Premier TRV local : **ÉS Énergies** (#72 Base, #190 HC), grille du 01/08/2026, HC dès 3 kVA ; Base 9-36 kVA en extinction. Tempo (#191) n'est pas repris.
 - **Offre GEDIA All Inclusive GES Électricité** (#54, #335), Base et Heures creuses : tableau « Domestique » de la grille TTC du 19-25/10/2026. Elle est réservée au réseau GEDIA (Dreux). Les offres acceptent maintenant **`abonnement_annuel_ttc`**, exclusif de `abonnement_mensuel_ttc`, pour les grilles publiées en €/an (repris sans division par 12).
 - **Offres ÉS Énergies** (#73, #74, #329, #332) : Électricité verte à prix fixe 1 an et Prix fixe 1 an Électricité verte 100 % régionale, Base et Heures creuses. Grilles TTC du 01/10/2026 ; le supplément régional de 2,27 € TTC/mois est ajouté à l'abonnement. Les options Week-end (#330, #331, #333, #334) ne sont pas reprises, car le moteur ne gère que Base et HC. Ces offres sont réservées au territoire Strasbourg Électricité Réseaux.

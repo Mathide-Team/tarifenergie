@@ -1,0 +1,32 @@
+# Énergies Services Lannemezan — TRV local, Tarif Bleu résidentiel (issues #210
+# Base, #211 HC ; phase 2 des ELD, #189). Seul fournisseur du TRV sur son réseau
+# (plateau de Lannemezan, ≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme
+# ÉS #72).
+# Grille TTC « Tarif Bleu Réglementé » applicable au 01/08/2026, relevée le
+# 24/10/2026 avec pdftotext -layout. kWh Base : 0,2001 € pour 3 et 6 kVA, 0,1985 €
+# de 9 à 36 kVA — ces puissances Base sont EN EXTINCTION (arrêté du 28/01/2025) :
+# publiées pour les contrats en cours, plus proposées à la souscription. HC dès
+# 3 kVA. Pas de Tempo publié dans cette grille.
+id: lannemezan_trv_local
+fournisseur: Énergies Services Lannemezan
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: energies_services_lannemezan
+grille_du: 2026-08-01
+source: https://eslannemezan.fr/wp-content/uploads/2026/08/TRV-ELEC-PARTICULIERS-TTC-AFFICHAGE-01-08-2026.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 53.88}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2001}
+      6: {base: 0.2001}
+      9: {base: 0.1985}
+      12: {base: 0.1985}
+      15: {base: 0.1985}
+      18: {base: 0.1985}
+      24: {base: 0.1985}
+      30: {base: 0.1985}
+      36: {base: 0.1985}
+  hphc:
+    abonnement_mensuel_ttc: {3: 12.22, 6: 16.05, 9: 20.16, 12: 24.13, 15: 27.86, 18: 31.70, 24: 39.88, 30: 47.40, 36: 54.99}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
