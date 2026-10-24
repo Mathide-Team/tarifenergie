@@ -1,0 +1,23 @@
+# Bazas Energies (régie municipale) — TRV local, Tarif Bleu résidentiel (issues
+# #218 Base, #219 HC ; phase 2 des ELD, #189). Seul fournisseur du TRV sur son
+# réseau (Bazas, ≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme ÉS #72).
+# Grille « Tarifs TTC au 1er août 2026 » (version 09/2026), relevée le 24/10/2026
+# avec pdftotext -layout. Abonnements « compteur Linky » retenus ; les abonnements
+# « compteur électronique », un peu plus chers, ne sont pas modélisés. Base publiée
+# pour 3 et 6 kVA seulement (9 à 36 kVA en extinction) ; HC de 6 à 36 kVA (pas de
+# HC en 3 kVA, comme le TRV national). Tempo (#220) non repris : le moteur ne
+# connaît que Base et HC.
+id: bazas_trv_local
+fournisseur: Bazas Energies
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: bazas_energies
+grille_du: 2026-08-01
+source: https://bazas-energies.fr/wp-content/uploads/2026/09/V2M1-Tarif-bleu-RESIDENTIELS-BAZAS-ENERGIES09-2026-1.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86}
+    kwh_ttc: {base: 0.2001}
+  hphc:
+    abonnement_mensuel_ttc: {6: 16.05, 9: 20.16, 12: 24.13, 15: 27.86, 18: 31.70, 24: 39.88, 30: 47.40, 36: 54.99}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
