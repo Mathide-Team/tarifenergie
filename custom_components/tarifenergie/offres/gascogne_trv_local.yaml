@@ -1,0 +1,33 @@
+# Gascogne Énergies Services — TRV local, Tarif Bleu résidentiel (issues #205
+# Base, #206 HC ; phase 2 des ELD, #189). Seul fournisseur du TRV sur son réseau
+# (Aire-sur-l'Adour et environs, ≤ 36 kVA) ; pas de filtre de zone dans le moteur
+# (comme ÉS #72).
+# Grille TRVE du 01/08/2026 (PDF combiné TRVE + Tempo), relevée le 24/10/2026
+# avec pdftotext -layout. Abonnements publiés en € TTC/an, repris tels quels.
+# kWh Base : 0,2001 € pour 3 et 6 kVA, 0,1985 € de 9 à 36 kVA — ces puissances
+# Base sont EN EXTINCTION (arrêté du 28/01/2025) : publiées pour les contrats en
+# cours, plus proposées à la souscription. HC dès 3 kVA. Tempo (#207) non repris :
+# le moteur ne connaît que Base et HC.
+id: gascogne_trv_local
+fournisseur: Gascogne Énergies Services
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: gascogne_energies_services
+grille_du: 2026-08-01
+source: https://www.gascogne-energies-services.com/wp-content/uploads/2026/08/Combine-parts-TRVE-Tempo-01082026.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.35, 9: 238.60, 12: 285.13, 15: 328.77, 18: 373.71, 24: 469.63, 30: 557.64, 36: 646.51}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2001}
+      6: {base: 0.2001}
+      9: {base: 0.1985}
+      12: {base: 0.1985}
+      15: {base: 0.1985}
+      18: {base: 0.1985}
+      24: {base: 0.1985}
+      30: {base: 0.1985}
+      36: {base: 0.1985}
+  hphc:
+    abonnement_annuel_ttc: {3: 146.67, 6: 192.59, 9: 241.96, 12: 289.60, 15: 334.36, 18: 380.41, 24: 478.58, 30: 568.82, 36: 659.92}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
