@@ -30,6 +30,8 @@ def test_quatre_offres_livrees(offres):
         "alterna_fixe_1an",
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
+        "gaz_de_bordeaux_novafixe",
+        "gaz_de_bordeaux_novafixe_bonus",
         "gedia_all_inclusive",
         "geg_elec_verte_3ans",
         "hunelec_prix_fixe_1an",
@@ -132,6 +134,28 @@ def test_abonnement_annuel_et_mensuel_exclusifs():
     deux = {**annuel, "abonnement_mensuel_ttc": {6: 15.0}}
     with pytest.raises(OffreInvalide, match="exclusifs"):
         offre_depuis_dict({**base, "options": {"base": deux}}, "x")
+
+
+def test_gaz_de_bordeaux_novafixe_grille_d_octobre_2026(offres):
+    """Fiche Bordeaux du 01/10/2026, NovaFixe Élec et Bonus Élec (#99, #111, #371, #372)."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    for ident in ("gaz_de_bordeaux_novafixe", "gaz_de_bordeaux_novafixe_bonus"):
+        g = grilles[f"{ident}:base"].en_vigueur(6, jour)
+        assert (g.debut, g.abonnement_an, g.prix) == (
+            datetime(2026, 10, 1).date(),
+            Decimal("190.44"),  # 15,87 x 12
+            {"base": Decimal("0.18373")},
+        )
+        assert grilles[f"{ident}:base"].en_vigueur(15, jour).prix == {"base": Decimal("0.18233")}
+        with pytest.raises(TarifIntrouvable, match="18 kVA"):  # Base de 3 à 15 kVA seulement
+            grilles[f"{ident}:base"].en_vigueur(18, jour)
+        g = grilles[f"{ident}:hphc"].en_vigueur(24, jour)
+        assert g.abonnement_an == Decimal("469.56")  # 39,13 x 12
+        assert g.prix == {"hp": Decimal("0.19648"), "hc": Decimal("0.14669")}
+        with pytest.raises(TarifIntrouvable, match="3 kVA"):
+            grilles[f"{ident}:hphc"].en_vigueur(3, jour)
+        assert offres[ident].duree_fixite_mois == 36
 
 
 def test_prudence_grille_du_1er_aout_2026(offres):
