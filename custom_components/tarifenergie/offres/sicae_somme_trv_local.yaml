@@ -1,0 +1,22 @@
+# SICAE de la Somme et du Cambraisis — TRV local, Tarif Bleu résidentiel (issues
+# #304 Base, #305 HC ; phase 2 des ELD, #189). Fournisseur historique sur son
+# réseau (≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme GEG #56).
+# Fiche descriptive, article 8.1 des CGV, « Prix TTC en vigueur au 1er août
+# 2026 », pages 1 et 2, recoupée avec le texte du PDF le 24/10/2026.
+# Abonnements publiés en €/an. Base : 20,01 c€ de 3 à 36 kVA (tel que publié) ;
+# 9 à 36 kVA plus proposées à la souscription. HC à partir de 6 kVA. Tempo
+# (#306) non repris : le moteur ne connaît que Base et HC.
+id: sicae_somme_trv_local
+fournisseur: SICAE de la Somme et du Cambraisis
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: sicae_somme
+grille_du: 2026-08-01
+source: https://www.sicaesomme.fr/storage/formulars_references/20260818132818_fichedescriptiveglobalesscv101082026.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.35, 9: 238.60, 12: 285.13, 15: 328.77, 18: 373.71, 24: 469.63, 30: 557.64, 36: 646.51}
+    kwh_ttc: {base: 0.2001}
+  hphc:
+    abonnement_annuel_ttc: {6: 192.59, 9: 241.96, 12: 289.60, 15: 334.36, 18: 380.41, 24: 478.58, 30: 568.82, 36: 659.92}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
