@@ -44,6 +44,7 @@ def test_quatre_offres_livrees(offres):
         "plenitude_pleniweb_1an",
         "primeo_fixe_confort",
         "selia_elec_vert_fixe",
+        "sorea_trv_local",
     ]
     assert all(o.grilles["base"] for o in offres.values())
 
@@ -134,6 +135,28 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_sorea_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local Soréa (#318, #319) : HC à partir de 6 kVA, même abonnement qu'en Base."""
+    offre = offres["sorea_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "sorea", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["sorea_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("190.32"),  # 15,86 x 12
+        {"base": Decimal("0.2001")},
+    )
+    abonnement_3kva = grilles["sorea_trv_local:base"].en_vigueur(3, jour).abonnement_an
+    assert abonnement_3kva == Decimal("145.56")  # 12,13 x 12
+    assert grilles["sorea_trv_local:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.1985")}
+    g = grilles["sorea_trv_local:hphc"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("190.32")
+    assert g.prix == {"hp": Decimal("0.2142"), "hc": Decimal("0.1589")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):
+        grilles["sorea_trv_local:hphc"].en_vigueur(3, jour)
 
 
 @pytest.mark.parametrize(
