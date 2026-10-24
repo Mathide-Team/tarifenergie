@@ -5,6 +5,7 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les numéros 
 ## [Non publié]
 
 ### Ajouté
+- **Offre Mint Énergie Smart & Green** (#36, #144), Base et Heures creuses : grille TTC du 08/10/2026, fixe 2 ans. Le kWh Base vaut 20,15 c€ de 3 à 6 kVA et 20,02 c€ au-delà. La réduction de 60 € et la majoration au renouvellement ne sont pas modélisées.
 - **Offre Mint Énergie Classic & Green** (#34, #142), Base et Heures creuses : grille TTC du 08/10/2026 (PDF officiel). Le kWh Base vaut 19,37 c€ de 3 à 6 kVA et 19,24 c€ au-delà ; pas d'HC en 3 kVA. La réduction de 50 € et la majoration au renouvellement ne sont pas modélisées.
 - **TRV local des ELD** (#189) : `type_prix: reglemente`, sans `duree_fixite_mois` (le prix suit le TRV) et avec le réseau dans `eld:` ; `Offre` porte `type_prix` et `eld`. Premier TRV local : **ÉS Énergies** (#72 Base, #190 HC), grille du 01/08/2026, HC dès 3 kVA ; Base 9-36 kVA en extinction. Tempo (#191) n'est pas repris.
 - **Offre GEDIA All Inclusive GES Électricité** (#54, #335), Base et Heures creuses : tableau « Domestique » de la grille TTC du 19-25/10/2026. Elle est réservée au réseau GEDIA (Dreux). Les offres acceptent maintenant **`abonnement_annuel_ttc`**, exclusif de `abonnement_mensuel_ttc`, pour les grilles publiées en €/an (repris sans division par 12).

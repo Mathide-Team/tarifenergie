@@ -40,6 +40,7 @@ def test_quatre_offres_livrees(offres):
         "la_bellenergie_garance",
         "la_bellenergie_prudence",
         "mint_classic_green",
+        "mint_smart_green",
         "ohm_fixe_2ans",
         "ohm_serente_fixe_1an",
         "plenitude_pleniweb_1an",
@@ -133,6 +134,22 @@ def test_mint_classic_green_grille_du_8_octobre_2026(offres):
     assert g.prix == {"hp": Decimal("0.2062"), "hc": Decimal("0.1576")}
     with pytest.raises(TarifIntrouvable, match="3 kVA"):
         grilles["mint_classic_green:hphc"].en_vigueur(3, jour)
+
+
+def test_mint_smart_green_grille_du_8_octobre_2026(offres):
+    """Mint Smart & Green, grille TTC du 08/10/2026 (#36, #144) : fixe 2 ans."""
+    offre = offres["mint_smart_green"]
+    assert (offre.type_prix, offre.duree_fixite_mois) == ("fixe", 24)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["mint_smart_green:base"].en_vigueur(6, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("227.28"), {"base": Decimal("0.2015")})  # 18,94 x 12
+    assert grilles["mint_smart_green:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.2002")}
+    g = grilles["mint_smart_green:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("671.28")  # 55,94 x 12
+    assert g.prix == {"hp": Decimal("0.2147"), "hc": Decimal("0.1636")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):
+        grilles["mint_smart_green:hphc"].en_vigueur(3, jour)
 
 
 def test_es_trv_local_grille_du_1er_aout_2026(offres):
