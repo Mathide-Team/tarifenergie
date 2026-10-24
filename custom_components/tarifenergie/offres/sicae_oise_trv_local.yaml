@@ -1,0 +1,22 @@
+# SICAE Oise — TRV local, Tarif Bleu résidentiel (issues #298 Base, #299 HC ;
+# phase 2 des ELD, #189). Fournisseur historique sur son réseau (≤ 36 kVA) ;
+# pas de filtre de zone dans le moteur (comme GEG #56).
+# « Fiche tarifs réglementés résidentiels 01/08/2026 », page 1 (tableaux en
+# image, lus sur le rendu le 24/10/2026). Abonnements publiés en €/an (HT et
+# TTC ; seul le TTC est repris). Base en 3 et 6 kVA seulement (9-15 kVA en
+# extinction, 18-36 kVA supprimées, non publiées) ; HC dès 3 kVA. Tempo (#300)
+# non repris : le moteur ne connaît que Base et HC.
+id: sicae_oise_trv_local
+fournisseur: SICAE Oise
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: sicae_oise
+grille_du: 2026-08-01
+source: https://www.sicae-oise.fr/images/uploads//FICHE%20OFFRE%20RESIDENTIELS%2008%202026.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.36}
+    kwh_ttc: {base: 0.2001}
+  hphc:
+    abonnement_annuel_ttc: {3: 146.68, 6: 192.59, 9: 241.96, 12: 289.60, 15: 334.36, 18: 380.41, 24: 478.57, 30: 568.81, 36: 659.92}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
