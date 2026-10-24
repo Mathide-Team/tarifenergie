@@ -1,0 +1,31 @@
+# SICAP Pithiviers (Loiret) — TRV local, Tarif Bleu résidentiel (issues #310
+# Base, #311 HC ; phase 2 des ELD, #189). Fournisseur historique sur son réseau
+# (≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme GEG #56).
+# « Tarifs TTC applicables au 01/08/2026 », grille à abonnement mensuel,
+# recoupée avec le texte du PDF le 24/10/2026. kWh Base : 0,2001 € pour 3 et
+# 6 kVA, 0,1985 € de 9 à 36 kVA — ces puissances sont EN EXTINCTION (arrêté du
+# 30/01/2025). HC dès 3 kVA. Tempo (#312) non repris : le moteur ne connaît que
+# Base et HC.
+id: sicap_pithiviers_trv_local
+fournisseur: SICAP Pithiviers
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: sicap_pithiviers
+grille_du: 2026-08-01
+source: https://www.sicap-pithiviers.net/wp-content/uploads/grille-de-tarification-residentiels-ttc-20260801-abo-mensuel-1.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 53.88}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2001}
+      6: {base: 0.2001}
+      9: {base: 0.1985}
+      12: {base: 0.1985}
+      15: {base: 0.1985}
+      18: {base: 0.1985}
+      24: {base: 0.1985}
+      30: {base: 0.1985}
+      36: {base: 0.1985}
+  hphc:
+    abonnement_mensuel_ttc: {3: 12.22, 6: 16.05, 9: 20.16, 12: 24.13, 15: 27.86, 18: 31.70, 24: 39.88, 30: 47.40, 36: 54.99}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
