@@ -28,6 +28,7 @@ def test_quatre_offres_livrees(offres):
     assert sorted(offres) == [
         "alterna_du_coin_1an",
         "alterna_fixe_1an",
+        "enes_creutzwald_trv_local",
         "es_trv_local",
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
@@ -133,6 +134,26 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     assert grilles["es_trv_local:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.19850")}
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
+    assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_enes_creutzwald_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local Enes Creutzwald (#275, #276)."""
+    offre = offres["enes_creutzwald_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "enes_creutzwald", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 24).date()
+    g = grilles["enes_creutzwald_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("191.42"),
+        {"base": Decimal("0.20006")},
+    )
+    # Base 9-36 kVA en extinction, publiée pour les contrats en cours
+    g = grilles["enes_creutzwald_trv_local:base"].en_vigueur(36, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("652.92"), {"base": Decimal("0.19850")})
+    g = grilles["enes_creutzwald_trv_local:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("669.06")
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
 
 

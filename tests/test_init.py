@@ -69,6 +69,9 @@ async def test_capteurs(hass: HomeAssistant):
         "la_bellenergie_prudence:hphc",
         "alterna_fixe_1an:hphc",
         "hphc",
+        # TRV local Enes Creutzwald HC (#276) : 7,32 €, à égalité au centime avec
+        # es_trv_local:hphc ; départage par le nom de l'option.
+        "enes_creutzwald_trv_local:hphc",
         # TRV local ÉS HC (#190) : 36 x 0,15890 + 3/365 x 194,16 = 7,316 €, juste
         # après le TRV national HC (abonnement un peu plus cher).
         "es_trv_local:hphc",
@@ -84,6 +87,9 @@ async def test_capteurs(hass: HomeAssistant):
         "alterna_fixe_1an:base",
         "hunelec_prix_fixe_1an_vert:hphc",
         "base",
+        # TRV local Enes Creutzwald Base (#275) : 8,78 €, à égalité au centime avec
+        # es_trv_local:base ; départage par le nom de l'option.
+        "enes_creutzwald_trv_local:base",
         # TRV local ÉS Base (#72) : 36 x 0,20006 + 3/365 x 191,40 = 8,775 € (TRV national : 8,772 €).
         "es_trv_local:base",
         "alterna_du_coin_1an:base",
