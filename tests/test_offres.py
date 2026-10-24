@@ -44,6 +44,7 @@ def test_quatre_offres_livrees(offres):
         "plenitude_pleniweb_1an",
         "primeo_fixe_confort",
         "selia_elec_vert_fixe",
+        "ume_trv_local",
     ]
     assert all(o.grilles["base"] for o in offres.values())
 
@@ -134,6 +135,29 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_ume_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local UME Erstein (#321, #322) : mêmes montants que le TRV local ÉS, réseau UME."""
+    offre = offres["ume_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "ume", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["ume_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("191.40"),  # 15,95 x 12
+        {"base": Decimal("0.20006")},
+    )
+    assert grilles["ume_trv_local:base"].en_vigueur(36, jour).prix == {"base": Decimal("0.19850")}
+    g = grilles["ume_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
+    assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
+    assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+    for option in ("base", "hphc"):
+        es, ume = grilles[f"es_trv_local:{option}"], grilles[f"ume_trv_local:{option}"]
+        for kva in (3, 6, 9, 36):
+            assert ume.en_vigueur(kva, jour).prix == es.en_vigueur(kva, jour).prix
+            assert ume.en_vigueur(kva, jour).abonnement_an == es.en_vigueur(kva, jour).abonnement_an
 
 
 @pytest.mark.parametrize(
