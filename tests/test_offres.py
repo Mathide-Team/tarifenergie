@@ -28,6 +28,7 @@ def test_quatre_offres_livrees(offres):
     assert sorted(offres) == [
         "alterna_du_coin_1an",
         "alterna_fixe_1an",
+        "energis_trv_local",
         "es_trv_local",
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
@@ -134,6 +135,25 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_energis_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local Energis (#200, #201) : Base en 3 et 6 kVA seulement, prix Base à 5 décimales."""
+    offre = offres["energis_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "energis", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 24).date()
+    g = grilles["energis_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("190.32"),  # 15,86 x 12
+        {"base": Decimal("0.19522")},
+    )
+    with pytest.raises(LookupError):  # Base 9-36 kVA en extinction, absente de la grille
+        grilles["energis_trv_local:base"].en_vigueur(9, jour)
+    g = grilles["energis_trv_local:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("646.56")  # 53,88 x 12
+    assert g.prix == {"hp": Decimal("0.2142"), "hc": Decimal("0.1589")}
 
 
 @pytest.mark.parametrize(

@@ -68,6 +68,9 @@ async def test_capteurs(hass: HomeAssistant):
         "plenitude_pleniweb_1an:hphc",
         "la_bellenergie_prudence:hphc",
         "alterna_fixe_1an:hphc",
+        # TRV local Energis HC (#201) : 7,28 €, juste devant le TRV national HC
+        # (abonnement 6 kVA un peu moins cher).
+        "energis_trv_local:hphc",
         "hphc",
         # TRV local ÉS HC (#190) : 36 x 0,15890 + 3/365 x 194,16 = 7,316 €, juste
         # après le TRV national HC (abonnement un peu plus cher).
@@ -80,6 +83,8 @@ async def test_capteurs(hass: HomeAssistant):
         # Hunélec HC (#326) : 36 x 0,19129 + 3/365 x 191,52 = 8,46 € ;
         # 100 % vert (#328) : + 2,27 €/mois = 8,68 € ; TRV Base : 8,77 €.
         "hunelec_prix_fixe_1an:hphc",
+        # TRV local Energis Base (#200) : 36 x 0,19522 + 3/365 x 190,32 = 8,59 €.
+        "energis_trv_local:base",
         "la_bellenergie_prudence:base",
         "alterna_fixe_1an:base",
         "hunelec_prix_fixe_1an_vert:hphc",
