@@ -1,0 +1,34 @@
+# GEG (Gaz Électricité de Grenoble) — TRV local, Tarif Bleu résidentiel
+# (issues #195 Base, #196 HC ; phase 2 des ELD, #189). Seul fournisseur du TRV
+# sur le territoire de GreenAlp (Grenoble et communes listées dans la grille,
+# ≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme ÉS #72).
+# Grille « Tarif Bleu Électricité – Clients Particuliers », « Tarif en vigueur à
+# partir du 1er août 2026 » (PART 08.26), relevée le 24/10/2026 avec
+# pdftotext -layout : abonnement TTC/mois et kWh TTC publiés à 4 décimales.
+# kWh Base : 0,2001 € pour 3 et 6 kVA, 0,1985 € de 9 à 36 kVA — ces puissances
+# Base sont EN EXTINCTION (arrêté du 28/01/2025) : publiées pour les contrats en
+# cours, plus proposées à la souscription. HC dès 3 kVA, abonnement HC identique
+# à la Base. EJP (en extinction) non repris ; pas de Tempo dans cette grille.
+id: geg_trv_local
+fournisseur: GEG
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: greenalp
+grille_du: 2026-08-01
+source: https://www.geg.fr/Medias/content-editor/Tarif%20Part/2026/Aout/Grille-tarifaire-Mes%20Offres%20Tarifs%20R%C3%A9glement%C3%A9es%20Bleues-PART08.26.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.15, 6: 15.90, 9: 19.99, 12: 23.90, 15: 27.55, 18: 31.32, 24: 39.43, 30: 46.79, 36: 54.23}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2001}
+      6: {base: 0.2001}
+      9: {base: 0.1985}
+      12: {base: 0.1985}
+      15: {base: 0.1985}
+      18: {base: 0.1985}
+      24: {base: 0.1985}
+      30: {base: 0.1985}
+      36: {base: 0.1985}
+  hphc:
+    abonnement_mensuel_ttc: {3: 12.15, 6: 15.90, 9: 19.99, 12: 23.90, 15: 27.55, 18: 31.32, 24: 39.43, 30: 46.79, 36: 54.23}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
