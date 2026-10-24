@@ -43,6 +43,7 @@ def test_quatre_offres_livrees(offres):
         "ohm_serente_fixe_1an",
         "plenitude_pleniweb_1an",
         "primeo_fixe_confort",
+        "sarre_union_trv_local",
         "selia_elec_vert_fixe",
     ]
     assert all(o.grilles["base"] for o in offres.values())
@@ -133,6 +134,30 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     assert grilles["es_trv_local:base"].en_vigueur(9, jour).prix == {"base": Decimal("0.19850")}
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
+    assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_sarre_union_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local Énergies & Services Sarre-Union (#257, #258)."""
+    offre = offres["sarre_union_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == (
+        "reglemente",
+        "energies_services_sarre_union",
+        None,
+    )
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 24).date()
+    g = grilles["sarre_union_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("191.40"),
+        {"base": Decimal("0.20006")},
+    )
+    # Base 9-36 kVA en extinction, publiée pour les contrats en cours
+    g = grilles["sarre_union_trv_local:base"].en_vigueur(36, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("652.92"), {"base": Decimal("0.19850")})
+    g = grilles["sarre_union_trv_local:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("669.12")
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
 
 
