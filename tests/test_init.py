@@ -55,7 +55,8 @@ async def test_capteurs(hass: HomeAssistant):
     assert base.attributes["grilles"] == ["2026-08-01"]
     # Offres de marché (issues #40, #44, #63, #64 et lot 2) : à cette consommation
     # nocturne, Primeo Fixe Confort HC (13,44 c€) est la moins chère ; les grilles
-    # postérieures au 3 octobre (GEG 05/10, Ohm 14/10 et 16/10, GEDIA 19/10) sont indisponibles.
+    # postérieures au 3 octobre (GEG 05/10, Mint 08/10, Ohm 14/10 et 16/10, GEDIA 19/10)
+    # sont indisponibles.
     prudence = hass.states.get("sensor.maison_12_month_cost_la_bellenergie_prudence_off_peak")
     assert prudence is not None
     assert prudence.state == "7.15"
@@ -107,6 +108,7 @@ async def test_capteurs(hass: HomeAssistant):
     assert "2026-10-01" in economie.attributes["indisponibles"]["geg_elec_verte_3ans:base"]
     assert "2026-10-01" in economie.attributes["indisponibles"]["ohm_serente_fixe_1an:base"]
     assert "2026-10-01" in economie.attributes["indisponibles"]["gedia_all_inclusive:hphc"]
+    assert "2026-10-01" in economie.attributes["indisponibles"]["mint_classic_green:base"]
     assert hass.states.get("sensor.maison_12_month_consumption").state == "36.0"
     assert hass.states.get("sensor.maison_off_peak_share").state == "100.0"
     assert await hass.config_entries.async_unload(entree.entry_id)

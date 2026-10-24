@@ -1,0 +1,31 @@
+# Mint Énergie Classic & Green (issues #34 Base, #142 HC ; inventaire #6).
+# Prix fixe (typologie CRE) : abonnement et kWh HTT fixes 1 an ; 50 % d'électricité
+# verte (garanties d'origine françaises). Grille TTC applicable du 08/10/2026
+# (réf. 271, puis 270), page 1 du PDF officiel. Base : 19,37 c€ de 3 à 6 kVA,
+# 19,24 c€ de 9 à 36 kVA (prix centrés sur leurs lignes, coupure comme au TRV).
+# Pas d'HC en 3 kVA. Non modélisés : réduction de 50 € TTC après 12 puis 24 mois,
+# majoration HTT au renouvellement (+2,50 €/mois, +0,0075 €/kWh Base et HP,
+# +0,0055 €/kWh HC).
+id: mint_classic_green
+fournisseur: Mint Énergie
+offre: Classic & Green
+type_prix: fixe
+grille_du: 2026-10-08
+duree_fixite_mois: 12
+source: https://www.mint-energie.com/wp-content/uploads/2026/10/MINT_ENERGIE_Fiche_Tarifs_27112_CLASSIC_GREEN.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.06, 6: 15.70, 9: 19.62, 12: 23.39, 15: 26.93, 18: 30.59, 24: 38.37, 30: 45.52, 36: 52.72}
+    kwh_ttc_par_puissance:
+      3: {base: 0.1937}
+      6: {base: 0.1937}
+      9: {base: 0.1924}
+      12: {base: 0.1924}
+      15: {base: 0.1924}
+      18: {base: 0.1924}
+      24: {base: 0.1924}
+      30: {base: 0.1924}
+      36: {base: 0.1924}
+  hphc:
+    abonnement_mensuel_ttc: {6: 15.88, 9: 19.90, 12: 23.76, 15: 27.40, 18: 31.15, 24: 39.11, 30: 46.45, 36: 53.84}
+    kwh_ttc: {hp: 0.2062, hc: 0.1576}
