@@ -1,0 +1,33 @@
+# SIEL de Labergement-Sainte-Marie (Doubs) — TRV local, Tarif Bleu résidentiel
+# (issues #313 Base, #314 HC ; phase 2 des ELD, #189). Fournisseur historique
+# sur son réseau (≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme
+# GEG #56).
+# « Grilles tarifaires clients résidentiels au 01/08/2026 », page 1, lue sur le
+# rendu et recoupée avec le texte du PDF le 24/10/2026. La grille publie les
+# abonnements annuels et mensuels (HT et TTC) : l'annuel TTC est repris. kWh
+# Base : 0,2001 € pour 3 et 6 kVA, 0,1985 € de 9 à 36 kVA — ces puissances sont
+# EN EXTINCTION. HC dès 3 kVA, même abonnement qu'en Base. Non repris : Tempo
+# (#315), EJP (en extinction), majorations hors Linky.
+id: siel_labergement_trv_local
+fournisseur: SIEL Labergement-Sainte-Marie
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: siel_labergement
+grille_du: 2026-08-01
+source: https://www.siel-electricite.fr/documents/trv.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.35, 9: 238.60, 12: 285.13, 15: 328.77, 18: 373.71, 24: 469.63, 30: 557.64, 36: 646.51}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2001}
+      6: {base: 0.2001}
+      9: {base: 0.1985}
+      12: {base: 0.1985}
+      15: {base: 0.1985}
+      18: {base: 0.1985}
+      24: {base: 0.1985}
+      30: {base: 0.1985}
+      36: {base: 0.1985}
+  hphc:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.35, 9: 238.60, 12: 285.13, 15: 328.77, 18: 373.71, 24: 469.63, 30: 557.64, 36: 646.51}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}

@@ -68,6 +68,8 @@ async def test_capteurs(hass: HomeAssistant):
         "plenitude_pleniweb_1an:hphc",
         "la_bellenergie_prudence:hphc",
         "alterna_fixe_1an:hphc",
+        # TRV local SIEL Labergement (#314) HC : 36 x 0,1589 + 3/365 x 190,35 €, sous le TRV national.
+        "siel_labergement_trv_local:hphc",
         "hphc",
         # TRV local ÉS HC (#190) : 36 x 0,15890 + 3/365 x 194,16 = 7,316 €, juste
         # après le TRV national HC (abonnement un peu plus cher).
@@ -84,6 +86,8 @@ async def test_capteurs(hass: HomeAssistant):
         "alterna_fixe_1an:base",
         "hunelec_prix_fixe_1an_vert:hphc",
         "base",
+        # TRV local SIEL Labergement (#313, #314) Base : 36 x 0,2001 + 3/365 x 190,35 €.
+        "siel_labergement_trv_local:base",
         # TRV local ÉS Base (#72) : 36 x 0,20006 + 3/365 x 191,40 = 8,775 € (TRV national : 8,772 €).
         "es_trv_local:base",
         "alterna_du_coin_1an:base",
