@@ -69,6 +69,8 @@ async def test_capteurs(hass: HomeAssistant):
         "la_bellenergie_prudence:hphc",
         "alterna_fixe_1an:hphc",
         "hphc",
+        # TRV local UEM HC (#243) : 7,30 €.
+        "uem_trv_local:hphc",
         # TRV local ÉS HC (#190) : 36 x 0,15890 + 3/365 x 194,16 = 7,316 €, juste
         # après le TRV national HC (abonnement un peu plus cher).
         "es_trv_local:hphc",
@@ -83,6 +85,8 @@ async def test_capteurs(hass: HomeAssistant):
         "la_bellenergie_prudence:base",
         "alterna_fixe_1an:base",
         "hunelec_prix_fixe_1an_vert:hphc",
+        # TRV local UEM Base (#242) : 8,76 €.
+        "uem_trv_local:base",
         "base",
         # TRV local ÉS Base (#72) : 36 x 0,20006 + 3/365 x 191,40 = 8,775 € (TRV national : 8,772 €).
         "es_trv_local:base",
