@@ -35,11 +35,12 @@ Avec moins de 12 mois d'historique, les coûts portent sur la période disponibl
 Les grilles des fournisseurs sont livrées dans `custom_components/tarifenergie/offres/*.yaml`
 (inventaire [#6](https://github.com/Mathide-Team/tarifenergie/issues/6), moteur [#5](https://github.com/Mathide-Team/tarifenergie/issues/5)) :
 une issue par offre documente la grille, sa date d'effet et ses sources. La v0.2 couvre
-les offres **à prix fixe** avec options Base et Heures creuses — 17 offres :
+les offres **à prix fixe** avec options Base et Heures creuses — 18 offres :
 
 - la bellenergie Prudence 1 an, Constance 2 ans et Garance 3 ans,
 - Ohm Énergie Sérénité Fixe 1 an et Fixe 2 ans,
 - Alterna Mon électricité française fixe 1 an et Mon électricité du coin 1 an,
+- EDF Zen Fixe 2 ans (kWh HT fixe 2 ans et 1 mois),
 - ÉS Énergies Électricité verte à prix fixe 1 an et sa variante 100 % régionale (Strasbourg Électricité Réseaux),
 - GEDIA All Inclusive GES Électricité (réseau GEDIA, Dreux ; abonnement publié en €/an),
 - GEG Mon Offre Elec Verte fixe 3 ans (kWh HC/HP selon la puissance),
