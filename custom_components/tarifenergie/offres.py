@@ -11,7 +11,7 @@ Format YAML (exemple complet : ``offres/la_bellenergie_prudence.yaml``) ::
     id: la_bellenergie_prudence          # doit être le nom du fichier, sans extension
     fournisseur: la bellenergie
     offre: Prudence
-    type_prix: fixe                      # seul type supporté en v0.2
+    type_prix: fixe                      # ou reglemente (TRV local d'une ELD : eld:, sans durée de fixité)
     grille_du: 2026-08-01                 # date d'effet de la grille tarifaire
     duree_fixite_mois: 12
     source: https://…/grille.pdf         # fiche de référence (registre #27)
@@ -48,7 +48,10 @@ from .modele import Grille, Grilles
 _LOGGER = logging.getLogger(__name__)
 
 DOSSIER_OFFRES = Path(__file__).parent / "offres"
-TYPE_PRIX: tuple[str, ...] = ("fixe",)
+# « reglemente » : TRV local d'une entreprise locale de distribution (ELD) —
+# barème national, abonnement propre au réseau ; pas de durée de fixité (le
+# prix suit les mouvements du TRV), identifiant de réseau ``eld`` exigé.
+TYPE_PRIX: tuple[str, ...] = ("fixe", "reglemente")
 POSTES = ("base", "hp", "hc")
 MOIS_PAR_AN = Decimal("12")
 
@@ -171,14 +174,16 @@ def _grilles_option(
 
 @dataclass(frozen=True)
 class Offre:
-    """Une offre de marché à prix fixe, convertie en grilles par option."""
+    """Une offre (prix fixe ou TRV local d'une ELD), convertie en grilles par option."""
 
     id: str
     fournisseur: str
     offre: str
     grille_du: date
-    duree_fixite_mois: int
+    duree_fixite_mois: int | None  # None pour un TRV local (type_prix « reglemente »)
     grilles: dict[str, Grilles]  # option du TRV ("base", "hphc") → Grilles
+    type_prix: str = "fixe"
+    eld: str | None = None  # réseau de l'ELD, pour un TRV local
 
     def cles(self) -> list[str]:
         """Clés de comparaison : ``<id>:<option>`` (ex. ``la_bellenergie_prudence:hphc``)."""
@@ -198,12 +203,20 @@ def offre_depuis_dict(donnees: Any, ident: str) -> Offre:
         "le caractère « : » est réservé aux clés de comparaison « <id>:<option> »",
     )
     _exiger(donnees.get("type_prix") in TYPE_PRIX, "offre.type_prix", f"attendu : {', '.join(TYPE_PRIX)}")
+    type_prix = donnees["type_prix"]
     duree = donnees.get("duree_fixite_mois")
-    _exiger(
-        isinstance(duree, int) and not isinstance(duree, bool) and duree > 0,
-        "offre.duree_fixite_mois",
-        "entier positif attendu",
-    )
+    eld = None
+    if type_prix == "reglemente":
+        _exiger(
+            duree is None, "offre.duree_fixite_mois", "sans objet pour un TRV local (le prix suit le TRV)"
+        )
+        eld = _texte(donnees, "eld", "offre")
+    else:
+        _exiger(
+            isinstance(duree, int) and not isinstance(duree, bool) and duree > 0,
+            "offre.duree_fixite_mois",
+            "entier positif attendu",
+        )
     _exiger(
         donnees.get("grille_du") is not None and hasattr(donnees["grille_du"], "isoformat"),
         "offre.grille_du",
@@ -233,6 +246,8 @@ def offre_depuis_dict(donnees: Any, ident: str) -> Offre:
         donnees["grille_du"],
         duree,
         grilles,
+        type_prix,
+        eld,
     )
 
 

@@ -49,6 +49,9 @@ les offres **à prix fixe** avec options Base et Heures creuses — 17 offres :
 - Eni Plenitude Pleniweb 1 an,
 - SÉLIA Mon Contrat élec vert Fixe.
 
+S'y ajoutent les **TRV locaux** des entreprises locales de distribution (`type_prix: reglemente`,
+sans durée de fixité, réseau dans `eld:`) : ÉS Énergies (Strasbourg Électricité Réseaux).
+
 Chaque offre est comparée sur la consommation réelle comme les tarifs réglementés :
 puissances non proposées (ex. Heures creuses en 3 kVA) signalées comme indisponibles,
 grilles datées appliquées au jour le jour. Les offres indexées, dynamiques ou à
