@@ -50,7 +50,8 @@ les offres **à prix fixe** avec options Base et Heures creuses — 17 offres :
 - SÉLIA Mon Contrat élec vert Fixe.
 
 S'y ajoutent les **TRV locaux** des entreprises locales de distribution (`type_prix: reglemente`,
-sans durée de fixité, réseau dans `eld:`) : ÉS Énergies (Strasbourg Électricité Réseaux).
+sans durée de fixité, réseau dans `eld:`) : ÉS Énergies (Strasbourg Électricité Réseaux) et
+UEM (réseau réséda, Metz).
 
 Chaque offre est comparée sur la consommation réelle comme les tarifs réglementés :
 puissances non proposées (ex. Heures creuses en 3 kVA) signalées comme indisponibles,
