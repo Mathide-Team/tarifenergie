@@ -33,6 +33,7 @@ def test_quatre_offres_livrees(offres):
         "es_verte_regionale_fixe_1an",
         "gedia_all_inclusive",
         "geg_elec_verte_3ans",
+        "geg_trv_local",
         "hunelec_prix_fixe_1an",
         "hunelec_prix_fixe_1an_vert",
         "ilek_enrfixe_plus",
@@ -134,6 +135,25 @@ def test_es_trv_local_grille_du_1er_aout_2026(offres):
     g = grilles["es_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
     assert g.abonnement_an == Decimal("147.48")  # 12,29 x 12
     assert g.prix == {"hp": Decimal("0.21422"), "hc": Decimal("0.15890")}
+
+
+def test_geg_trv_local_grille_du_1er_aout_2026(offres):
+    """TRV local GEG (#195, #196) : réseau GreenAlp, kWh TTC à 4 décimales, HC dès 3 kVA."""
+    offre = offres["geg_trv_local"]
+    assert (offre.type_prix, offre.eld, offre.duree_fixite_mois) == ("reglemente", "greenalp", None)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 24).date()
+    g = grilles["geg_trv_local:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 8, 1).date(),
+        Decimal("190.80"),  # 15,90 x 12
+        {"base": Decimal("0.2001")},
+    )
+    g = grilles["geg_trv_local:base"].en_vigueur(36, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("650.76"), {"base": Decimal("0.1985")})  # 54,23 x 12
+    g = grilles["geg_trv_local:hphc"].en_vigueur(3, jour)  # HC proposée dès 3 kVA
+    assert g.abonnement_an == Decimal("145.80")  # 12,15 x 12, comme la Base
+    assert g.prix == {"hp": Decimal("0.2142"), "hc": Decimal("0.1589")}
 
 
 @pytest.mark.parametrize(
