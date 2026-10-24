@@ -1,0 +1,23 @@
+# SICAE de la Vallée du Sausseron (Val-d'Oise) — TRV local, Tarif Bleu
+# résidentiel (issues #307 Base, #308 HC ; phase 2 des ELD, #189). Fournisseur
+# historique sur son réseau (≤ 36 kVA) ; pas de filtre de zone dans le moteur
+# (comme GEG #56).
+# Fiche des tarifs réglementés, chapitre 4 des CGV, tarifs applicables au
+# 1er août 2026, page 1, recoupée avec le texte du PDF le 24/10/2026.
+# Abonnements publiés en €/an (HT et TTC ; seul le TTC est repris). Base publiée
+# en 3 et 6 kVA seulement ; HC dès 3 kVA. Tempo (#309) non repris : le moteur
+# ne connaît que Base et HC.
+id: sicae_vs_trv_local
+fournisseur: SICAE de la Vallée du Sausseron
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: sicae_vs
+grille_du: 2026-08-01
+source: https://sicae-vs.fr/wp-content/uploads/fiche-descriptive-offre-TRVE-SICAE-VS-01082026-1.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 145.56, 6: 190.35}
+    kwh_ttc: {base: 0.2001}
+  hphc:
+    abonnement_annuel_ttc: {3: 146.67, 6: 192.59, 9: 241.96, 12: 289.60, 15: 334.36, 18: 380.41, 24: 478.58, 30: 568.82, 36: 659.92}
+    kwh_ttc: {hp: 0.2142, hc: 0.1589}
