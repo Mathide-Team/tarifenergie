@@ -1,0 +1,35 @@
+# Enes Creutzwald — TRV local, Tarif Bleu résidentiel (issues #275 Base, #276 HC ;
+# phase 2 des ELD, #189). Seul fournisseur du TRV sur son réseau (Creutzwald,
+# Moselle, ≤ 36 kVA) ; pas de filtre de zone dans le moteur (comme ÉS #72).
+# Grilles publiées en images (« Service Base » et « Service Heures creuses / Heures
+# pleines », année 2026), lues sur le rendu le 24/10/2026. La date exacte n'est pas
+# écrite, mais les prix du kWh sont ceux du barème du 01/08/2026 (mêmes valeurs que
+# ÉS). Abonnement + CTA publié en € TTC/an et en € TTC/mois : l'annuel, plus précis,
+# est retenu. kWh Base : 0,20006 € pour 3 et 6 kVA, 0,19850 € de 9 à 36 kVA, en
+# extinction pour les contrats en cours. HC dès 3 kVA ; l'abonnement HC 3 kVA est
+# publié à 184,92 €/an (15,41 €/mois), bien au-dessus des autres ELD : repris tel
+# que publié. Grille HC : image séparée particulier_cvs_service_hc_hp2026.jpg.
+# Pas de Tempo publié.
+id: enes_creutzwald_trv_local
+fournisseur: Enes Creutzwald
+offre: TRV local (Tarif Bleu)
+type_prix: reglemente
+eld: enes_creutzwald
+grille_du: 2026-08-01
+source: https://www.enes.fr/dynamic/documents/creutzwald/electricite/2026/particulier_cvs_service_base2026.jpg
+options:
+  base:
+    abonnement_annuel_ttc: {3: 146.09, 6: 191.42, 9: 240.20, 12: 287.27, 15: 331.44, 18: 376.92, 24: 473.92, 30: 562.98, 36: 652.92}
+    kwh_ttc_par_puissance:
+      3: {base: 0.20006}
+      6: {base: 0.20006}
+      9: {base: 0.19850}
+      12: {base: 0.19850}
+      15: {base: 0.19850}
+      18: {base: 0.19850}
+      24: {base: 0.19850}
+      30: {base: 0.19850}
+      36: {base: 0.19850}
+  hphc:
+    abonnement_annuel_ttc: {3: 184.92, 6: 194.11, 9: 244.24, 12: 292.64, 15: 338.16, 18: 384.98, 24: 484.67, 30: 576.43, 36: 669.06}
+    kwh_ttc: {hp: 0.21422, hc: 0.15890}
