@@ -89,6 +89,8 @@ async def test_capteurs(hass: HomeAssistant):
         "alterna_du_coin_1an:base",
         "la_bellenergie_constance:base",
         "la_bellenergie_garance:base",
+        # Engie Elec Référence 3 ans HC (#127) : 36 x 0,20683 + 3/365 x 215,79 = 9,22 €.
+        "engie_elec_reference_3ans:hphc",
         "selia_elec_vert_fixe:hphc",
         "ilek_enrfixe_plus:hphc",
         # Hunélec Base (#325, #327) : 36 x 0,23506 + 3/365 x 188,88 = 10,01 € (vert : 10,24 €).
@@ -97,6 +99,8 @@ async def test_capteurs(hass: HomeAssistant):
         # Hunélec vert Base (10,2385 €) ; ÉS 100 % régionale HC (#332) : 10,46 €.
         "es_verte_fixe_1an:hphc",
         "hunelec_prix_fixe_1an_vert:base",
+        # Engie Elec Référence 3 ans Base (#28) : 36 x 0,24205 + 3/365 x 195,18 = 10,32 €.
+        "engie_elec_reference_3ans:base",
         "es_verte_regionale_fixe_1an:hphc",
         "ilek_enrfixe_plus:base",
         "selia_elec_vert_fixe:base",

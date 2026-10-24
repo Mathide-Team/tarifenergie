@@ -28,6 +28,7 @@ def test_quatre_offres_livrees(offres):
     assert sorted(offres) == [
         "alterna_du_coin_1an",
         "alterna_fixe_1an",
+        "engie_elec_reference_3ans",
         "es_trv_local",
         "es_verte_fixe_1an",
         "es_verte_regionale_fixe_1an",
@@ -112,6 +113,31 @@ def test_gedia_grille_du_19_octobre_2026(offres):
     assert g.prix == {"hp": Decimal("0.28965"), "hc": Decimal("0.21082")}
     with pytest.raises(TarifIntrouvable, match="3 kVA"):
         grilles["gedia_all_inclusive:hphc"].en_vigueur(3, jour)
+
+
+def test_engie_elec_reference_grille_d_octobre_2026(offres):
+    """Engie Elec Référence 3 ans, grille d'octobre 2026 (#28, #127) : somme des trois parts.
+
+    Base : CU ; 6 kVA 45,79 + 149,39 €/an, 16,379 + 5,988 + 1,838 c€ ; 9 kVA obligations 2,010 c€.
+    HC : MUDT ; 6 kVA 45,79 + 170,00 €/an, HP 16,861 + 6,108 + 2,030, HC 14,321 + 4,332 + 2,030 c€.
+    """
+    offre = offres["engie_elec_reference_3ans"]
+    assert (offre.type_prix, offre.duree_fixite_mois) == ("fixe", 36)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["engie_elec_reference_3ans:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 10, 1).date(),
+        Decimal("195.18"),
+        {"base": Decimal("0.24205")},
+    )
+    g = grilles["engie_elec_reference_3ans:base"].en_vigueur(36, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("667.55"), {"base": Decimal("0.24377")})
+    g = grilles["engie_elec_reference_3ans:hphc"].en_vigueur(6, jour)
+    assert g.abonnement_an == Decimal("215.79")
+    assert g.prix == {"hp": Decimal("0.24999"), "hc": Decimal("0.20683")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):
+        grilles["engie_elec_reference_3ans:hphc"].en_vigueur(3, jour)
 
 
 def test_es_trv_local_grille_du_1er_aout_2026(offres):
