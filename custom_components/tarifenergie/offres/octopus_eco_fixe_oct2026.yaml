@@ -1,0 +1,31 @@
+# Octopus Energy Eco Fixe Octobre 2026 (issues #30 Base, #139 Heures creuses ; inventaire #6).
+# Offre à prix fixe (typologie CRE) : abonnement et kWh HTT fixes 24 mois à
+# compter de l'activation (fiche descriptive), hors évolutions réglementaires et
+# fiscales. Grille « Applicable au 30/09/2026 », vérifiée sur le PDF. kWh Base :
+# 0,2033 € de 1 à 6 kVA, 0,2017 € de 7 à 36 kVA (cellules fusionnées, coupure lue sur
+# la position des cellules). HC proposée dès 3 kVA, abonnement identique à Base.
+# Puissances 1, 2 kVA et intermédiaires (Linky) non reprises. Réservée au
+# territoire Enedis : le moteur ne filtre pas encore par zone.
+id: octopus_eco_fixe_oct2026
+fournisseur: Octopus Energy
+offre: Eco Fixe Octobre 2026
+type_prix: fixe
+grille_du: 2026-09-30
+duree_fixite_mois: 24
+source: https://a.storyblok.com/f/151412/x/ba2769d1df/grille-tarifaire-cocon_fallback_oct26.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 54.41}
+    kwh_ttc_par_puissance:
+      3: {base: 0.2033}
+      6: {base: 0.2033}
+      9: {base: 0.2017}
+      12: {base: 0.2017}
+      15: {base: 0.2017}
+      18: {base: 0.2017}
+      24: {base: 0.2017}
+      30: {base: 0.2017}
+      36: {base: 0.2017}
+  hphc:
+    abonnement_mensuel_ttc: {3: 12.13, 6: 15.86, 9: 19.88, 12: 23.76, 15: 27.40, 18: 31.14, 24: 39.14, 30: 46.47, 36: 54.41}
+    kwh_ttc: {hp: 0.2178, hc: 0.1613}

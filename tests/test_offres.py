@@ -38,6 +38,8 @@ def test_quatre_offres_livrees(offres):
         "la_bellenergie_constance",
         "la_bellenergie_garance",
         "la_bellenergie_prudence",
+        "octopus_eco_fixe_oct2026",
+        "octopus_eco_fixe_plus_oct2026",
         "ohm_fixe_2ans",
         "ohm_serente_fixe_1an",
         "plenitude_pleniweb_1an",
@@ -132,6 +134,31 @@ def test_abonnement_annuel_et_mensuel_exclusifs():
     deux = {**annuel, "abonnement_mensuel_ttc": {6: 15.0}}
     with pytest.raises(OffreInvalide, match="exclusifs"):
         offre_depuis_dict({**base, "options": {"base": deux}}, "x")
+
+
+def test_octopus_eco_fixe_grilles_d_octobre_2026(offres):
+    """Grilles TTC Octopus Eco Fixe Plus (12/10/2026) et Eco Fixe (30/09/2026) (#29, #30, #138, #139)."""
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["octopus_eco_fixe_plus_oct2026:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 10, 12).date(),
+        Decimal("190.32"),  # 15,86 x 12
+        {"base": Decimal("0.1968")},
+    )
+    # Cellules fusionnées : 1-6 kVA puis 7-36 kVA ; 36 kVA à 54,41 €/mois.
+    g = grilles["octopus_eco_fixe_plus_oct2026:base"].en_vigueur(36, jour)
+    assert (g.abonnement_an, g.prix) == (Decimal("652.92"), {"base": Decimal("0.1953")})
+    # HC proposée dès 3 kVA, même abonnement qu'en Base.
+    g = grilles["octopus_eco_fixe_plus_oct2026:hphc"].en_vigueur(3, jour)
+    assert g.abonnement_an == Decimal("145.56")  # 12,13 x 12
+    assert g.prix == {"hp": Decimal("0.2106"), "hc": Decimal("0.1565")}
+    g = grilles["octopus_eco_fixe_oct2026:base"].en_vigueur(9, jour)
+    assert (g.debut, g.prix) == (datetime(2026, 9, 30).date(), {"base": Decimal("0.2017")})
+    assert grilles["octopus_eco_fixe_oct2026:base"].en_vigueur(3, jour).prix == {"base": Decimal("0.2033")}
+    g = grilles["octopus_eco_fixe_oct2026:hphc"].en_vigueur(6, jour)
+    assert g.prix == {"hp": Decimal("0.2178"), "hc": Decimal("0.1613")}
+    assert offres["octopus_eco_fixe_oct2026"].duree_fixite_mois == 24
 
 
 def test_prudence_grille_du_1er_aout_2026(offres):
