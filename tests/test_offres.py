@@ -33,6 +33,7 @@ def test_quatre_offres_livrees(offres):
         "es_verte_regionale_fixe_1an",
         "gedia_all_inclusive",
         "geg_elec_verte_3ans",
+        "happe_elec_1an",
         "hunelec_prix_fixe_1an",
         "hunelec_prix_fixe_1an_vert",
         "ilek_enrfixe_plus",
@@ -112,6 +113,31 @@ def test_gedia_grille_du_19_octobre_2026(offres):
     assert g.prix == {"hp": Decimal("0.28965"), "hc": Decimal("0.21082")}
     with pytest.raises(TarifIntrouvable, match="3 kVA"):
         grilles["gedia_all_inclusive:hphc"].en_vigueur(3, jour)
+
+
+def test_happe_elec_1an_grille_du_1er_octobre_2026(offres):
+    """Happ-e Électricité 1 an, annexe prix du 01/10/2026 (#71, #128) : fourniture + acheminement.
+
+    Base : CU ; 6 kVA 44,35 + 149,39 €/an, 20,321 + 5,988 c€.
+    HC : MUDT ; 6 kVA 44,35 + 170,00 €/an, HP 21,296 + 6,108, HC 18,066 + 4,332 c€ ; pas de 3 kVA.
+    """
+    offre = offres["happe_elec_1an"]
+    assert (offre.type_prix, offre.duree_fixite_mois) == ("fixe", 12)
+    grilles = grilles_offres(offres)
+    jour = datetime(2026, 10, 19).date()
+    g = grilles["happe_elec_1an:base"].en_vigueur(6, jour)
+    assert (g.debut, g.abonnement_an, g.prix) == (
+        datetime(2026, 10, 1).date(),
+        Decimal("193.74"),
+        {"base": Decimal("0.26309")},
+    )
+    g = grilles["happe_elec_1an:base"].en_vigueur(3, jour)
+    assert g.abonnement_an == Decimal("146.50")
+    g = grilles["happe_elec_1an:hphc"].en_vigueur(36, jour)
+    assert g.abonnement_an == Decimal("789.81")
+    assert g.prix == {"hp": Decimal("0.27404"), "hc": Decimal("0.22398")}
+    with pytest.raises(TarifIntrouvable, match="3 kVA"):
+        grilles["happe_elec_1an:hphc"].en_vigueur(3, jour)
 
 
 def test_es_trv_local_grille_du_1er_aout_2026(offres):

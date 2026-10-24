@@ -90,6 +90,8 @@ async def test_capteurs(hass: HomeAssistant):
         "la_bellenergie_constance:base",
         "la_bellenergie_garance:base",
         "selia_elec_vert_fixe:hphc",
+        # Happ-e Électricité 1 an HC (#128) : 36 x 0,22398 + 3/365 x 214,35 = 9,83 €.
+        "happe_elec_1an:hphc",
         "ilek_enrfixe_plus:hphc",
         # Hunélec Base (#325, #327) : 36 x 0,23506 + 3/365 x 188,88 = 10,01 € (vert : 10,24 €).
         "hunelec_prix_fixe_1an:base",
@@ -98,6 +100,8 @@ async def test_capteurs(hass: HomeAssistant):
         "es_verte_fixe_1an:hphc",
         "hunelec_prix_fixe_1an_vert:base",
         "es_verte_regionale_fixe_1an:hphc",
+        # Happ-e Électricité 1 an Base (#71) : 36 x 0,26309 + 3/365 x 193,74 = 11,06 €.
+        "happe_elec_1an:base",
         "ilek_enrfixe_plus:base",
         "selia_elec_vert_fixe:base",
         # ÉS Base (#73) : 36 x 0,30216 + 3/365 x 191,40 = 12,45 € ; régionale (#74) : 12,67 €.
