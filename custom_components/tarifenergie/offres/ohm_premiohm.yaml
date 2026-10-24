@@ -1,0 +1,20 @@
+# Ohm Énergie Premi'Ohm (issues #39 Base, #147 HC ; inventaire #6).
+# Électricité 100 % renouvelable incluse ; prix fixe de la part électricité 3 ans
+# (TURPE, taxes et obligations répercutés), service client prioritaire.
+# Grille TTC applicable au 14/10/2026 (PDF officiel, tableaux en image pages 2-3) :
+# un seul prix du kWh pour toutes les puissances. Puissances usuelles seulement
+# (les intermédiaires sont réservées aux compteurs Linky), comme ohm_fixe_2ans.
+id: ohm_premiohm
+fournisseur: Ohm Énergie
+offre: Premi'Ohm
+type_prix: fixe
+grille_du: 2026-10-14
+duree_fixite_mois: 36
+source: https://ohm-energie.com/grilles/elec/2026/10/ELEC-PremiOhm.pdf
+options:
+  base:
+    abonnement_mensuel_ttc: {3: 12.15, 6: 15.88, 9: 19.90, 12: 23.78, 15: 27.42, 18: 31.16, 24: 39.16, 30: 46.49, 36: 53.89}
+    kwh_ttc: {base: 0.2287}
+  hphc:  # pas d'option HC en 3 kVA
+    abonnement_mensuel_ttc: {6: 16.07, 9: 20.18, 12: 24.15, 15: 27.88, 18: 31.72, 24: 39.90, 30: 47.42, 36: 55.01}
+    kwh_ttc: {hp: 0.2455, hc: 0.1799}
