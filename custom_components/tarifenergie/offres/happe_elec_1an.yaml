@@ -1,0 +1,29 @@
+# Happ-e by ENGIE Électricité 1 an (issues #71 Base, #128 HC ; inventaire #6).
+# « Offre à prix fixe de la part de l'électricité » (typologie CRE), comme Engie
+# Elec Référence 3 ans (#28) : seule la fourniture est fixe 12 mois ;
+# l'acheminement suit le TURPE.
+# Annexe prix « en vigueur au 01/10/2026 », pages 1 à 3. Selon la fiche
+# descriptive (article 4 des CGV), l'abonnement et le prix par kWh comprennent
+# chacun une part fourniture et une part acheminement. Chaque total ci-dessous
+# est donc la somme fourniture + acheminement (TTC « hors évolution des taxes ») :
+#   - Base : acheminement CU (sans différenciation temporelle), le cas courant ;
+#     fourniture 44,35 €/an et 20,321 c€, CU 5,988 c€.
+#   - HC : acheminement MUDT (2 plages), le cas courant ; fourniture 44,35 €/an,
+#     HP 21,296 / HC 18,066 c€, MUDT HP 6,108 / HC 4,332 c€. Pas d'HC en 3 kVA
+#     (la grille fourniture HP/HC commence à 6 kVA).
+# Les options d'acheminement CU4 et MU4 (4 plages saisonnières) ne sont pas reprises.
+# Abonnement publié en €/an : abonnement_annuel_ttc (fourniture + acheminement).
+id: happe_elec_1an
+fournisseur: Happ-e by ENGIE
+offre: Électricité 1 an
+type_prix: fixe
+grille_du: 2026-10-01
+duree_fixite_mois: 12
+source: https://particuliers.engie.fr/content/dam/happe-public/pdf/grille_tarifaire.pdf
+options:
+  base:
+    abonnement_annuel_ttc: {3: 146.50, 6: 193.74, 9: 240.97, 12: 288.21, 15: 335.45, 18: 382.68, 24: 477.16, 30: 571.63, 36: 666.11}
+    kwh_ttc: {base: 0.26309}
+  hphc:
+    abonnement_annuel_ttc: {6: 214.35, 9: 271.90, 12: 329.44, 15: 386.99, 18: 444.54, 24: 559.63, 30: 674.72, 36: 789.81}
+    kwh_ttc: {hp: 0.27404, hc: 0.22398}
